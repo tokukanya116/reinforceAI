@@ -1,7 +1,7 @@
 ﻿ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 1,,,,Mod Title,,reinforceAI_V2
 2,,,,Mod Page Description,,Personal mods based on AGS:reinforceAI
-3,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nOpening bonus market (ai will automatically produce merchants after 15 minutes)\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 100 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
+3,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nOpening bonus market (ai will automatically produce merchants after 15 minutes)\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
 4,,,,Option Header,,Win Conditions
 5,,,,Annihilation Option,,Annihilation
 6,,,,Annihilation Option,,"Destroy all enemies. This option is required, unless you wish for player to be never eliminated even if he loses everything."

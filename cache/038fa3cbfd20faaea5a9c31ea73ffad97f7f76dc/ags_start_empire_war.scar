@@ -173,7 +173,6 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
     end
     
   end
-	
   
   -- For every sgroup
   --SGroup_ForEach(sg_player_farmer, _AssignFarmer)
@@ -255,12 +254,9 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
 			end
 			
 			-- fieldLocation
-			--local ebp_site = AGS_GetNeutralEntity(AGS_BP_SACRED_SITE)
-			
-			field =  Entity_CreateFacing(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, gold_position, true)
-			local pos_test = World_GetSpawnablePosition(gold_position, field)
-			--local pos_minecamp = Entity_CalculatePassableSpawnPosition(field,gold_position )
-			--Entity_SetPosition(field,World_Pos(gold_position))
+			field = Entity_Create(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, true)
+			local pos_minecamp = Entity_CalculatePassableSpawnPosition(field,gold_position )
+			Entity_SetPosition(field,World_Pos(pos_minecamp))
 			
 			Entity_ForceConstruct(field)
 			Entity_SnapToGridAndGround(field, false) --false表示即时构建
@@ -268,14 +264,14 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
 			
 			--Entity_SetInvulnerableMinCap(entity, 1.0, 0.0)
 			
-			--local sbp_villager = BP_GetSquadBlueprint("unit_villager_1_"..prefix)
-			--local sg_player_goldminer = SGroup_CreateIfNotFound("sg_player_goldminer")
-			--UnitEntry_DeploySquads(localPlayer, sg_player_goldminer, {{sbp = sbp_villager, numSquads = 2 }}, pos_minecamp)
+			local sbp_villager = BP_GetSquadBlueprint("unit_villager_1_"..prefix)
+			local sg_player_goldminer = SGroup_CreateIfNotFound("sg_player_goldminer")
+			UnitEntry_DeploySquads(localPlayer, sg_player_goldminer, {{sbp = sbp_villager, numSquads = 2 }}, pos_minecamp)
 			
 			-- 获取玩家农民
-			--eg_farms = Player_GetEntitiesFromType(localPlayer, "farm")
+			eg_farms = Player_GetEntitiesFromType(localPlayer, "farm")
 			
-			--SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
+			SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
 		end
 	end
 end

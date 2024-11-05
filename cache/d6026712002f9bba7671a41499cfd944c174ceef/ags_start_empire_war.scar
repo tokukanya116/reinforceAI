@@ -255,16 +255,14 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
 			end
 			
 			-- fieldLocation
-			--local ebp_site = AGS_GetNeutralEntity(AGS_BP_SACRED_SITE)
-			
-			field =  Entity_CreateFacing(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, gold_position, true)
-			local pos_test = World_GetSpawnablePosition(gold_position, field)
+			AGS_SiteLimit_CreateEntity(BP_GetEntityBlueprint(fieldShortName..prefix),gold_position)
+			--field = Entity_Create(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, true)
 			--local pos_minecamp = Entity_CalculatePassableSpawnPosition(field,gold_position )
 			--Entity_SetPosition(field,World_Pos(gold_position))
 			
-			Entity_ForceConstruct(field)
-			Entity_SnapToGridAndGround(field, false) --false表示即时构建
-			Entity_Spawn(field)
+			--Entity_ForceConstruct(field)
+			--Entity_SnapToGridAndGround(field, false) --false表示即时构建
+			--Entity_Spawn(field)
 			
 			--Entity_SetInvulnerableMinCap(entity, 1.0, 0.0)
 			
@@ -344,4 +342,24 @@ function ChallengeMission_InitStartingUnits()
   -- Spawn minimap icons
   --Util_CreateEntities(nil, eg_minimap, BP_GetEntityBlueprint("gaia_deer_dummy_minimap_icon"), mkr_player_deer_spawn, 1, nil, true, true)
   
+end
+
+function AGS_SiteLimit_CreateEntity(bp_entity, position)
+	local position_offset = World_Pos(0, 0, 0)	
+	-- Determine proper position and rotation.
+	local nx = position.x
+	local ny = position.y
+	local nz = position.z
+	local placement = World_Pos(nx + position_offset.x, ny + position_offset.y, nz + position_offset.z)
+	local rotation = World_Pos(nx + position_offset.x, ny + position_offset.y, nz + position_offset.z + 5)
+	-- Spawn
+	local e = Entity_CreateENVFacing(bp_entity, placement, rotation, true)
+	
+	local safe_spawn = World_GetSpawnablePosition(placement, e)
+	Entity_WarpToPos(e, safe_spawn)
+	
+	Entity_Spawn(e)
+	Entity_ForceConstruct(e)
+	Entity_SnapToGridAndGround(e, false)
+	return e	
 end

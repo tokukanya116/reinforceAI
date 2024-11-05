@@ -27,7 +27,11 @@ end
 --调用预设置函数
 function AGS_Empire_War_PresetExecute()
 	AGS_Print("AGS_Empire_War_PresetExecute")
-	AGS_Empire_War_AssignUnitsToResources(player)
+	for _, player in pairs(PLAYERS) do
+		if not AGS_AI_IsAI(player.id) then
+			AGS_Empire_War_AssignUnitsToResources(player)
+		end			
+	end
 end
 
 -- Assign units to resources
@@ -173,7 +177,6 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
     end
     
   end
-	
   
   -- For every sgroup
   --SGroup_ForEach(sg_player_farmer, _AssignFarmer)
@@ -185,99 +188,92 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
   --SGroup_ForEach(sg_player_hunter, _AssignHunter)
   --SGroup_ForEach(sg_player_fishingboat, _AssignFishingboat)
   
-	for _, player in pairs(PLAYERS) do
-		if not AGS_AI_IsAI(player.id) then	
-			--获取第一个城镇中心
-			eg_player_entities = Player_GetEntities(localPlayer)
-			EGroup_Filter(eg_player_entities, "town_center", FILTER_KEEP)
-			local ent_town_center = EGroup_GetEntityAt(eg_player_entities, 1)
-			local pos_town_center = Entity_GetPosition(ent_town_center)
-			
-			--民族类型
-			local raceName = Player_GetRaceName(localPlayer)
-			local prefixes = AGS_GLOBAL_SETTINGS.Prefixes
-			local prefix = prefixes[raceName]
-			
-			if EGroup_Exists("eg_gold_deposit") == false then
-				eg_gold_deposit = EGroup_Create("eg_gold_deposit")
-			else
-				EGroup_Clear(eg_gold_deposit)
-			end
-			
-			
-			
-			-- 查找周边金矿类型(先查小金，不存在则找大金)
-			local gold_type = 'small'
-			World_GetEntitiesNearPoint(localPlayer, eg_gold_deposit, pos_town_center, 60, OT_Neutral)
-			EGroup_Filter(eg_gold_deposit, BP_GetEntityBlueprint("resource_gold_deposit_small"), FILTER_KEEP)
-			
-			if EGroup_Count(eg_gold_deposit) == 0 then
-				World_GetEntitiesNearPoint(localPlayer, eg_gold_deposit, pos_town_center, 60, OT_Neutral)
-				EGroup_Filter(eg_gold_deposit, BP_GetEntityBlueprint("resource_gold_deposit"), FILTER_KEEP)
-				gold_type = 'big'
-			end
-			
-			-- 如果还是没有，补木头和两个农民给玩家
-			if EGroup_Count(eg_gold_deposit) == 0 then
-				
-				return
-			end
-			
-			
-			-- 最近的单个金矿
-			local eg_gold_single = EGroup_GetEntityAt(eg_gold_deposit, 1)
-			-- 这个金矿对应的坐标
-			local gold_position = Entity_GetPosition(eg_gold_single)
-			
-			-- 设置偏移
-			-- 默认小金+标准矿场
-			--local pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,10)
-			
-			--if gold_type == 'big' then
-			--pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,15)
-			--end
-			
-			--if prefix == 'jpn' then
-			--pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,15)
-			--if gold_type == 'big' then
-			--pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,20)
-			--end
-			--end
-			
-			local fieldShortName
-			-- 根据民族类型找不同的蓝图
-			if prefix == 'mal' or prefix == 'ott' or prefix == 'jpn' then
-				fieldShortName = 'building_econ_mining_camp_'
-			elseif prefix == 'mon' then
-				fieldShortName = 'building_house_'  
-			else
-				fieldShortName ='building_econ_mining_camp_control_'
-			end
-			
-			-- fieldLocation
-			--local ebp_site = AGS_GetNeutralEntity(AGS_BP_SACRED_SITE)
-			
-			field =  Entity_CreateFacing(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, gold_position, true)
-			local pos_test = World_GetSpawnablePosition(gold_position, field)
-			--local pos_minecamp = Entity_CalculatePassableSpawnPosition(field,gold_position )
-			--Entity_SetPosition(field,World_Pos(gold_position))
-			
-			Entity_ForceConstruct(field)
-			Entity_SnapToGridAndGround(field, false) --false表示即时构建
-			Entity_Spawn(field)
-			
-			--Entity_SetInvulnerableMinCap(entity, 1.0, 0.0)
-			
-			--local sbp_villager = BP_GetSquadBlueprint("unit_villager_1_"..prefix)
-			--local sg_player_goldminer = SGroup_CreateIfNotFound("sg_player_goldminer")
-			--UnitEntry_DeploySquads(localPlayer, sg_player_goldminer, {{sbp = sbp_villager, numSquads = 2 }}, pos_minecamp)
-			
-			-- 获取玩家农民
-			--eg_farms = Player_GetEntitiesFromType(localPlayer, "farm")
-			
-			--SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
-		end
+    --获取第一个城镇中心
+    eg_player_entities = Player_GetEntities(localPlayer)
+    EGroup_Filter(eg_player_entities, "town_center", FILTER_KEEP)
+    local ent_town_center = EGroup_GetEntityAt(eg_player_entities, 1)
+    local pos_town_center = Entity_GetPosition(ent_town_center)
+    
+    --民族类型
+    local raceName = Player_GetRaceName(localPlayer)
+    local prefixes = AGS_GLOBAL_SETTINGS.Prefixes
+    local prefix = prefixes[raceName]
+    
+    if EGroup_Exists("eg_gold_deposit") == false then
+      eg_gold_deposit = EGroup_Create("eg_gold_deposit")
+    else
+      EGroup_Clear(eg_gold_deposit)
+    end
+    
+    
+    
+    -- 查找周边金矿类型(先查小金，不存在则找大金)
+    local gold_type = 'small'
+    World_GetEntitiesNearPoint(localPlayer, eg_gold_deposit, pos_town_center, 60, OT_Neutral)
+    EGroup_Filter(eg_gold_deposit, BP_GetEntityBlueprint("resource_gold_deposit_small"), FILTER_KEEP)
+    
+    if EGroup_Count(eg_gold_deposit) == 0 then
+      World_GetEntitiesNearPoint(localPlayer, eg_gold_deposit, pos_town_center, 60, OT_Neutral)
+      EGroup_Filter(eg_gold_deposit, BP_GetEntityBlueprint("resource_gold_deposit"), FILTER_KEEP)
+      gold_type = 'big'
+    end
+	
+	-- 如果还是没有，补木头和两个农民给玩家
+	if EGroup_Count(eg_gold_deposit) == 0 then
+	  
+	  return
 	end
+		
+    
+	-- 最近的单个金矿
+    local eg_gold_single = EGroup_GetEntityAt(eg_gold_deposit, 1)
+	-- 这个金矿对应的坐标
+    local gold_position = Entity_GetPosition(eg_gold_single)
+    
+    -- 设置偏移
+	-- 默认小金+标准矿场
+    --local pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,10)
+		
+	--if gold_type == 'big' then
+    	--pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,15)
+    --end
+		
+    --if prefix == 'jpn' then
+      --pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,15)
+		--if gold_type == 'big' then
+    		--pos_minecamp = Util_GetPositionFromAtoB(gold_position,pos_town_center,20)
+    	--end
+    --end
+		
+    local fieldShortName
+      -- 根据民族类型找不同的蓝图
+    if prefix == 'mal' or prefix == 'ott' or prefix == 'jpn' then
+      fieldShortName = 'building_econ_mining_camp_'
+    elseif prefix == 'mon' then
+      fieldShortName = 'building_house_'  
+    else
+      fieldShortName ='building_econ_mining_camp_control_'
+    end
+		
+    -- fieldLocation
+    field = Entity_Create(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, true)
+	local pos_minecamp = Entity_CalculatePassableSpawnPosition(field, gold_position)
+	Entity_SetPosition(field,pos_minecamp)
+    
+    Entity_ForceConstruct(field)
+    Entity_SnapToGridAndGround(field, false) --false表示即时构建
+    Entity_Spawn(field)
+    
+    --Entity_SetInvulnerableMinCap(entity, 1.0, 0.0)
+    
+    local sbp_villager = BP_GetSquadBlueprint("unit_villager_1_"..prefix)
+    local sg_player_goldminer = SGroup_CreateIfNotFound("sg_player_goldminer")
+    UnitEntry_DeploySquads(localPlayer, sg_player_goldminer, {{sbp = sbp_villager, numSquads = 2 }}, pos_minecamp)
+    
+    -- 获取玩家农民
+    eg_farms = Player_GetEntitiesFromType(localPlayer, "farm")
+    
+    SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
 end
 
 function EGroup_GetClosestEntity(egroup, position)

@@ -257,7 +257,7 @@ function AGS_Empire_War_AssignUnitsToResources(localPlayer)
 			-- fieldLocation
 			--local ebp_site = AGS_GetNeutralEntity(AGS_BP_SACRED_SITE)
 			
-			field =  Entity_CreateFacing(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, gold_position, true)
+			field = Entity_Create(BP_GetEntityBlueprint(fieldShortName..prefix), player.id, gold_position, true)
 			local pos_test = World_GetSpawnablePosition(gold_position, field)
 			--local pos_minecamp = Entity_CalculatePassableSpawnPosition(field,gold_position )
 			--Entity_SetPosition(field,World_Pos(gold_position))
