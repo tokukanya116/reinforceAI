@@ -123,7 +123,7 @@ function AGS_Empire_War_AssignUnitsToResources()
 	AGS_SpawnEntity(player_id, "field", AGS_GetCivilizationEntity(player_civ, AGS_BP_TC_MINING_CAMP), center_pos, nil, false, true)	
 		
 	
-	--Squad_SetPosition(gid, pos_minecamp, gold_position) 742
+	Squad_SetPosition(gid, pos_minecamp, gold_position)
 		
 	SGroup_Single(sg_single, sid)
 	LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_gold_deposit, false)

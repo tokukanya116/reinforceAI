@@ -72,7 +72,6 @@ AGS_BP_OUTPOST = "outpost"
 -- This represents any tradeable building. Landmarks, Docks, Markets. 
 -- Counts for tributes.
 AGS_BP_TYPE_TRADE = "trade_post"
-AGS_BP_TC_MINING_CAMP = "mining_camp"
 
 AGS_ENTITY_TABLE = {
 	neutral = {
@@ -108,7 +107,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_eng",
 		blacksmith = "building_tech_unit_infantry_control_eng",
 		outpost = "building_defense_outpost_eng",
-		mining_camp = "building_econ_mining_camp_control_eng"
 	},
 	chinese = {
 		castle = "building_defense_keep_chi",
@@ -130,7 +128,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_chi",	
 		blacksmith = "building_tech_unit_infantry_control_chi",	
 		outpost = "building_defense_outpost_chi",
-		mining_camp = "building_econ_mining_camp_control_chi"
 	},
 	french = {
 		castle = "building_defense_keep_fre",
@@ -152,7 +149,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_fre",	
 		blacksmith = "building_tech_unit_infantry_control_fre",
 		outpost = "building_defense_outpost_fre",
-		mining_camp = "building_econ_mining_camp_control_fre"
 	},
 	hre = {
 		castle = "building_defense_keep_hre",
@@ -175,7 +171,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_hre",
 		blacksmith = "building_tech_unit_infantry_control_hre",	
 		outpost = "building_defense_outpost_hre",
-		mining_camp = "building_econ_mining_camp_control_hre"
 	},
 	rus = {	
 		castle = "building_defense_keep_control_rus",
@@ -196,8 +191,7 @@ AGS_ENTITY_TABLE = {
 		scar_dock = "building_unit_naval_rus",	
 		house = "building_house_control_rus",	
 		blacksmith = "building_tech_unit_infantry_control_rus",
-		outpost = "building_defense_wooden_fort_rus",
-		mining_camp = "building_econ_mining_camp_control_rus"
+		outpost = "building_defense_wooden_fort_rus",		
 	},
 	abbasid = {
 		castle = "building_defense_keep_control_abb",
@@ -220,7 +214,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_abb",	
 		blacksmith = "building_tech_unit_infantry_control_abb",
 		outpost = "building_defense_outpost_control_abb",
-		mining_camp = "building_econ_mining_camp_control_abb"
 	},
 	mongol = {
 		castle = "building_defense_keep_control_nov",
@@ -242,7 +235,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_mon",
 		blacksmith = "building_tech_unit_infantry_mon",
 		outpost = "building_defense_outpost_mon",
-		mining_camp = "building_house_mon"
 	},
 	sultanate = {
 		castle = "building_defense_keep_control_sul",
@@ -264,7 +256,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_sul",	
 		blacksmith = "building_tech_unit_infantry_control_sul",
 		outpost = "building_defense_outpost_control_sul",
-		mining_camp = "building_econ_mining_camp_control_sul"
 	},
 	malian = {
 		castle = "building_defense_keep_mal",
@@ -286,7 +277,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_mal",	
 		blacksmith = "building_tech_unit_infantry_mal",
 		outpost = "building_defense_outpost_mal",
-		mining_camp = "building_econ_mining_camp_mal"
 	},
 	ottoman = {
 		castle = "building_defense_keep_ott",
@@ -308,7 +298,6 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_ott",	
 		blacksmith = "building_tech_unit_infantry_ott",
 		outpost = "building_defense_outpost_ott",
-		mining_camp = "building_econ_mining_camp_ott"
 	},
     chinese_ha_01 = {
     castle = "building_defense_keep_chi_ha_01",
@@ -330,7 +319,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_chi_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_chi_ha_01",  
     outpost = "building_defense_outpost_chi_ha_01",
-	mining_camp = "building_econ_mining_camp_control_chi_ha_01"
   },
     french_ha_01 = {
     castle = "building_defense_keep_fre_ha_01",
@@ -353,7 +341,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_fre_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_fre_ha_01",
     outpost = "building_defense_outpost_fre_ha_01",
-		mining_camp = "building_econ_mining_camp_control_fre_ha_01"
   },
     abbasid_ha_01 = {
     castle = "building_defense_keep_control_abb_ha_01",
@@ -376,7 +363,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_abb_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_abb_ha_01",
     outpost = "building_defense_outpost_control_abb_ha_01",
-	mining_camp = "building_econ_mining_camp_control_abb_ha_01"
   },
     hre_ha_01 = {
     castle = "building_defense_keep_hre_ha_01",
@@ -399,7 +385,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_hre_ha_01",
     blacksmith = "building_tech_unit_infantry_control_hre_ha_01",  
     outpost = "building_defense_outpost_hre_ha_01",
-	mining_camp = "building_econ_mining_camp_control_hre_ha_01"
   },
     japanese = {
     castle = "building_defense_keep_jpn",
@@ -422,7 +407,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_jpn",
     blacksmith = "building_tech_unit_infantry_control_jpn",
     outpost = "building_defense_outpost_jpn",
-	mining_camp = "building_econ_mining_camp_jpn"
   },
     byzantine={
     castle = "building_defense_keep_byz",
@@ -445,7 +429,6 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_byz",
     blacksmith = "building_tech_unit_infantry_control_byz",
     outpost = "building_defense_outpost_byz",
-	mining_camp = "building_econ_mining_camp_control_byz"
   },
 }
 
@@ -1262,23 +1245,4 @@ end
 -- It's safe to call LocString on this result
 function AGS_GetCurrentName(player)
 	return Core_GetPlayerName(player.id)
-end
-function AGS_EGroup_GetClosestEntity(egroup, position)
-  local closest_distance_sqr = 1000000000000
-  local closest_entity = nil
-  
-  local _CheckEntity = function(gid, idx, eid)
-    local entityPosition = Entity_GetPosition(eid)
-    local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
-    
-    if distance_sqr < closest_distance_sqr then
-      closest_distance_sqr = distance_sqr
-      closest_entity = eid
-    end
-    
-  end
-  EGroup_ForEach(egroup, _CheckEntity)
-  
-  return closest_entity
-  
 end
