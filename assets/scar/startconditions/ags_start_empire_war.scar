@@ -36,6 +36,7 @@ function AGS_Empire_War_AssignUnitsToResources()
 	local player_id
 	local localPlayer
 	local player_town_center_pos
+  local player_raceName
 	
   -- 派遣种田
   local function _AssignFarmer(gid, idx, sid)
@@ -79,54 +80,63 @@ function AGS_Empire_War_AssignUnitsToResources()
   end
   --派遣挖矿
   local function _AssignGoldminer(gid, idx, sid)
-	local gold_type 
-	local gold_entities = EGroup_CreateIfNotFound("closest_single_gold_deposit")
-	
-	-- 查找周边金矿类型(先查小金，不存在则找大金)
-	gold_type = 'small'
-	World_GetEntitiesNearPoint(player_id, gold_entities, player_town_center_pos, 60, OT_Neutral)
-	EGroup_Filter(gold_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP)
-	
-	if EGroup_Count(gold_entities) == 0 then
-		World_GetEntitiesNearPoint(player_id, gold_entities, player_town_center_pos, 60, OT_Neutral)
-		EGroup_Filter(gold_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD), FILTER_KEEP)
-		gold_type = 'big'
-	end
-	
-	-- 需求:如果还是没有，补木头和两个农民给玩家
-	if EGroup_Count(gold_entities) == 0 then
-		return
-	end
-		
-	local eg_gold_deposit = EGroup_GetEntityAt(gold_entities, 1)
-	
-	-- 最近的单个金矿的坐标
-	local gold_position = Entity_GetPosition(eg_gold_deposit)
-	
-	-- 设置偏移
-	-- 默认大金+标准矿场
-	local pos_minecamp = 12.5
-	-- 小金+标准矿场
-	if gold_type == 'small' then
-		pos_minecamp = 10
-	end
-	--日本的矿场无论大小金都是固定距离(因为 1个地图栅格 有 4实体占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格)
-	if player_civ == 'jpn' then
-		pos_minecamp = 12.5
-	end
-	
-	--新需求待办:要以金矿中心为基点位移延长 获取上线左右4个定位点，找出和城镇中心最近的点去生成，100%不会有阻碍
-	local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, 0)  
-		
-	-- 玩家id，实体名(必须为字符串)，实体蓝图，生成点(nil,World_pos)，生成点偏移量(nil，World_pos)，是否旋转(布尔)，是否计算地形返回最近的安全位置(布尔)
-	--AGS_SpawnEntity(player_id,"field",BP_GetEntityBlueprint(fieldShortName..player_civ),center_pos,nil,false,true)
-	AGS_SpawnEntity(player_id, "field", AGS_GetCivilizationEntity(player_civ, AGS_BP_TC_MINING_CAMP), center_pos, nil, false, true)	
-		
-	
-	--Squad_SetPosition(gid, pos_minecamp, gold_position) 742
-		
-	SGroup_Single(sg_single, sid)
-	LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_gold_deposit, false)
+    local gold_type 
+    local gold_entities = EGroup_CreateIfNotFound("closest_single_gold_deposit")
+    
+    -- 查找周边金矿类型(先查小金，不存在则找大金)
+    gold_type = 'small'
+    World_GetEntitiesNearPoint(player_id, gold_entities, player_town_center_pos, 60, OT_Neutral)
+    EGroup_Filter(gold_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP)
+    
+    --AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD)
+    --BP_GetEntityBlueprint("resource_gold_deposit_small")
+    if EGroup_Count(gold_entities) == 0 then
+      World_GetEntitiesNearPoint(player_id, gold_entities, player_town_center_pos, 60, OT_Neutral)
+      EGroup_Filter(gold_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD), FILTER_KEEP)
+      gold_type = 'big'
+    end
+
+    -- 需求:如果还是没有，补木头和两个农民给玩家
+    if EGroup_Count(gold_entities) == 0 then
+      return
+    end
+    
+    local eg_gold_deposit = EGroup_GetEntityAt(gold_entities, 1)
+    
+    -- 最近的单个金矿的坐标
+    local gold_position = Entity_GetPosition(eg_gold_deposit)
+    
+    -- 设置偏移
+    -- 默认大金+标准矿场
+    local pos_minecamp = 12.5
+    -- 小金+标准矿场
+    if gold_type == 'small' then
+      pos_minecamp = 10
+    end
+    --日本的矿场无论大小金都是固定距离(因为 1个地图栅格 有 4实体占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格)
+    if player_civ == 'jpn' then
+      pos_minecamp = 12.5
+    end
+    
+    --新需求待办:要以金矿中心为基点位移延长 获取上线左右4个定位点，找出和城镇中心最近的点去生成，100%不会有阻碍
+    local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, 0)  
+    
+    -- 玩家id，实体名(必须为字符串)，实体蓝图，生成点(nil,World_pos)，生成点偏移量(nil，World_pos)，是否旋转(布尔)，是否计算地形返回最近的安全位置(布尔)
+    --AGS_SpawnEntity(player_id,"field",BP_GetEntityBlueprint(fieldShortName..player_civ),center_pos,nil,false,true)
+    AGS_SpawnEntity(player_id, "field", AGS_GetCivilizationEntity(player_raceName, AGS_BP_TC_MINING_CAMP), center_pos, nil, false, true)	
+    
+    
+    --SGroup_WarpToPos，LocalCommand_SquadEntity 只支持SGroup
+    SGroup_Single(sg_single, sid)
+    --理论上这里该用squad进行传送，但sid没生效，不知道为什么
+    --SGroup_WarpToPos(sg_single, center_pos) --1753
+    --Squad_WarpToPos( sid, center_pos )
+   
+    if eg_gold_deposit ~= nil then
+      EGroup_Single(eg_single, eg_gold_deposit)
+      LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_single, false)
+    end
+
   end
 	
   --派遣采集石料   
@@ -219,13 +229,15 @@ function AGS_Empire_War_AssignUnitsToResources()
 		-- 根据index获取当前轮到的玩家
 		--Game_GetLocalPlayer() 不太确定是否能用
 		localPlayer = World_GetPlayerAt(idx)
+    player_raceName = player.raceName
 		player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
 		
 		if not AGS_AI_IsAI(player_id) then
 			
 			--生成派发的村民
 			local sg_player_goldminer = AGS_Empire_War_Generate_Villager_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
-			
+			--生成矿场建筑
+      
 			--遍历执行派遣
 			SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
 		end
@@ -265,7 +277,8 @@ function AGS_Empire_War_Generate_Villager_PreSetting(player_id,localPlayer, use_
 	end
 
 	--返回生成的农民实体
-	return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+	local squad_group = AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+  return squad_group
 end
 -- Initialize Additional Starting Units
 function ChallengeMission_InitStartingUnits()

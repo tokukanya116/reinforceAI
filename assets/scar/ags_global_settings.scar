@@ -264,15 +264,15 @@ function AGS_GlobalSettings_SetupSettings(options)
     AGS_GlobalSettings_DefineResourceSupSetting(options.section_resource_sup_setting)
   end
 	
-  --Rule_AddOneShot(Reinforce_AI_DefaultSettings,2)
+  Rule_AddOneShot(Reinforce_AI_DefaultSettings,2)
 end
 
 function Reinforce_AI_DefaultSettings()
 	--MapVision
     --AGS_GS_SETTLEMENT_SETTLED
-	Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
+	  --Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
     Rule_AddOneShot(AGS_AIMadModel, 780)
-    Rule_AddOneShot(AGS_Spawn_Ram, 900)
+    --Rule_AddOneShot(AGS_Spawn_Ram, 900)
 end
 
 function AGS_GlobalSettings_EarlyInitializations()
@@ -1241,7 +1241,7 @@ function AGS_GlobalSettings_SetTownCenterRestricts(tc_restrictions)
 end
   
 function AGS_AIMadModel()
-  Rule_AddInterval(AGS_GiveResources, 60)
+  Rule_AddInterval(AGS_GiveResources, 30)
   --Rule_AddInterval(AGS_Spawn_Setting, 300)
   Rule_AddInterval(AGS_Spawn_Ram, 150)
 end
