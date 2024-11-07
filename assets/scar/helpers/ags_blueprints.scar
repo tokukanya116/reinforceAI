@@ -83,7 +83,7 @@ AGS_ENTITY_TABLE = {
 		resource_pickup_stone = "resource_pickup_stone",
 		relic = "relic",
 		special_beacon = "holy_site",
-    	market = "market",
+    market = "market",
 		gold = "resource_gold_deposit",
 		gold_small = "resource_gold_deposit_small"
 	},
@@ -493,7 +493,6 @@ AGS_CIV_PREFIXES = {
     japanese = "jpn",
     byzantine = "byz",
 }
-
 
 AGS_UPGRADE_AGES = {
 	AGE_DARK = "dark_age",
@@ -1072,6 +1071,7 @@ function AGS_EGroupNeutralName(unique_num, egroup_focus_name)
 end
 
 -- Spawn entity and return it to caller.
+-- 玩家id，实体名(必须为字符串)，实体蓝图，生成点(nil,World_pos)，生成点偏移量(nil，World_pos)，是否旋转(布尔)，是否计算地形返回最近的安全位置(布尔)
 function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_offset, opt_do_rounding, opt_do_correction)
 	if position == nil then
 		position = Player_GetStartingPosition(player_id)	
@@ -1131,7 +1131,6 @@ function AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, position_off
 	
 	return squad_group	
 end
--- 我的天(这个b直接用打印对象的方式来调用全局里的数据)
 function AGS_Print(text, opt_data, opt_level)
 	if opt_level == nil then
 		opt_level = 10
@@ -1281,4 +1280,39 @@ function AGS_EGroup_GetClosestEntity(egroup, position)
   
   return closest_entity
   
+end
+function AGS_GetClosestGoldEntity(player_id, position, distance)
+  if not position then
+    position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  end
+   if not distance then
+    distance = 100
+  end
+  local closest_distance_sqr = 1000000000000
+  local closest_entity = nil
+  local closest_resource_gold_deposit = EGroup_CreateIfNotFound("closest_resource_gold_deposit")
+ 
+  -- 查找周边金矿类型(先查小金，不存在则找大金)
+  World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
+  EGroup_Filter(closest_resource_gold_deposit, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD), FILTER_KEEP)
+  
+  if EGroup_Count(closest_resource_gold_deposit) == 0 then
+    World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
+    EGroup_Filter(closest_resource_gold_deposit, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP)
+  end  
+  
+  local _CheckEntity = function(gid, idx, eid)
+    local entityPosition = Entity_GetPosition(eid)
+    local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+    
+    if distance_sqr < closest_distance_sqr then
+      closest_distance_sqr = distance_sqr
+      closest_entity = eid
+      EGroup_Clear(closest_resource_gold_deposit)
+    end
+    
+  end
+  EGroup_ForEach(closest_resource_gold_deposit, _CheckEntity)
+  
+  return closest_entity
 end
