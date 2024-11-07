@@ -271,8 +271,9 @@ function Reinforce_AI_DefaultSettings()
 	--MapVision
     --AGS_GS_SETTLEMENT_SETTLED
 	  --Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
+    Rule_AddOneShot(AGS_GiveResources_ONCE, 4)
     Rule_AddOneShot(AGS_AIMadModel, 780)
-    --Rule_AddOneShot(AGS_Spawn_Ram, 900)
+    Rule_AddOneShot(AGS_Spawn_Ram, 900)
 end
 
 function AGS_GlobalSettings_EarlyInitializations()
@@ -1261,6 +1262,18 @@ function AGS_GiveResources()
       Player_AddResource(player.id, RT_Food, rate*300*2)
       Player_AddResource(player.id, RT_Gold, rate*300*2)
       Player_AddResource(player.id, RT_Wood, rate*150*2)
+      Player_AddResource(player.id, RT_Stone, 150)
+    end
+  end
+end
+
+function AGS_GiveResources_ONCE()
+  for i, player in pairs(PLAYERS) do
+    -- 根据玩家类型给资源
+    if Player_IsHuman(player.id) then
+      Player_AddResource(player.id, RT_Food, 350)
+      Player_AddResource(player.id, RT_Gold, 200)
+      Player_AddResource(player.id, RT_Stone, 900)
     end
   end
 end
