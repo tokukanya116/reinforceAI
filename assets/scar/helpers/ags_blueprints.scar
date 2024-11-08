@@ -1773,7 +1773,7 @@ function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_o
 	if position_offset == nil then
 		position_offset = World_Pos(0, 0, 0)	
 	end	
-	-- Determine proper position and rotation.
+	-- 确定适合的位置和旋转.
 	local nx = position.x
 	local ny = position.y
 	local nz = position.z
@@ -1794,9 +1794,10 @@ function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_o
 		Entity_WarpToPos(e, safe_spawn)	
 	end
 	
-	Entity_Spawn(e)
+  -- 必须先位移在生成到地图上，不然位置占位会出错
 	Entity_ForceConstruct(e)
 	Entity_SnapToGridAndGround(e, false)
+  Entity_Spawn(e)
 	local eg = EGroup_CreateIfNotFound(egroup_name) 
 	EGroup_Add(eg, e)
 	Core_CallDelegateFunctions("EntitySpawned", {pbg = bp_entity, player = player_id, entity = e})
@@ -2002,11 +2003,13 @@ function AGS_GetClosestGoldEntity(player_id, position, distance)
     if distance_sqr < closest_distance_sqr then
       closest_distance_sqr = distance_sqr
       closest_entity = eid
-      EGroup_Clear(closest_resource_gold_deposit)
     end
-    
   end
   EGroup_ForEach(closest_resource_gold_deposit, _CheckEntity)
+  
+  --if closest_entity ~= nil then
+    --EGroup_Clear(closest_resource_gold_deposit)
+  --end
   
   return closest_entity
 end
