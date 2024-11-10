@@ -65,14 +65,15 @@ AGS_BP_TREASURE_STONE = "resource_pickup_stone"
 AGS_BP_DEPOSIT_GOLD = "gold"
 AGS_BP_DEPOSIT_GOLD_SMALL = "gold_small"
 AGS_BP_DEPOSIT_STONE = "stone"
-AGS_BP_DEPOSIT_FOOD = "forage_bush"
+AGS_BP_DEPOSIT_FOOD = "forage_berry_bush"
 AGS_BP_DEPOSIT_MARKET = "settlement"
 AGS_BP_DEPOSIT_ANIMAL = "animal"
 AGS_BP_OUTPOST = "outpost"
 -- This represents any tradeable building. Landmarks, Docks, Markets. 
 -- Counts for tributes.
 AGS_BP_TYPE_TRADE = "trade_post"
-AGS_BP_TC_MINING_CAMP = "mining_camp"
+AGS_BP_MINING_CAMP = "mining_camp"
+AGS_BP_ECOM_FOOD = "econ_food"
 
 AGS_ENTITY_TABLE = {
 	neutral = {
@@ -85,7 +86,8 @@ AGS_ENTITY_TABLE = {
 		special_beacon = "holy_site",
     market = "market",
 		gold = "resource_gold_deposit",
-		gold_small = "resource_gold_deposit_small"
+		gold_small = "resource_gold_deposit_small",
+    forage_berry_bush = "resource_food_forage_berry_bush" 
 	},
 	english = {
 		castle = "building_defense_keep_eng",
@@ -108,7 +110,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_eng",
 		blacksmith = "building_tech_unit_infantry_control_eng",
 		outpost = "building_defense_outpost_eng",
-		mining_camp = "building_econ_mining_camp_control_eng"
+		mining_camp = "building_econ_mining_camp_control_eng",
+    econ_food = "building_econ_food_control_eng"
 	},
 	chinese = {
 		castle = "building_defense_keep_chi",
@@ -130,7 +133,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_chi",	
 		blacksmith = "building_tech_unit_infantry_control_chi",	
 		outpost = "building_defense_outpost_chi",
-		mining_camp = "building_econ_mining_camp_control_chi"
+		mining_camp = "building_econ_mining_camp_control_chi",
+    econ_food = "building_econ_food_control_chi"
 	},
 	french = {
 		castle = "building_defense_keep_fre",
@@ -152,7 +156,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_fre",	
 		blacksmith = "building_tech_unit_infantry_control_fre",
 		outpost = "building_defense_outpost_fre",
-		mining_camp = "building_econ_mining_camp_control_fre"
+		mining_camp = "building_econ_mining_camp_control_fre",
+    econ_food = "building_econ_food_control_fre"
 	},
 	hre = {
 		castle = "building_defense_keep_hre",
@@ -175,7 +180,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_hre",
 		blacksmith = "building_tech_unit_infantry_control_hre",	
 		outpost = "building_defense_outpost_hre",
-		mining_camp = "building_econ_mining_camp_control_hre"
+		mining_camp = "building_econ_mining_camp_control_hre",
+    econ_food = "building_econ_food_control_hre"
 	},
 	rus = {	
 		castle = "building_defense_keep_control_rus",
@@ -197,7 +203,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_rus",	
 		blacksmith = "building_tech_unit_infantry_control_rus",
 		outpost = "building_defense_wooden_fort_rus",
-		mining_camp = "building_econ_mining_camp_control_rus"
+		mining_camp = "building_econ_mining_camp_control_rus",
+    econ_food = "building_econ_food_control_rus"
 	},
 	abbasid = {
 		castle = "building_defense_keep_control_abb",
@@ -220,7 +227,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_abb",	
 		blacksmith = "building_tech_unit_infantry_control_abb",
 		outpost = "building_defense_outpost_control_abb",
-		mining_camp = "building_econ_mining_camp_control_abb"
+		mining_camp = "building_econ_mining_camp_control_abb",
+    econ_food = "building_econ_food_control_abb"
 	},
 	mongol = {
 		castle = "building_defense_keep_control_nov",
@@ -242,7 +250,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_mon",
 		blacksmith = "building_tech_unit_infantry_mon",
 		outpost = "building_defense_outpost_mon",
-		mining_camp = "building_house_mon"
+		mining_camp = "building_house_mon",
+    econ_food = "building_house_mon"
 	},
 	sultanate = {
 		castle = "building_defense_keep_control_sul",
@@ -264,7 +273,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_control_sul",	
 		blacksmith = "building_tech_unit_infantry_control_sul",
 		outpost = "building_defense_outpost_control_sul",
-		mining_camp = "building_econ_mining_camp_control_sul"
+		mining_camp = "building_econ_mining_camp_control_sul",
+    econ_food = "building_econ_food_control_sul"
 	},
 	malian = {
 		castle = "building_defense_keep_mal",
@@ -286,7 +296,8 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_mal",	
 		blacksmith = "building_tech_unit_infantry_mal",
 		outpost = "building_defense_outpost_mal",
-		mining_camp = "building_econ_mining_camp_mal"
+		mining_camp = "building_econ_mining_camp_mal",
+    econ_food = "building_econ_food_mal"
 	},
 	ottoman = {
 		castle = "building_defense_keep_ott",
@@ -308,9 +319,10 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_ott",	
 		blacksmith = "building_tech_unit_infantry_ott",
 		outpost = "building_defense_outpost_ott",
-		mining_camp = "building_econ_mining_camp_ott"
+		mining_camp = "building_econ_mining_camp_ott",
+    econ_food = "building_econ_food_ott"
 	},
-    chinese_ha_01 = {
+  chinese_ha_01 = {
     castle = "building_defense_keep_chi_ha_01",
     town_center_capital = "building_town_center_capital_chi_ha_01",
     town_center = "building_town_center_chi_ha_01",
@@ -330,9 +342,10 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_chi_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_chi_ha_01",  
     outpost = "building_defense_outpost_chi_ha_01",
-	mining_camp = "building_econ_mining_camp_control_chi_ha_01"
+	  mining_camp = "building_econ_mining_camp_control_chi_ha_01",
+    econ_food = "building_econ_food_control_chi_ha_01"
   },
-    french_ha_01 = {
+  french_ha_01 = {
     castle = "building_defense_keep_fre_ha_01",
     town_center_capital = "building_town_center_capital_fre_ha_01",
     town_center = "building_town_center_fre_ha_01",
@@ -353,9 +366,10 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_fre_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_fre_ha_01",
     outpost = "building_defense_outpost_fre_ha_01",
-		mining_camp = "building_econ_mining_camp_control_fre_ha_01"
+		mining_camp = "building_econ_mining_camp_control_fre_ha_01",
+    econ_food = "building_econ_food_control_fre_ha_01"
   },
-    abbasid_ha_01 = {
+  abbasid_ha_01 = {
     castle = "building_defense_keep_control_abb_ha_01",
     town_center_capital = "building_town_center_capital_abb_ha_01",
     town_center = "building_town_center_abb_ha_01",
@@ -376,9 +390,10 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_abb_ha_01",  
     blacksmith = "building_tech_unit_infantry_control_abb_ha_01",
     outpost = "building_defense_outpost_control_abb_ha_01",
-	mining_camp = "building_econ_mining_camp_control_abb_ha_01"
+	  mining_camp = "building_econ_mining_camp_control_abb_ha_01",
+    econ_food = "building_econ_food_control_abb_ha_01"
   },
-    hre_ha_01 = {
+  hre_ha_01 = {
     castle = "building_defense_keep_hre_ha_01",
     town_center_capital = "building_town_center_capital_hre_ha_01",
     town_center = "building_town_center_hre_ha_01",
@@ -399,14 +414,16 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_hre_ha_01",
     blacksmith = "building_tech_unit_infantry_control_hre_ha_01",  
     outpost = "building_defense_outpost_hre_ha_01",
-	mining_camp = "building_econ_mining_camp_control_hre_ha_01"
+	  mining_camp = "building_econ_mining_camp_control_hre_ha_01",
+    econ_food = "building_econ_food_control_hre_ha_01"
   },
-    japanese = {
+  japanese = {
     castle = "building_defense_keep_jpn",
+    outpost = "building_defense_outpost_jpn",
     town_center_capital = "building_town_center_capital_jpn",
     town_center = "building_town_center_jpn",
-    town_center_landmark = "building_landmark_age2_westminster_palace_jpn",
-    scar_market = "building_econ_market_control_jpn",
+    building_landmark_age1_defense = "building_landmark_age1_shinobi_jpn",
+    scar_market = "building_econ_market_jpn",
     villager = "unit_villager_1_jpn",
     scout = "unit_scout_1_jpn",
     king = "unit_king_1_jpn",
@@ -415,16 +432,13 @@ AGS_ENTITY_TABLE = {
     monk = "unit_monk_3_jpn",
     monastery = "building_unit_religious_control_jpn",
     barracks = "building_unit_infantry_control_jpn",
-    stable = "building_unit_cavalry_control_jpn",
-    archery_range = "building_unit_ranged_control_jpn",
     siege_workshop = "building_unit_siege_control_jpn",
     scar_dock = "building_unit_naval_jpn",    
-    house = "building_house_control_jpn",
-    blacksmith = "building_tech_unit_infantry_control_jpn",
-    outpost = "building_defense_outpost_jpn",
-	mining_camp = "building_econ_mining_camp_jpn"
+    house = "building_house_jpn",
+	  mining_camp = "building_econ_mining_camp_jpn",
+    econ_food = "building_house_jpn"
   },
-    byzantine={
+  byzantine={
     castle = "building_defense_keep_byz",
     town_center_capital = "building_town_center_capital_byz",
     town_center = "building_town_center_byz",
@@ -445,701 +459,210 @@ AGS_ENTITY_TABLE = {
     house = "building_house_control_byz",
     blacksmith = "building_tech_unit_infantry_control_byz",
     outpost = "building_defense_outpost_byz",
-	mining_camp = "building_econ_mining_camp_control_byz"
+	  mining_camp = "building_econ_mining_camp_control_byz",
+    econ_food = "building_econ_food_control_byz"
   },
 }
 
 AGS_EMPIRE_WAR_SQUAD_NUM_TABLE = {
   english = {
-    gold_worker = 2,
-    tree_worker = 6,
-    food_worker = 11,
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
     scout = 2,
   },
   chinese = {
-    gold_worker = 4,
-    tree_worker = 6,
-    food_worker = 11,
+    econ_food_worker = 11,
+    econ_wood_worker = 6,
+    mining_camp_worker = 4,
     scout = 2,
     official = 2, -- 命官
   },
   french = {
-    castle = "building_defense_keep_fre",
-    town_center_capital = "building_town_center_capital_fre",
-    town_center = "building_town_center_fre",
-    scar_market = "building_econ_market_control_fre",
-    villager = "unit_villager_1_fre",
-    scout = "unit_scout_1_fre",
-    king = "unit_king_1_fre",
-    palisade_wall = "building_defense_palisade_fre",
-    palisade_gate = "building_defense_palisade_gate_fre",
-    monk = "unit_monk_3_fre",
-    monastery = "building_unit_religious_control_fre",
-    barracks = "building_unit_infantry_control_fre",
-    stable = "building_unit_cavalry_control_fre",
-    archery_range = "building_unit_ranged_control_fre",
-    siege_workshop = "building_unit_siege_control_fre",
-    scar_dock = "building_unit_naval_fre",  
-    house = "building_house_control_fre",  
-    blacksmith = "building_tech_unit_infantry_control_fre",
-    outpost = "building_defense_outpost_fre",
-    mining_camp = "building_econ_mining_camp_control_fre"
+    econ_food_worker = 13,
+    econ_wood_worker = 7,
+    mining_camp_worker = 6,
+    scout = 2,
   },
   hre = {
-    castle = "building_defense_keep_hre",
-    town_center_capital = "building_town_center_capital_hre",
-    town_center = "building_town_center_hre",
-    town_center_landmark = "building_landmark_age3_hohenzollern_castle_hre",
-    scar_market = "building_econ_market_control_hre",
-    villager = "unit_villager_1_hre",
-    scout = "unit_scout_1_hre",
-    king = "unit_king_1_hre",
-    palisade_wall = "building_defense_palisade_hre",
-    palisade_gate = "building_defense_palisade_gate_hre",
-    monk = "unit_monk_1_hre",
-    monastery = "building_unit_religious_control_hre",
-    barracks = "building_unit_infantry_control_hre",
-    stable = "building_unit_cavalry_control_hre",
-    archery_range = "building_unit_ranged_control_hre",
-    siege_workshop = "building_unit_siege_control_hre",
-    scar_dock = "building_unit_naval_hre",  
-    house = "building_house_control_hre",
-    blacksmith = "building_tech_unit_infantry_control_hre",  
-    outpost = "building_defense_outpost_hre",
-    mining_camp = "building_econ_mining_camp_control_hre"
+    econ_food_worker = 11,
+    econ_wood_worker = 6,
+    mining_camp_worker = 4,
+    scout = 2,
   },
   rus = {  
-    castle = "building_defense_keep_control_rus",
-    town_center_capital = "building_town_center_capital_rus",
-    town_center = "building_town_center_rus",
-    scar_market = "building_econ_market_control_rus",
-    villager = "unit_villager_1_rus",
-    scout = "unit_scout_1_rus",
-    king = "unit_king_1_rus",
-    palisade_wall = "building_defense_palisade_rus",
-    palisade_gate = "building_defense_palisade_gate_rus",
-    monk = "unit_monk_3_rus",
-    monastery = "building_unit_religious_control_rus",
-    barracks = "building_unit_infantry_control_rus",
-    stable = "building_unit_cavalry_control_rus",
-    archery_range = "building_unit_ranged_control_rus",
-    siege_workshop = "building_unit_siege_control_rus",
-    scar_dock = "building_unit_naval_rus",  
-    house = "building_house_control_rus",  
-    blacksmith = "building_tech_unit_infantry_control_rus",
-    outpost = "building_defense_wooden_fort_rus",
-    mining_camp = "building_econ_mining_camp_control_rus"
+    econ_food_worker = 2,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
   abbasid = {
-    castle = "building_defense_keep_control_abb",
-    town_center_capital = "building_town_center_capital_abb",
-    town_center = "building_town_center_abb",
-    scar_market = "building_econ_market_control_abb",
-    villager = "unit_villager_1_abb",
-    scout = "unit_scout_1_abb",
-    king = "unit_king_1_abb",
-    house_of_wisdom = "building_house_of_wisdom_control_abb",
-    palisade_wall = "building_defense_palisade_abb",
-    palisade_gate = "building_defense_palisade_gate_abb",
-    monk = "unit_monk_3_abb",
-    monastery = "building_unit_religious_control_abb",
-    barracks = "building_unit_infantry_control_abb",
-    stable = "building_unit_cavalry_control_abb",
-    archery_range = "building_unit_ranged_control_abb",
-    siege_workshop = "building_unit_siege_control_abb",
-    scar_dock = "building_unit_naval_abb",    
-    house = "building_house_control_abb",  
-    blacksmith = "building_tech_unit_infantry_control_abb",
-    outpost = "building_defense_outpost_control_abb",
-    mining_camp = "building_econ_mining_camp_control_abb"
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
   mongol = {
-    castle = "building_defense_keep_control_nov",
-    town_center_capital = "building_town_center_capital_mon",
-    town_center_capital_moving = "building_town_center_capital_moving_mon",
-    town_center = "building_town_center_mon",
-    scar_market = "building_econ_market_mon",
-    villager = "unit_villager_1_mon",
-    scout = "unit_khan_1_mon",
-    king = "unit_king_1_mon",
-    house_moving = "building_house_moving_mon",
-    monk = "unit_monk_3_mon",
-    monastery = "building_unit_religious_mon",
-    barracks = "building_unit_infantry_mon",
-    stable = "building_unit_cavalry_mon",
-    archery_range = "building_unit_ranged_mon",
-    siege_workshop = "building_unit_siege_mon",
-    scar_dock = "building_unit_naval_mon",  
-    house = "building_house_mon",
-    blacksmith = "building_tech_unit_infantry_mon",
-    outpost = "building_defense_outpost_mon",
-    mining_camp = "building_house_mon"
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 1,
   },
   sultanate = {
-    castle = "building_defense_keep_control_sul",
-    town_center_capital = "building_town_center_capital_sul",
-    town_center = "building_town_center_sul",
-    scar_market = "building_econ_market_control_sul",
-    villager = "unit_villager_1_sul",
-    scout = "unit_scout_1_sul",
-    king = "unit_king_1_sul",
-    palisade_wall = "building_defense_palisade_sul",
-    palisade_gate = "building_defense_palisade_gate_sul",
-    monk = "unit_monk_2_sul",
-    monastery = "building_unit_religious_control_sul",
-    barracks = "building_unit_infantry_control_sul",
-    stable = "building_unit_cavalry_control_sul",
-    archery_range = "building_unit_ranged_control_sul",
-    siege_workshop = "building_unit_siege_control_sul",
-    scar_dock = "building_unit_naval_sul",  
-    house = "building_house_control_sul",  
-    blacksmith = "building_tech_unit_infantry_control_sul",
-    outpost = "building_defense_outpost_control_sul",
-    mining_camp = "building_econ_mining_camp_control_sul"
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
   malian = {
-    castle = "building_defense_keep_mal",
-    town_center_capital = "building_town_center_capital_mal",
-    town_center = "building_town_center_mal",
-    scar_market = "building_econ_market_mal",
-    villager = "unit_villager_1_mal",
-    scout = "unit_scout_1_mal",
-    king = "unit_king_1_mal",
-    palisade_wall = "building_defense_palisade_mal",
-    palisade_gate = "building_defense_palisade_gate_mal",
-    monk = "unit_monk_3_mal",
-    monastery = "building_unit_religious_mal",
-    barracks = "building_unit_infantry_mal",
-    stable = "building_unit_cavalry_mal",
-    archery_range = "building_unit_ranged_mal",
-    siege_workshop = "building_unit_siege_mal",
-    scar_dock = "building_unit_naval_mal",  
-    house = "building_house_mal",  
-    blacksmith = "building_tech_unit_infantry_mal",
-    outpost = "building_defense_outpost_mal",
-    mining_camp = "building_econ_mining_camp_mal"
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
   ottoman = {
-    castle = "building_defense_keep_ott",
-    town_center_capital = "building_town_center_capital_ott",
-    town_center = "building_town_center_ott",
-    scar_market = "building_econ_market_ott",
-    villager = "unit_villager_1_ott",
-    scout = "unit_scout_1_ott",
-    king = "unit_king_1_ott",
-    palisade_wall = "building_defense_palisade_ott",
-    palisade_gate = "building_defense_palisade_gate_ott",
-    monk = "unit_monk_3_ott",
-    monastery = "building_unit_religious_ott",
-    barracks = "building_unit_infantry_ott",
-    stable = "building_unit_cavalry_ott",
-    archery_range = "building_unit_ranged_ott",
-    siege_workshop = "building_unit_siege_ott",
-    scar_dock = "building_unit_naval_ott",  
-    house = "building_house_ott",  
-    blacksmith = "building_tech_unit_infantry_ott",
-    outpost = "building_defense_outpost_ott",
-    mining_camp = "building_econ_mining_camp_ott"
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
-    chinese_ha_01 = {
-    castle = "building_defense_keep_chi_ha_01",
-    town_center_capital = "building_town_center_capital_chi_ha_01",
-    town_center = "building_town_center_chi_ha_01",
-    scar_market = "building_econ_market_control_chi_ha_01",
-    villager = "unit_villager_1_chi_ha_01",
-    scout = "unit_scout_1_chi_ha_01",
-    king = "unit_king_1_chi_ha_01",  
-    palisade_wall = "building_defense_palisade_chi_ha_01",
-    palisade_gate = "building_defense_palisade_gate_chi_ha_01",
-    monk = "unit_monk_3_chi_ha_01",
-    monastery = "building_unit_religious_control_chi_ha_01",
-    barracks = "building_unit_infantry_control_chi_ha_01",
-    stable = "building_unit_cavalry_control_chi_ha_01",
-    archery_range = "building_unit_ranged_control_chi_ha_01",
-    siege_workshop = "building_unit_siege_control_chi_ha_01",
-    scar_dock = "building_unit_naval_chi_ha_01",  
-    house = "building_house_control_chi_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_chi_ha_01",  
-    outpost = "building_defense_outpost_chi_ha_01",
-  mining_camp = "building_econ_mining_camp_control_chi_ha_01"
+  chinese_ha_01 = {
+    econ_food_worker = 11,
+    econ_wood_worker = 6,
+    mining_camp_worker = 4,
+    scout = 2,
+    official = 2, -- 命官
   },
-    french_ha_01 = {
-    castle = "building_defense_keep_fre_ha_01",
-    town_center_capital = "building_town_center_capital_fre_ha_01",
-    town_center = "building_town_center_fre_ha_01",
-    scar_market = "building_econ_market_control_fre_ha_01",
-    villager = "unit_villager_1_fre_ha_01",
-    jeanne_d_arc_1 = "unit_jeanne_d_arc_1_fre_ha_01",
-    scout = "unit_scout_1_fre_ha_01",
-    king = "unit_king_1_fre_ha_01",
-    palisade_wall = "building_defense_palisade_fre_ha_01",
-    palisade_gate = "building_defense_palisade_gate_fre_ha_01",
-    monk = "unit_monk_3_fre_ha_01",
-    monastery = "building_unit_religious_control_fre_ha_01",
-    barracks = "building_unit_infantry_control_fre_ha_01",
-    stable = "building_unit_cavalry_control_fre_ha_01",
-    archery_range = "building_unit_ranged_control_fre_ha_01",
-    siege_workshop = "building_unit_siege_control_fre_ha_01",
-    scar_dock = "building_unit_naval_fre_ha_01",  
-    house = "building_house_control_fre_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_fre_ha_01",
-    outpost = "building_defense_outpost_fre_ha_01",
-    mining_camp = "building_econ_mining_camp_control_fre_ha_01"
+  french_ha_01 = {
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
-    abbasid_ha_01 = {
-    castle = "building_defense_keep_control_abb_ha_01",
-    town_center_capital = "building_town_center_capital_abb_ha_01",
-    town_center = "building_town_center_abb_ha_01",
-    scar_market = "building_econ_market_control_abb_ha_01",
-    villager = "unit_villager_1_abb_ha_01",
-    scout = "unit_scout_1_abb_ha_01",
-    king = "unit_king_1_abb_ha_01",
-    house_of_wisdom = "building_house_of_wisdom_control_abb_ha_01",
-    palisade_wall = "building_defense_palisade_abb_ha_01",
-    palisade_gate = "building_defense_palisade_gate_abb_ha_01",
-    monk = "unit_monk_3_abb_ha_01",
-    monastery = "building_unit_religious_control_abb_ha_01",
-    barracks = "building_unit_infantry_control_abb_ha_01",
-    stable = "building_unit_cavalry_control_abb_ha_01",
-    archery_range = "building_unit_ranged_control_abb_ha_01",
-    siege_workshop = "building_unit_siege_control_abb_ha_01",
-    scar_dock = "building_unit_naval_abb_ha_01",    
-    house = "building_house_control_abb_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_abb_ha_01",
-    outpost = "building_defense_outpost_control_abb_ha_01",
-  mining_camp = "building_econ_mining_camp_control_abb_ha_01"
+  abbasid_ha_01 = {
+    econ_food_worker = 12,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
-    hre_ha_01 = {
-    castle = "building_defense_keep_hre_ha_01",
-    town_center_capital = "building_town_center_capital_hre_ha_01",
-    town_center = "building_town_center_hre_ha_01",
-    town_center_landmark = "building_landmark_age3_hohenzollern_castle_hre_ha_01",
-    scar_market = "building_econ_market_control_hre_ha_01",
-    villager = "unit_villager_1_hre_ha_01",
-    scout = "unit_scout_1_hre_ha_01",
-    king = "unit_king_1_hre_ha_01",
-    palisade_wall = "building_defense_palisade_hre_ha_01",
-    palisade_gate = "building_defense_palisade_gate_hre_ha_01",
-    monk = "unit_monk_1_hre_ha_01",
-    monastery = "building_unit_religious_control_hre_ha_01",
-    barracks = "building_unit_infantry_control_hre_ha_01",
-    stable = "building_unit_cavalry_control_hre_ha_01",
-    archery_range = "building_unit_ranged_control_hre_ha_01",
-    siege_workshop = "building_unit_siege_control_hre_ha_01",
-    scar_dock = "building_unit_naval_hre_ha_01",  
-    house = "building_house_control_hre_ha_01",
-    blacksmith = "building_tech_unit_infantry_control_hre_ha_01",  
-    outpost = "building_defense_outpost_hre_ha_01",
-  mining_camp = "building_econ_mining_camp_control_hre_ha_01"
+  hre_ha_01 = {
+    econ_food_worker = 10,
+    econ_wood_worker = 6,
+    mining_camp_worker = 4,
+    scout = 2,
   },
-    japanese = {
-    castle = "building_defense_keep_jpn",
-    town_center_capital = "building_town_center_capital_jpn",
-    town_center = "building_town_center_jpn",
-    town_center_landmark = "building_landmark_age2_westminster_palace_jpn",
-    scar_market = "building_econ_market_control_jpn",
-    villager = "unit_villager_1_jpn",
-    scout = "unit_scout_1_jpn",
-    king = "unit_king_1_jpn",
-    palisade_wall = "building_defense_palisade_jpn",
-    palisade_gate = "building_defense_palisade_gate_jpn",
-    monk = "unit_monk_3_jpn",
-    monastery = "building_unit_religious_control_jpn",
-    barracks = "building_unit_infantry_control_jpn",
-    stable = "building_unit_cavalry_control_jpn",
-    archery_range = "building_unit_ranged_control_jpn",
-    siege_workshop = "building_unit_siege_control_jpn",
-    scar_dock = "building_unit_naval_jpn",    
-    house = "building_house_control_jpn",
-    blacksmith = "building_tech_unit_infantry_control_jpn",
-    outpost = "building_defense_outpost_jpn",
-  mining_camp = "building_econ_mining_camp_jpn"
+  japanese = {
+    econ_food_worker = 11,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    econ_stone_worker = 1,
+    scout = 2,
   },
-    byzantine={
-    castle = "building_defense_keep_byz",
-    town_center_capital = "building_town_center_capital_byz",
-    town_center = "building_town_center_byz",
-    town_center_landmark = "building_landmark_age2_westminster_palace_byz",
-    scar_market = "building_econ_market_control_byz",
-    villager = "unit_villager_1_byz",
-    scout = "unit_scout_1_byz",
-    king = "unit_king_1_byz",
-    palisade_wall = "building_defense_palisade_byz",
-    palisade_gate = "building_defense_palisade_gate_byz",
-    monk = "unit_monk_3_byz",
-    monastery = "building_unit_religious_control_byz",
-    barracks = "building_unit_infantry_control_byz",
-    stable = "building_unit_cavalry_control_byz",
-    archery_range = "building_unit_ranged_control_byz",
-    siege_workshop = "building_unit_siege_control_byz",
-    scar_dock = "building_unit_naval_byz",    
-    house = "building_house_control_byz",
-    blacksmith = "building_tech_unit_infantry_control_byz",
-    outpost = "building_defense_outpost_byz",
-  mining_camp = "building_econ_mining_camp_control_byz"
+  byzantine={
+    econ_food_worker = 11,
+    econ_wood_worker = 6,
+    mining_camp_worker = 5,
+    scout = 2,
   },
 }
 
 AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
   english = {
-    castle = "building_defense_keep_eng",
-    town_center_capital = "building_town_center_capital_eng",
-    town_center = "building_town_center_eng",
-    town_center_landmark = "building_landmark_age2_westminster_palace_eng",
-    scar_market = "building_econ_market_control_eng",
-    villager = "unit_villager_1_eng",
-    scout = "unit_scout_1_eng",
-    king = "unit_king_1_eng",
-    palisade_wall = "building_defense_palisade_eng",
-    palisade_gate = "building_defense_palisade_gate_eng",
-    monk = "unit_monk_3_eng",
-    monastery = "building_unit_religious_control_eng",
-    barracks = "building_unit_infantry_control_eng",
-    stable = "building_unit_cavalry_control_eng",
-    archery_range = "building_unit_ranged_control_eng",
-    siege_workshop = "building_unit_siege_control_eng",
-    scar_dock = "building_unit_naval_eng",    
-    house = "building_house_control_eng",
-    blacksmith = "building_tech_unit_infantry_control_eng",
-    outpost = "building_defense_outpost_eng",
-    mining_camp = "building_econ_mining_camp_control_eng"
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   chinese = {
-    castle = "building_defense_keep_chi",
-    town_center_capital = "building_town_center_capital_chi",
-    town_center = "building_town_center_chi",
-    scar_market = "building_econ_market_control_chi",
-    villager = "unit_villager_1_chi",
-    scout = "unit_scout_1_chi",
-    king = "unit_king_1_chi",  
-    palisade_wall = "building_defense_palisade_chi",
-    palisade_gate = "building_defense_palisade_gate_chi",
-    monk = "unit_monk_3_chi",
-    monastery = "building_unit_religious_control_chi",
-    barracks = "building_unit_infantry_control_chi",
-    stable = "building_unit_cavalry_control_chi",
-    archery_range = "building_unit_ranged_control_chi",
-    siege_workshop = "building_unit_siege_control_chi",
-    scar_dock = "building_unit_naval_chi",  
-    house = "building_house_control_chi",  
-    blacksmith = "building_tech_unit_infantry_control_chi",  
-    outpost = "building_defense_outpost_chi",
-    mining_camp = "building_econ_mining_camp_control_chi"
+    house = 2,
+    Hamlet = 1, --村庄
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   french = {
-    castle = "building_defense_keep_fre",
-    town_center_capital = "building_town_center_capital_fre",
-    town_center = "building_town_center_fre",
-    scar_market = "building_econ_market_control_fre",
-    villager = "unit_villager_1_fre",
-    scout = "unit_scout_1_fre",
-    king = "unit_king_1_fre",
-    palisade_wall = "building_defense_palisade_fre",
-    palisade_gate = "building_defense_palisade_gate_fre",
-    monk = "unit_monk_3_fre",
-    monastery = "building_unit_religious_control_fre",
-    barracks = "building_unit_infantry_control_fre",
-    stable = "building_unit_cavalry_control_fre",
-    archery_range = "building_unit_ranged_control_fre",
-    siege_workshop = "building_unit_siege_control_fre",
-    scar_dock = "building_unit_naval_fre",  
-    house = "building_house_control_fre",  
-    blacksmith = "building_tech_unit_infantry_control_fre",
-    outpost = "building_defense_outpost_fre",
-    mining_camp = "building_econ_mining_camp_control_fre"
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   hre = {
-    castle = "building_defense_keep_hre",
-    town_center_capital = "building_town_center_capital_hre",
-    town_center = "building_town_center_hre",
-    town_center_landmark = "building_landmark_age3_hohenzollern_castle_hre",
-    scar_market = "building_econ_market_control_hre",
-    villager = "unit_villager_1_hre",
-    scout = "unit_scout_1_hre",
-    king = "unit_king_1_hre",
-    palisade_wall = "building_defense_palisade_hre",
-    palisade_gate = "building_defense_palisade_gate_hre",
-    monk = "unit_monk_1_hre",
-    monastery = "building_unit_religious_control_hre",
-    barracks = "building_unit_infantry_control_hre",
-    stable = "building_unit_cavalry_control_hre",
-    archery_range = "building_unit_ranged_control_hre",
-    siege_workshop = "building_unit_siege_control_hre",
-    scar_dock = "building_unit_naval_hre",  
-    house = "building_house_control_hre",
-    blacksmith = "building_tech_unit_infantry_control_hre",  
-    outpost = "building_defense_outpost_hre",
-    mining_camp = "building_econ_mining_camp_control_hre"
+     house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   rus = {  
-    castle = "building_defense_keep_control_rus",
-    town_center_capital = "building_town_center_capital_rus",
-    town_center = "building_town_center_rus",
-    scar_market = "building_econ_market_control_rus",
-    villager = "unit_villager_1_rus",
-    scout = "unit_scout_1_rus",
-    king = "unit_king_1_rus",
-    palisade_wall = "building_defense_palisade_rus",
-    palisade_gate = "building_defense_palisade_gate_rus",
-    monk = "unit_monk_3_rus",
-    monastery = "building_unit_religious_control_rus",
-    barracks = "building_unit_infantry_control_rus",
-    stable = "building_unit_cavalry_control_rus",
-    archery_range = "building_unit_ranged_control_rus",
-    siege_workshop = "building_unit_siege_control_rus",
-    scar_dock = "building_unit_naval_rus",  
-    house = "building_house_control_rus",  
-    blacksmith = "building_tech_unit_infantry_control_rus",
-    outpost = "building_defense_wooden_fort_rus",
-    mining_camp = "building_econ_mining_camp_control_rus"
+     house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   abbasid = {
-    castle = "building_defense_keep_control_abb",
-    town_center_capital = "building_town_center_capital_abb",
-    town_center = "building_town_center_abb",
-    scar_market = "building_econ_market_control_abb",
-    villager = "unit_villager_1_abb",
-    scout = "unit_scout_1_abb",
-    king = "unit_king_1_abb",
-    house_of_wisdom = "building_house_of_wisdom_control_abb",
-    palisade_wall = "building_defense_palisade_abb",
-    palisade_gate = "building_defense_palisade_gate_abb",
-    monk = "unit_monk_3_abb",
-    monastery = "building_unit_religious_control_abb",
-    barracks = "building_unit_infantry_control_abb",
-    stable = "building_unit_cavalry_control_abb",
-    archery_range = "building_unit_ranged_control_abb",
-    siege_workshop = "building_unit_siege_control_abb",
-    scar_dock = "building_unit_naval_abb",    
-    house = "building_house_control_abb",  
-    blacksmith = "building_tech_unit_infantry_control_abb",
-    outpost = "building_defense_outpost_control_abb",
-    mining_camp = "building_econ_mining_camp_control_abb"
+    house = 8,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   mongol = {
-    castle = "building_defense_keep_control_nov",
-    town_center_capital = "building_town_center_capital_mon",
-    town_center_capital_moving = "building_town_center_capital_moving_mon",
-    town_center = "building_town_center_mon",
-    scar_market = "building_econ_market_mon",
-    villager = "unit_villager_1_mon",
-    scout = "unit_khan_1_mon",
-    king = "unit_king_1_mon",
-    house_moving = "building_house_moving_mon",
-    monk = "unit_monk_3_mon",
-    monastery = "building_unit_religious_mon",
-    barracks = "building_unit_infantry_mon",
-    stable = "building_unit_cavalry_mon",
-    archery_range = "building_unit_ranged_mon",
-    siege_workshop = "building_unit_siege_mon",
-    scar_dock = "building_unit_naval_mon",  
-    house = "building_house_mon",
-    blacksmith = "building_tech_unit_infantry_mon",
-    outpost = "building_defense_outpost_mon",
-    mining_camp = "building_house_mon"
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   sultanate = {
-    castle = "building_defense_keep_control_sul",
-    town_center_capital = "building_town_center_capital_sul",
-    town_center = "building_town_center_sul",
-    scar_market = "building_econ_market_control_sul",
-    villager = "unit_villager_1_sul",
-    scout = "unit_scout_1_sul",
-    king = "unit_king_1_sul",
-    palisade_wall = "building_defense_palisade_sul",
-    palisade_gate = "building_defense_palisade_gate_sul",
-    monk = "unit_monk_2_sul",
-    monastery = "building_unit_religious_control_sul",
-    barracks = "building_unit_infantry_control_sul",
-    stable = "building_unit_cavalry_control_sul",
-    archery_range = "building_unit_ranged_control_sul",
-    siege_workshop = "building_unit_siege_control_sul",
-    scar_dock = "building_unit_naval_sul",  
-    house = "building_house_control_sul",  
-    blacksmith = "building_tech_unit_infantry_control_sul",
-    outpost = "building_defense_outpost_control_sul",
-    mining_camp = "building_econ_mining_camp_control_sul"
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   malian = {
-    castle = "building_defense_keep_mal",
-    town_center_capital = "building_town_center_capital_mal",
-    town_center = "building_town_center_mal",
-    scar_market = "building_econ_market_mal",
-    villager = "unit_villager_1_mal",
-    scout = "unit_scout_1_mal",
-    king = "unit_king_1_mal",
-    palisade_wall = "building_defense_palisade_mal",
-    palisade_gate = "building_defense_palisade_gate_mal",
-    monk = "unit_monk_3_mal",
-    monastery = "building_unit_religious_mal",
-    barracks = "building_unit_infantry_mal",
-    stable = "building_unit_cavalry_mal",
-    archery_range = "building_unit_ranged_mal",
-    siege_workshop = "building_unit_siege_mal",
-    scar_dock = "building_unit_naval_mal",  
-    house = "building_house_mal",  
-    blacksmith = "building_tech_unit_infantry_mal",
-    outpost = "building_defense_outpost_mal",
-    mining_camp = "building_econ_mining_camp_mal"
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
   ottoman = {
-    castle = "building_defense_keep_ott",
-    town_center_capital = "building_town_center_capital_ott",
-    town_center = "building_town_center_ott",
-    scar_market = "building_econ_market_ott",
-    villager = "unit_villager_1_ott",
-    scout = "unit_scout_1_ott",
-    king = "unit_king_1_ott",
-    palisade_wall = "building_defense_palisade_ott",
-    palisade_gate = "building_defense_palisade_gate_ott",
-    monk = "unit_monk_3_ott",
-    monastery = "building_unit_religious_ott",
-    barracks = "building_unit_infantry_ott",
-    stable = "building_unit_cavalry_ott",
-    archery_range = "building_unit_ranged_ott",
-    siege_workshop = "building_unit_siege_ott",
-    scar_dock = "building_unit_naval_ott",  
-    house = "building_house_ott",  
-    blacksmith = "building_tech_unit_infantry_ott",
-    outpost = "building_defense_outpost_ott",
-    mining_camp = "building_econ_mining_camp_ott"
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    chinese_ha_01 = {
-    castle = "building_defense_keep_chi_ha_01",
-    town_center_capital = "building_town_center_capital_chi_ha_01",
-    town_center = "building_town_center_chi_ha_01",
-    scar_market = "building_econ_market_control_chi_ha_01",
-    villager = "unit_villager_1_chi_ha_01",
-    scout = "unit_scout_1_chi_ha_01",
-    king = "unit_king_1_chi_ha_01",  
-    palisade_wall = "building_defense_palisade_chi_ha_01",
-    palisade_gate = "building_defense_palisade_gate_chi_ha_01",
-    monk = "unit_monk_3_chi_ha_01",
-    monastery = "building_unit_religious_control_chi_ha_01",
-    barracks = "building_unit_infantry_control_chi_ha_01",
-    stable = "building_unit_cavalry_control_chi_ha_01",
-    archery_range = "building_unit_ranged_control_chi_ha_01",
-    siege_workshop = "building_unit_siege_control_chi_ha_01",
-    scar_dock = "building_unit_naval_chi_ha_01",  
-    house = "building_house_control_chi_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_chi_ha_01",  
-    outpost = "building_defense_outpost_chi_ha_01",
-  mining_camp = "building_econ_mining_camp_control_chi_ha_01"
+  chinese_ha_01 = {
+    house = 2,
+    Hamlet = 1, --村庄
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    french_ha_01 = {
-    castle = "building_defense_keep_fre_ha_01",
-    town_center_capital = "building_town_center_capital_fre_ha_01",
-    town_center = "building_town_center_fre_ha_01",
-    scar_market = "building_econ_market_control_fre_ha_01",
-    villager = "unit_villager_1_fre_ha_01",
-    jeanne_d_arc_1 = "unit_jeanne_d_arc_1_fre_ha_01",
-    scout = "unit_scout_1_fre_ha_01",
-    king = "unit_king_1_fre_ha_01",
-    palisade_wall = "building_defense_palisade_fre_ha_01",
-    palisade_gate = "building_defense_palisade_gate_fre_ha_01",
-    monk = "unit_monk_3_fre_ha_01",
-    monastery = "building_unit_religious_control_fre_ha_01",
-    barracks = "building_unit_infantry_control_fre_ha_01",
-    stable = "building_unit_cavalry_control_fre_ha_01",
-    archery_range = "building_unit_ranged_control_fre_ha_01",
-    siege_workshop = "building_unit_siege_control_fre_ha_01",
-    scar_dock = "building_unit_naval_fre_ha_01",  
-    house = "building_house_control_fre_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_fre_ha_01",
-    outpost = "building_defense_outpost_fre_ha_01",
-    mining_camp = "building_econ_mining_camp_control_fre_ha_01"
+  french_ha_01 = {
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    abbasid_ha_01 = {
-    castle = "building_defense_keep_control_abb_ha_01",
-    town_center_capital = "building_town_center_capital_abb_ha_01",
-    town_center = "building_town_center_abb_ha_01",
-    scar_market = "building_econ_market_control_abb_ha_01",
-    villager = "unit_villager_1_abb_ha_01",
-    scout = "unit_scout_1_abb_ha_01",
-    king = "unit_king_1_abb_ha_01",
-    house_of_wisdom = "building_house_of_wisdom_control_abb_ha_01",
-    palisade_wall = "building_defense_palisade_abb_ha_01",
-    palisade_gate = "building_defense_palisade_gate_abb_ha_01",
-    monk = "unit_monk_3_abb_ha_01",
-    monastery = "building_unit_religious_control_abb_ha_01",
-    barracks = "building_unit_infantry_control_abb_ha_01",
-    stable = "building_unit_cavalry_control_abb_ha_01",
-    archery_range = "building_unit_ranged_control_abb_ha_01",
-    siege_workshop = "building_unit_siege_control_abb_ha_01",
-    scar_dock = "building_unit_naval_abb_ha_01",    
-    house = "building_house_control_abb_ha_01",  
-    blacksmith = "building_tech_unit_infantry_control_abb_ha_01",
-    outpost = "building_defense_outpost_control_abb_ha_01",
-  mining_camp = "building_econ_mining_camp_control_abb_ha_01"
+  abbasid_ha_01 = {
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    hre_ha_01 = {
-    castle = "building_defense_keep_hre_ha_01",
-    town_center_capital = "building_town_center_capital_hre_ha_01",
-    town_center = "building_town_center_hre_ha_01",
-    town_center_landmark = "building_landmark_age3_hohenzollern_castle_hre_ha_01",
-    scar_market = "building_econ_market_control_hre_ha_01",
-    villager = "unit_villager_1_hre_ha_01",
-    scout = "unit_scout_1_hre_ha_01",
-    king = "unit_king_1_hre_ha_01",
-    palisade_wall = "building_defense_palisade_hre_ha_01",
-    palisade_gate = "building_defense_palisade_gate_hre_ha_01",
-    monk = "unit_monk_1_hre_ha_01",
-    monastery = "building_unit_religious_control_hre_ha_01",
-    barracks = "building_unit_infantry_control_hre_ha_01",
-    stable = "building_unit_cavalry_control_hre_ha_01",
-    archery_range = "building_unit_ranged_control_hre_ha_01",
-    siege_workshop = "building_unit_siege_control_hre_ha_01",
-    scar_dock = "building_unit_naval_hre_ha_01",  
-    house = "building_house_control_hre_ha_01",
-    blacksmith = "building_tech_unit_infantry_control_hre_ha_01",  
-    outpost = "building_defense_outpost_hre_ha_01",
-  mining_camp = "building_econ_mining_camp_control_hre_ha_01"
+  hre_ha_01 = {
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    japanese = {
-    castle = "building_defense_keep_jpn",
-    town_center_capital = "building_town_center_capital_jpn",
-    town_center = "building_town_center_jpn",
-    town_center_landmark = "building_landmark_age2_westminster_palace_jpn",
-    scar_market = "building_econ_market_control_jpn",
-    villager = "unit_villager_1_jpn",
-    scout = "unit_scout_1_jpn",
-    king = "unit_king_1_jpn",
-    palisade_wall = "building_defense_palisade_jpn",
-    palisade_gate = "building_defense_palisade_gate_jpn",
-    monk = "unit_monk_3_jpn",
-    monastery = "building_unit_religious_control_jpn",
-    barracks = "building_unit_infantry_control_jpn",
-    stable = "building_unit_cavalry_control_jpn",
-    archery_range = "building_unit_ranged_control_jpn",
-    siege_workshop = "building_unit_siege_control_jpn",
-    scar_dock = "building_unit_naval_jpn",    
-    house = "building_house_control_jpn",
-    blacksmith = "building_tech_unit_infantry_control_jpn",
-    outpost = "building_defense_outpost_jpn",
-  mining_camp = "building_econ_mining_camp_jpn"
+  japanese = {
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
-    byzantine={
-    castle = "building_defense_keep_byz",
-    town_center_capital = "building_town_center_capital_byz",
-    town_center = "building_town_center_byz",
-    town_center_landmark = "building_landmark_age2_westminster_palace_byz",
-    scar_market = "building_econ_market_control_byz",
-    villager = "unit_villager_1_byz",
-    scout = "unit_scout_1_byz",
-    king = "unit_king_1_byz",
-    palisade_wall = "building_defense_palisade_byz",
-    palisade_gate = "building_defense_palisade_gate_byz",
-    monk = "unit_monk_3_byz",
-    monastery = "building_unit_religious_control_byz",
-    barracks = "building_unit_infantry_control_byz",
-    stable = "building_unit_cavalry_control_byz",
-    archery_range = "building_unit_ranged_control_byz",
-    siege_workshop = "building_unit_siege_control_byz",
-    scar_dock = "building_unit_naval_byz",    
-    house = "building_house_control_byz",
-    blacksmith = "building_tech_unit_infantry_control_byz",
-    outpost = "building_defense_outpost_byz",
-  mining_camp = "building_econ_mining_camp_control_byz"
+  byzantine={
+    house = 4,
+    econ_wood = 1,
+    econ_food = 1,
+    mining_camp = 1,
   },
 }
 
@@ -1898,6 +1421,7 @@ function AGS_RemoveUpgrade(player_id, upgrade)
 	end
 end
 
+-- 计算实体中心偏移
 function AGS_CalculateCenterOffset(start, x_offset, z_offset)
 	local x_val = 0
 	local z_val = 0
@@ -1918,7 +1442,7 @@ end
 AGS_SAE_SELF = 0
 AGS_SAE_ALLY = 1
 AGS_SAE_ENEMY = 2
--- Returns relation with local player, very useful for anything that can decide best on relation.
+-- Returns relation with local player, very useful for anything that can decide best on relation. 返回团队关系(判断传入玩家和场上玩家所属阵营)
 -- This automatically resolves also problem related to dynamic relations as it uses team method to resolve friendship.
 -- Nota that this will not return ALLY if player and local player are not able to win together due to team rules.
 function AGS_GetRelation(player)
@@ -1934,7 +1458,7 @@ function AGS_GetRelation(player)
 	-- Most likely enemy or neutral.
 	return AGS_SAE_ENEMY
 end
--- Checks if array table contains value.
+-- Checks if array table contains value. 检查数组表中是否存在某个值
 function AGS_Contains(table, value)
 	for _, item in pairs(table) do
 		if item == value then
@@ -1943,7 +1467,7 @@ function AGS_Contains(table, value)
 	end	
 	return false
 end
--- Returns elements that were not in used list.
+-- Returns elements that were not in used list. 返回不在used表里列出的all表里的元素
 function AGS_GetFreeItems(all, used)
 	local free = { }
 	for _, item in pairs(all) do
@@ -1953,7 +1477,7 @@ function AGS_GetFreeItems(all, used)
 	end	
 	return free
 end
--- It's safe to call LocString on this result
+-- It's safe to call LocString on this result 貌似直接用这个查玩家文明名称是最稳妥的
 function AGS_GetCurrentName(player)
 	return Core_GetPlayerName(player.id)
 end
@@ -1974,8 +1498,8 @@ function AGS_EGroup_GetClosestEntity(egroup, position)
   EGroup_ForEach(egroup, _CheckEntity)
   
   return closest_entity
-  
 end
+
 function AGS_GetClosestGoldEntity(player_id, position, distance)
   if not position then
     position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
@@ -2010,6 +1534,42 @@ function AGS_GetClosestGoldEntity(player_id, position, distance)
   --if closest_entity ~= nil then
     --EGroup_Clear(closest_resource_gold_deposit)
   --end
+  
+  return closest_entity
+end
+
+-- 目前仅支持浆果(需要匹配鱼，鹿，羊)
+function AGS_GetClosestFoodEntity(player_id, position, distance, food_type)
+  if not position then
+    position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  end
+  if not distance then
+    distance = 100
+  end
+  if not food_type then --没有其他食物默认浆果
+    food_type = AGS_BP_DEPOSIT_FOOD
+  end
+  local closest_distance_sqr = 1000000000000
+  local closest_entity = nil
+  local closest_resource_food_deposit = EGroup_CreateIfNotFound("closest_resource_food_deposit")
+ 
+  -- 查找周边食物类型
+  World_GetEntitiesNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Neutral)
+  EGroup_Filter(closest_resource_food_deposit, AGS_GetNeutralEntity(food_type), FILTER_KEEP)
+   
+  local _CheckEntity = function(gid, idx, eid)
+    local entityPosition = Entity_GetPosition(eid)
+    local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+    
+    if distance_sqr < closest_distance_sqr then
+      closest_distance_sqr = distance_sqr
+      closest_entity = eid
+    end
+  end
+ 
+  if EGroup_Count(closest_resource_food_deposit) ~= 0 then
+    EGroup_ForEach(closest_resource_food_deposit, _CheckEntity)
+  end  
   
   return closest_entity
 end

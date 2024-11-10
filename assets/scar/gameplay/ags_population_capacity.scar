@@ -47,7 +47,7 @@ function AGS_PopulationCapacity_Change()
 		if Player_IsHuman(player.id) == true then
 			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation)
 		else
-			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 100)
+			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 75)
 		end	
 		
 		AGS_PopulationCapacity_SetMinPopulation(player, AGS_GLOBAL_SETTINGS.MinimumPopulation) 
@@ -73,7 +73,5 @@ end
 
 function AGS_PopulationCapacity_ApplyMaxCapPopulation(player, pop_size)
 	local value = - (200 - pop_size)
-	-- 设置ai采集比例
-	--AIPlayer_SetGathererDistributionOverride(PCMD_AIPlayer, {['food']=4,['gold']=3,['wood'] = 2,['stone']=1})	
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
 end

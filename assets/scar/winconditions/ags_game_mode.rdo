@@ -24,7 +24,7 @@
 				<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 				<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
 				<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-				<DataProperty Name="m_locStringKey" Type="Int32" Value="3"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="414"/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_startingBuildingReplacements" Type="Object"/>
@@ -36,7 +36,7 @@
 				<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 				<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
 				<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-				<DataProperty Name="m_locStringKey" Type="Int32" Value="1"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="413"/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_tuningModGUID" Type="String" Value=""/>

@@ -47,7 +47,11 @@ function AGS_StartingResources_SetResources(key)
 				Player_SetResource(player.id, RT_Food, resources.Food)
 				Player_SetResource(player.id, RT_Wood, resources.Wood)		
 				Player_SetResource(player.id, RT_Gold, resources.Gold)		
-				Player_SetResource(player.id, RT_Stone, resources.Stone)		
+				Player_SetResource(player.id, RT_Stone, resources.Stone)
+        if AGS_AI_IsAI(player.id) then
+          -- 设置ai采集比例
+          AIPlayer_SetGathererDistributionOverride(player.id, {['food']=4, ['gold']=4, ['wood'] = 1, ['stone']=1})  
+        end
 			end	
 		end
 	end

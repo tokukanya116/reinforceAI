@@ -1099,6 +1099,11 @@ function AGS_GlobalSettings_SetStartingVillagers(starting_villagers)
   elseif starting_villagers.enum_value == starting_villagers.enum_items.starting_villagers_200 then
     AGS_GLOBAL_SETTINGS.StartingVillagers = 200
   end
+  
+  -- 改动
+  if AGS_GLOBAL_SETTINGS.EnableEmpireWar then
+    AGS_GLOBAL_SETTINGS.StartingVillagers = 0
+  end
 end
 
 function AGS_GlobalSettings_SetStartingKeeps(starting_keeps)
