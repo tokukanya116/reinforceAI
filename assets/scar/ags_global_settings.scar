@@ -117,7 +117,7 @@ AGS_GLOBAL_SETTINGS = {
     ChangeRelations = true, -- undefined, used for testing treaty without diplomacy module.
   },
   
-  Diplomacy = true, --外交(游戏内是否能随便更换盟友关系).
+  Diplomacy = false, --外交(游戏内是否能随便更换盟友关系).
   Tributes = true, --进贡(关了就不能送资源给盟友了)
   Relations = false,
   TeamVision = AGS_GS_TEAM_VISION_ALWAYS, -- 团队视野
@@ -207,7 +207,7 @@ AGS_GLOBAL_SETTINGS = {
     },
 	
 --新增部分
-  EnableEmpireWar = false
+  EnableEmpireWar = true
 }
 
 ---------------------------------------------------------------------------------------------------
@@ -271,9 +271,10 @@ function Reinforce_AI_DefaultSettings()
 	--MapVision
     --AGS_GS_SETTLEMENT_SETTLED
 	  --Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
+    AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 0
     Rule_AddOneShot(AGS_GiveResources_ONCE, 4)
     Rule_AddOneShot(AGS_AIMadModel, 780)
-    Rule_AddOneShot(AGS_Spawn_Ram, 900)
+    --Rule_AddOneShot(AGS_Spawn_Ram, 900)
 end
 
 function AGS_GlobalSettings_EarlyInitializations()
@@ -778,7 +779,9 @@ function AGS_GlobalSettings_SetWonderScaleCost(scale_cost)
     AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 750
   elseif scale_cost.enum_value == scale_cost.enum_items.wonder_scale_cost_1000 then
     AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 1000
-  elseif scale_cost.enum_value == scale_cost.enum_items.wonder_scale_cost_1500 then
+  elseif scale_cost.enum_value == scale_cost.enum_items.wonder_scale_cost_1375 then
+    AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 1375
+    elseif scale_cost.enum_value == scale_cost.enum_items.wonder_scale_cost_1500 then
     AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 1500
   elseif scale_cost.enum_value == scale_cost.enum_items.wonder_scale_cost_2000 then
     AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 2000
