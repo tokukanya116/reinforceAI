@@ -70,24 +70,24 @@ function AGS_Empire_War_AssignUnitsToResources()
   
 	for idx, player in pairs(PLAYERS) do
     player_id = player.id
-		if not AGS_AI_IsAI(player_id) then 
+    if not AGS_AI_IsAI(player_id) then 
       -- 根据index获取当前轮到的玩家
       --Game_GetLocalPlayer() 不太确定是否能用
       localPlayer = World_GetPlayerAt(idx)
       player_raceName = player.raceName
-    
+      
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-			--生成矿场建筑
-			local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
+      --生成矿场建筑
+      local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
       local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)	
       --AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos)
-			--生成派发的村民
-			--local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
+      --生成派发的村民
+      --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
       local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "mining_camp", '_worker', Entity_GetPosition(gold_mining_camp))
       local sg_player_econ_food = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "econ_food", '_worker', Entity_GetPosition(econ_food))
       
-			--遍历执行派遣
-			SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
+      --遍历执行派遣
+      SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
       SGroup_ForEach(sg_player_econ_food, _AssignGatherer)
 		end
 	end

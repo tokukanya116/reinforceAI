@@ -79,7 +79,7 @@ AGS_GLOBAL_SETTINGS = {
   MaintainTeamBalance = AGS_GS_TEAM_BALANCE_NONE,
   
   EliminationSettings = {
-    EnableAITakeover = false, -- AI接管尸体(防止玩家意外掉线导致游戏gg).
+    EnableAITakeover = true, -- AI接管尸体(防止玩家意外掉线导致游戏gg).
   },  
 --征服类型
   ConquestSettings = {
@@ -121,7 +121,7 @@ AGS_GLOBAL_SETTINGS = {
   Tributes = true, --进贡(关了就不能送资源给盟友了)
   Relations = false,
   TeamVision = AGS_GS_TEAM_VISION_ALWAYS, -- 团队视野
-  MapVision = AGS_GS_MAP_VISION_EXPLORED, -- 地图视野
+  MapVision = AGS_GS_MAP_VISION_REVEALED, -- 地图视野 --AGS_GS_MAP_VISION_REVEALED --AGS_GS_MAP_VISION_EXPLORED
   
   StartingAge = AGS_GS_AGE_DARK, --起始时代
   EndingAge = AGS_GS_AGE_LATE_IMPERIAL, --结束时代
