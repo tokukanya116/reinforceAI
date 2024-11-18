@@ -24,6 +24,12 @@ AGS_WONDER_SCALE_COST_RESOURCE_COUNT = {
 	sultanate = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
 	malian = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
 	ottoman = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  chinese_ha_01 = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  french_ha_01 = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  abbasid_ha_01 = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  hre_ha_01 = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  japanese = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
+  byzantine = { total = 4, food = 1.6, wood = 1.6, gold = 1.6, stone = 1.6},
 }
 
 ---------------------------------------------------------------------------------------------------
@@ -46,7 +52,7 @@ end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
-
+-- 开局调整
 function AGS_WonderScaleCost_CalculateCost(player, player_count)
 	local civ_wonder_type = AGS_WONDER_SCALE_COST_RESOURCE_COUNT[player.raceName]
 	-- This will calculate inflation value for single player.

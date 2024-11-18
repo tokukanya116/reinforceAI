@@ -80,7 +80,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       --生成矿场建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
       local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)	
-      --AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos)
+      AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos)
       --生成派发的村民
       --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
       local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "mining_camp", '_worker', Entity_GetPosition(gold_mining_camp))
@@ -223,14 +223,21 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
   local raceName = Player_GetRaceName(localPlayer)
   local distance = 50
   
-  local build_entity_callback
+  --local build_entity_callback
   
   for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do
-    if  not house then
-      
+    if build_type == 'house' then
+      if raceName ~= 'mongol' then
+        for i = 1, build_num do
+           local position_offset = World_Pos(0, -20, 0)
+          AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, "build_house"), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'house'), nil, position_offset, false, true)
+        end
+      end
     end
-    AGS_Print('build_type',build_type)
+    
+    --AGS_Print('build_type',build_type)
     AGS_Print('build_num',build_num)
+    
   end
   
   --for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do

@@ -7,7 +7,7 @@
 -- Contains functionality for adjusting starting villagers for prefab start.
 -- Contains functionality to replicate prefab start.
 ---------------------------------------------------------------------------------------------------
-
+-- 开局调整
 AGS_SETTLED_MODULE = "AGS_Settled"
 
 ---------------------------------------------------------------------------------------------------

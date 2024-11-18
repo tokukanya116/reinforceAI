@@ -824,13 +824,13 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     mining_camp = 1,
   },
   hre = {
-     house = 4,
+    house = 4,
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
   },
   rus = {  
-     house = 4,
+    house = 4,
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -890,7 +890,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     mining_camp = 1,
   },
   japanese = {
-    house = 4,
+    house = 3, --都在浆果旁
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -1550,7 +1550,7 @@ function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_o
 	local e = Entity_CreateFacing(bp_entity, player_id, placement, rotation, true)
 	
 	if opt_do_correction then
-		local safe_spawn = World_GetSpawnablePosition(placement, e)
+		local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement, e))
 		Entity_WarpToPos(e, safe_spawn)	
 	end
 	

@@ -271,9 +271,11 @@ function Reinforce_AI_DefaultSettings()
 	--MapVision
     --AGS_GS_SETTLEMENT_SETTLED
 	  --Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
-    AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = 0
     Rule_AddOneShot(AGS_GiveResources_ONCE, 4)
     Rule_AddOneShot(AGS_AIMadModel, 780)
+    --Rule_AddInterval(World_CleanUpTheDead(ALL), 60)
+    --AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = wonder_scale_cost_1375
+    
     --Rule_AddOneShot(AGS_Spawn_Ram, 900)
 end
 
@@ -1252,7 +1254,7 @@ end
 function AGS_AIMadModel()
   Rule_AddInterval(AGS_GiveResources, 30)
   --Rule_AddInterval(AGS_Spawn_Setting, 300)
-  Rule_AddInterval(AGS_Spawn_Ram, 150)
+  --Rule_AddInterval(AGS_Spawn_Ram, 150)
 end
 
 -- 续命资源
