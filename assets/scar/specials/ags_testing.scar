@@ -26,6 +26,7 @@ function AGS_Testing_OnPlay()
 	for _, player in pairs(PLAYERS) do
 		AGS_Print(player.id, player.raceName)
 	end
+  Rule_AddInterval(AGS_Testing_RemoveUnits,600)
 end		
 
 ---------------------------------------------------------------------------------------------------
@@ -40,11 +41,18 @@ function AGS_Testing_RemoveGaia()
 	EGroup_Destroy(egroup)
 end
 
+-- 清空可能会导致单位卡顿的单位
 function AGS_Testing_RemoveUnits()
 	for _, player in pairs(PLAYERS) do
-		SGroup_DestroyAllSquads(Player_GetSquads(player.id))
-	end
+    if AI_IsAIPlayer(player.id) then
+      if Player_IsAlive(player.id)  then
+        -- 冲车，叉叉，步弓，肉马
+        SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+      end
+    end
+  end
 end
+
 -- Returns option from command line like "-cheat" by asking for "cheat"
 function AGS_Testing_HasCommandLineOption(option_name)
 	return Misc_IsCommandLineOptionSet(option_name)

@@ -1,7 +1,7 @@
 ﻿ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
-1,,,,Mod Title,,reinforceAI_V2
+1,,,,Mod Title,,reinforceAI_V2(Ongoing update)
 2,,,,Mod Page Description,,Personal mods based on AGS:reinforceAI
-3,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nOpening bonus market (ai will automatically produce merchants after 15 minutes)\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 100 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
+3,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
 4,,,,Option Header,,Win Conditions
 5,,,,Annihilation Option,,Annihilation
 6,,,,Annihilation Option,,"Destroy all enemies. This option is required, unless you wish for player to be never eliminated even if he loses everything."
@@ -96,7 +96,7 @@
 95,,,,Generic,,0 per player
 96,,,,Generic,,250 per player
 97,,,,Generic,,375 per player
-98,,,,Generic,,500 per player
+98,,,,Generic,,700 per player
 99,,,,Generic,,750 per player
 100,,,,Generic,,1000 per player
 101,,,,Generic,,1500 per player
@@ -399,13 +399,19 @@
 398,,,,,,Resource
 399,,,,,,Get resources per minute after 13 minutes
 400,,,,,,ResourceBase(food/gold/wood/stone):\nPlayer:300/300/150/100\nAI:expect stone all*2(2 Combat loss)
-401,,,,,,Weak(ResourceBase*1)
-402,,,,,,Just ResourceBase
-403,,,,,,Normal(ResourceBase*1.5)
-404,,,,,,ResourceBase*1.5
-406,,,,,,Hard(ResourceBase*2)
-407,,,,,,ResourceBase*2
+401,,,,,,Weak(ResourceBase*1.25)
+402,,,,,,ResourceBase*1.25
+403,,,,,,Normal(ResourceBase*1.75)
+404,,,,,,ResourceBase*1.75
+406,,,,,,Hard(ResourceBase*2.5)
+407,,,,,,ResourceBase*2.5
 408,,,,,,Very Hard(ResourceBase*3)
 409,,,,,,ResourceBase*3
 410,,,,,,Empire_war
 412,,,,,,Start with the Empire_war
+413,,,,Mod Title,,reinforceAI_V2(Ongoing update)
+414,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
+415,,,,,,Default
+416,,,,,,Enable_test_mode
+417,,,,,,Impossible(ResourceBase*4)
+418,,,,,,ResourceBase*4

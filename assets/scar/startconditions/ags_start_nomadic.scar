@@ -54,9 +54,9 @@ end
 function AGS_Nomadic_OnStarting()
 	AGS_Print("AGS_Nomadic_OnStarting")
 	for _, player in pairs(PLAYERS) do	
-		-- Insist that player do not have capital.
+		-- Insist that player do not have capital. --强制ai认为没有首都城镇中心
 		Player_SetStateModelFloat(player.id, "has_capital", 0)	
-		-- Player should be able to build structures
+		-- Player should be able to build structures --设置ai可以建造建筑
 		Player_SetStateModelBool(player.id, "player_can_construct_structures", true)
 		
 		Core_CallDelegateFunctions("AdjustAIPlayers", AGS_AI_ADJUSTREASON_NOMAD, player)

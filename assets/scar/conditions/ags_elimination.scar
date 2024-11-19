@@ -8,6 +8,7 @@
 -- A player is eliminated when they quit (through the button in the Pause menu) or otherwise drop/disconnect. 
 -- The last remaining player/team wins. 
 -- This is different from Relic. We are checking for AI elimination only in Surrender condition.
+-- 玩家意外掉线会由AI替代，此处是AI的设置
 ---------------------------------------------------------------------------------------------------
 
 import("conditions/conditiondata/ags_elimination_data.scar")
@@ -40,15 +41,25 @@ function AGS_Elimination_OnPlayerAITakeover(context)
 			-- AI players here were hosted on the now disconnected human players computer, and need to move to another
 			-- client. This was done in C++ land (in GameWorld::SetGameOver and GameWorld::StationTakeOverAi) so don't
 			-- eliminate them here.
-			if not AGS_GLOBAL_SETTINGS.EliminationSettings.EnableAITakeover then
+			if not AGS_GLOBAL_SETTINGS.EliminationSettings.EnableAITakeover then --没开AI托管直接设置玩家战败
 				AGS_SetPlayerDefeated(player.id, AGS_Presentations_Loss, AGS_WR_ELIMINATION,
 					AGS_Objectives_PresentWrap(
 						AGS_ELIMINATION_OBJECTIVE, 
 						OS_Failed, 
 						AGS_OBJECTIVES_ELIMINATION.title))	
 			else 
-				-- This should IMHO be updated in case something relies on it.
+				-- This should IMHO be updated in case something relies on it.(别拿这个变量去耦合其它参数)
 				player.isHuman = false
+        
+        if AI_IsAIPlayer(player.id) then --重新设置AI难度为极难
+          -- 请对照 scardoc 里 Enum List 对应的 AIDifficultyLevel(由0开始荒谬是1 令人发指是2 荒唐是3 极难是8)
+          AI_SetDifficulty(player.id, 8)
+          AI_Enable(player.id, true)
+          
+          --设置AI可以建造
+          Player_SetStateModelBool(player.id, "player_can_construct_structures", true)
+        end
+        
 			end
 		end		
 	end	
