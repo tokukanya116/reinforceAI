@@ -138,7 +138,7 @@ import("balance/ags_tournament_nomad_balance.scar")
 -- Wrapper around all default match options, that will have minimal changes done to them. 包装所有的比赛选项，就是上诉的功能的函数总引用位置
 import("specials/ags_utilities.scar")
 -- Special container for testing and unfinished functionality. 用于测试未完成函数的容器(丢里面跑不一定会引发致命错误)
---import("specials/ags_testing.scar")
+import("specials/ags_testing.scar")
 -- Additional UI elements
 -- import("specials/ags_match_ui.scar")
 -- Observer UI

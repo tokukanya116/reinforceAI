@@ -40,3 +40,6 @@ wonder:奇观
 farm:田
 ```
 
+```
+如需要生成新ui，参考 ags_diplomacy_ui.scar
+```

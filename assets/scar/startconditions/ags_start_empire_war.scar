@@ -14,28 +14,29 @@ AGS_Empire_War_MODULE = "AGS_Empire_War"
 -- Delegates:
 ---------------------------------------------------------------------------------------------------
 
-Core_RegisterModule(AGS_Empire_War_MODULE)	
+Core_RegisterModule(AGS_Empire_War_MODULE)  
 
 --如果没勾选帝国战争模式，将与帝国战争模式的函数注入全部移除
 function AGS_Empire_War_UpdateModuleSettings()
-	AGS_Print("AGS_Empire_War_UpdateModuleSettings")
-	if not AGS_GLOBAL_SETTINGS.EnableEmpireWar then
-		Core_UnregisterModule(AGS_Empire_War_MODULE)
-	end
+  AGS_Print("AGS_Empire_War_UpdateModuleSettings")
+  if not AGS_GLOBAL_SETTINGS.EnableEmpireWar then
+    Core_UnregisterModule(AGS_Empire_War_MODULE)
+  end
 end
 
 --调用预设置函数
 function AGS_Empire_War_PresetExecute()
-	--AGS_Print("AGS_Empire_War_PresetExecute")
-	AGS_Empire_War_AssignUnitsToResources()
+  --AGS_Print("AGS_Empire_War_PresetExecute")
+  AGS_Empire_War_AssignUnitsToResources()
+  --UI_MessageBoxSetText('测试',"浅尝一口?")
 end
 
 -- Assign units to resources
 function AGS_Empire_War_AssignUnitsToResources()
-	local player_civ
-	local player_id
-	local localPlayer
-	local player_town_center_pos
+  local player_civ
+  local player_id
+  local localPlayer
+  local player_town_center_pos
   local player_raceName
 
   -- 派遣挖矿
@@ -68,7 +69,7 @@ function AGS_Empire_War_AssignUnitsToResources()
   end
 
   
-	for idx, player in pairs(PLAYERS) do
+  for idx, player in pairs(PLAYERS) do
     player_id = player.id
     if not AGS_AI_IsAI(player_id) then 
       -- 根据index获取当前轮到的玩家
@@ -79,7 +80,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       --生成矿场建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
-      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)	
+      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)  
       AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos)
       --生成派发的村民
       --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
@@ -89,76 +90,76 @@ function AGS_Empire_War_AssignUnitsToResources()
       --遍历执行派遣
       SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
       SGroup_ForEach(sg_player_econ_food, _AssignGatherer)
-		end
-	end
+    end
+  end
 end
 
 --自动识别sbp类型并返回sgroup
 function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,localPlayer, use_type, sbp_type_suffix, preset_position)
-	--空值，报错拦截
-	if not player_id then
-		return
-	end
-	if not localPlayer then
-		return
-	end
-	if not use_type then
-		return
-	end
-	if not preset_position then
-		preset_position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-	end
+  --空值，报错拦截
+  if not player_id then
+    return
+  end
+  if not localPlayer then
+    return
+  end
+  if not use_type then
+    return
+  end
+  if not preset_position then
+    preset_position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  end
   if not sbp_type_suffix then
     sbp_type_suffix = ''
   end
-	
-	
-	-- 共通参数设置
-	--local player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-	local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)] -- 文明后缀 例如 日本 = jpn
-	local bp_squad -- 小队蓝图
-	local sgroup_name = AGS_SGroupName(player_id, use_type)
-	local count
-	local position = preset_position
-	
-	-- 按类型生成的个体参数
+  
+  
+  -- 共通参数设置
+  --local player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)] -- 文明后缀 例如 日本 = jpn
+  local bp_squad -- 小队蓝图
+  local sgroup_name = AGS_SGroupName(player_id, use_type)
+  local count
+  local position = preset_position
+  
+  -- 按类型生成的个体参数
   --if use_type == "mining_camp" then
     bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
     count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[Player_GetRaceName(localPlayer)][tostring(use_type) .. sbp_type_suffix]
   --elseif use_type == "econ_food" then
     --bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
     --count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[Player_GetRaceName(localPlayer)][tostring(use_type) .. '_worker']
-	--end
+  --end
 
-	--返回生成的农民实体
-	return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+  --返回生成的农民实体
+  return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
 end
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
 function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, build_type, preset_position)
-	--空值，报错拦截
-	if not player_id then
-		return
-	end
-	if not localPlayer then
-		return
-	end
-	if not build_type then
-		return
-	end
-	if not preset_position then
-		preset_position = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-	end
-	
-	local gold_type 
-	local gold_entities = EGroup_CreateIfNotFound(build_type)
+  --空值，报错拦截
+  if not player_id then
+    return
+  end
+  if not localPlayer then
+    return
+  end
+  if not build_type then
+    return
+  end
+  if not preset_position then
+    preset_position = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  end
+  
+  local gold_type 
+  local gold_entities = EGroup_CreateIfNotFound(build_type)
   local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
   local distance = 80
   
-	local build_entity_callback
-	
+  local build_entity_callback
+  
   -- 金矿
-	if build_type == "gold_mining_camp" then
-		-- 查找周边金矿类型(先查小金，不存在则找大金)
+  if build_type == "gold_mining_camp" then
+    -- 查找周边金矿类型(先查小金，不存在则找大金)
     
     local gold_entity = AGS_GetClosestGoldEntity(player_id, preset_position, distance)
     
@@ -185,7 +186,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
       local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, 0) 
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
     end
-	end
+  end
   -- 磨坊
   if build_type == "econ_food" then
     local forag_bush_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_FOOD))
@@ -203,7 +204,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_ECOM_FOOD), center_pos, nil, false, true)  
     end
   end
-	return build_entity_callback
+  return build_entity_callback
 end
 --其他额外建筑
 function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, preset_position)
@@ -221,44 +222,50 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
   local build_entities = EGroup_CreateIfNotFound('build_entities')
   --local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
   local raceName = Player_GetRaceName(localPlayer)
-  local distance = 50
+  local distance
+  local position
   
   --local build_entity_callback
   
   for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do
+    -- 房屋
     if build_type == 'house' then
       if raceName ~= 'mongol' then
         for i = 1, build_num do
-           local position_offset = World_Pos(0, -20, 0)
-          AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, "build_house"), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'house'), nil, position_offset, false, true)
-        end
+          distance = 30
+          --local position_offset = World_Pos(0, -20, 0)
+          --AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, "build_house"), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'house'), nil, position_offset, false, true)
+            AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), preset_position, distance, i)
+          end
       end
     end
-    
-    --AGS_Print('build_type',build_type)
-    AGS_Print('build_num',build_num)
-    
-  end
   
-  --for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do
-    
-  --end
-  ---- 磨坊
-  --if build_type == "econ_food" then
-    --local forag_bush_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_FOOD))
-    ---- 查找周边浆果类型
-    --World_GetEntitiesNearPoint(player_id, forag_bush_entities, preset_position, distance, OT_Neutral)
-    --EGroup_Filter(forag_bush_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_FOOD), FILTER_KEEP)
-    
-    --local forag_bush_entity = AGS_EGroup_GetClosestEntity(forag_bush_entities, preset_position)
-    
-    --if forag_bush_entity ~= nil then
+  end
+end
 
-      --local forag_bush_entity_position = Entity_GetPosition(forag_bush_entity)
-      
-      --local center_pos = AGS_CalculateCenterOffset(forag_bush_entity_position, 5, -5) 
-      --build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_ECOM_FOOD), center_pos, nil, false, true)  
-    --end
-  --end
-  --return build_entity_callback
+-- 返回安全的位置
+function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, position, distance, step)
+  if not player_id then
+    return
+  end
+  if position == nil then
+    position = Player_GetStartingPosition(player_id)  
+  end
+  if distance == nil then
+    distance = 30 
+  end  
+  local egroupid = EGroup_CreateIfNotFound('build_entities')
+
+  local nx = position.x
+  local ny = position.y
+  local nz = position.z
+  
+  local placement = World_Pos(nx + distance, ny, nz)
+  local rotation = World_Pos(nx + distance, ny, nz + 5)
+
+  local e = Entity_CreateFacing(ebp, player_id, placement, rotation, true)
+  local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement, e))
+--PropertyBagGroupID
+  --会出现建筑物虚影但不会立马构造
+  Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 4, rotation, true, false, false)
 end
