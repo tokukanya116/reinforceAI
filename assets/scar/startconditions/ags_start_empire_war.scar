@@ -28,7 +28,7 @@ end
 function AGS_Empire_War_PresetExecute()
   --AGS_Print("AGS_Empire_War_PresetExecute")
   AGS_Empire_War_AssignUnitsToResources()
-  --UI_MessageBoxSetText('测试',"浅尝一口?")
+  UI_MessageBoxSetText('测试',"浅尝一口?")
 end
 
 -- Assign units to resources
@@ -235,7 +235,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
           distance = 30
           --local position_offset = World_Pos(0, -20, 0)
           --AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, "build_house"), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'house'), nil, position_offset, false, true)
-            AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), preset_position, distance, i)
+            AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), preset_position, distance, i, 7.5)
           end
       end
     end
@@ -244,7 +244,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
 end
 
 -- 返回安全的位置
-function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, position, distance, step)
+function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, position, distance, step, offset)
   if not player_id then
     return
   end
@@ -253,19 +253,30 @@ function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, position, 
   end
   if distance == nil then
     distance = 30 
-  end  
+  end
+  if offset == nil then
+    offset = 10
+  end
+  --思路：以上一个建筑为定位，基数+y，偶数+x
+  --如果是是影响格建筑，就第一个先算y的偏移，然后其他以第一个偏移的建筑为基准加减x轴补蓝图
+  local build_offset_x
+  local build_offset_y
+  if step then
+    build_offset_x = (step-1) * offset
+    build_offset_y = (step-1) * offset
+  end
   local egroupid = EGroup_CreateIfNotFound('build_entities')
 
   local nx = position.x
   local ny = position.y
   local nz = position.z
   
-  local placement = World_Pos(nx + distance, ny, nz)
-  local rotation = World_Pos(nx + distance, ny, nz + 5)
+  local placement = World_Pos(nx + distance + build_offset_x, ny + build_offset_y, nz)
+  local rotation = World_Pos(nx + distance + build_offset_x, ny + build_offset_y, nz + 5)
 
   local e = Entity_CreateFacing(ebp, player_id, placement, rotation, true)
   local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement, e))
 --PropertyBagGroupID
-  --会出现建筑物虚影但不会立马构造
-  Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 4, rotation, true, false, false)
+  --倒数第二个参数为true会出现建筑物虚影但不会立马构造 --有个缺陷，没按照栅格部署
+  Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 1, rotation, true, false, false)
 end
