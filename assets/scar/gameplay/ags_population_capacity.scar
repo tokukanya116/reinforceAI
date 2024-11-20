@@ -47,7 +47,7 @@ function AGS_PopulationCapacity_Change()
 		if Player_IsHuman(player.id) == true then
 			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation)
 		else
-			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 75)
+			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 50)
 		end	
 		
 		AGS_PopulationCapacity_SetMinPopulation(player, AGS_GLOBAL_SETTINGS.MinimumPopulation) 

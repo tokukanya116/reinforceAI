@@ -117,7 +117,7 @@ AGS_GLOBAL_SETTINGS = {
     ChangeRelations = true, -- undefined, used for testing treaty without diplomacy module.
   },
   
-  Diplomacy = false, --外交(游戏内是否能随便更换盟友关系).
+  Diplomacy = true, --外交(游戏内是否能随便更换盟友关系).
   Tributes = true, --进贡(关了就不能送资源给盟友了)
   Relations = false,
   TeamVision = AGS_GS_TEAM_VISION_ALWAYS, -- 团队视野
