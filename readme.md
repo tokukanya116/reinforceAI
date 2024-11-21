@@ -21,3 +21,4 @@ ags_tree_bombardment貌似是找出实体周边的树删掉(AGS_TreeBombardment_
 EGroup_GetClosestEntity
 ```
 
+建议取一个实体的8个方向作为基本定位，很有效
