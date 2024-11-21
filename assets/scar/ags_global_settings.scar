@@ -204,7 +204,7 @@ AGS_GLOBAL_SETTINGS = {
       ottoman = 'ott',
       japanese = 'jpn',
       byzantine = 'byz',
-    },
+  },
   
 --新增部分
   EnableEmpireWar = true
