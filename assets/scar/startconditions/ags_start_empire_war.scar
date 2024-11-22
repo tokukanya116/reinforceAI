@@ -79,17 +79,27 @@ function AGS_Empire_War_AssignUnitsToResources()
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       --生成矿场建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
+      local stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "stone_mining_camp", player_town_center_pos)
       local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)
       
       local player_building_position_table = {
         pos_gold_mining_camp = Entity_GetPosition(gold_mining_camp),
         pos_econ_food = Entity_GetPosition(econ_food),
-        landmark_abb = nil
+        landmark_abb = nil,
+        ovoo = nil
       }
       
+      --智慧宫
       if player_raceName == 'abbasid' or player_raceName == 'abbasid_ha_01' then
         local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "landmark_abb", player_town_center_pos) 
         player_building_position_table['landmark_abb'] = Entity_GetPosition(landmark_abb)
+        --Player_AddResource(player.id, RT_Wood, 50)
+      end
+      
+      -- 敖包
+      if player_raceName == 'mongol' then
+        player_building_position_table['ovoo'] = Entity_GetPosition(stone_mining_camp)
+        --Player_AddResource(player.id, RT_Wood, 50)
       end
       
       AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos, player_building_position_table)
@@ -162,8 +172,6 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
     preset_position = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
   end
   
-  local gold_type 
-  local gold_entities = EGroup_CreateIfNotFound(build_type)
   local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
   local distance = 80
   
@@ -171,6 +179,9 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
   
   -- 金矿
   if build_type == "gold_mining_camp" then
+    local gold_type 
+    local gold_entities = EGroup_CreateIfNotFound(build_type)
+    
     -- 查找周边金矿类型(先查小金，不存在则找大金)
     
     local gold_entity = AGS_GetClosestGoldEntity(player_id, preset_position, distance)
@@ -199,6 +210,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
     end
   end
+  
   -- 磨坊
   if build_type == "econ_food" then
     local forag_bush_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_FOOD))
@@ -212,10 +224,59 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
 
       local forag_bush_entity_position = Entity_GetPosition(forag_bush_entity)
       
-      local center_pos = AGS_CalculateCenterOffset(forag_bush_entity_position, 0, 5) 
+      local center_pos = AGS_CalculateCenterOffset(forag_bush_entity_position, 0, 7.5) 
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_ECOM_FOOD), center_pos, nil, false, true)  
     end
   end
+  
+  --石矿
+  if build_type == "stone_mining_camp" then
+    local stone_type
+    -- 查找周边金矿类型(石料，兼容蒙古？)
+    distance = 120
+    local stone_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_STONE))
+    -- 查找周边石头类型
+    World_GetEntitiesNearPoint(player_id, stone_entities, preset_position, distance, OT_Neutral)
+    EGroup_Filter(stone_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL), FILTER_KEEP)
+    
+    local stone_entity = AGS_EGroup_GetClosestEntity(stone_entities, preset_position)
+    
+    if stone_entity ~= nil then
+      
+      --判断是大石料还是小石料
+      --if Entity_HasBlueprint(stone_entity, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL)) then
+        --stone_type = 'small'
+      --else
+        --stone_type = 'big'
+      --end
+      
+     
+      local stone_position = Entity_GetPosition(stone_entity)
+      local center_pos = AGS_CalculateCenterOffset(stone_position, 0, 0) 
+      --蒙古
+      if Player_GetRaceName(localPlayer) == 'mongol' then
+        --local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
+        local ovoo_type = 'ovoo_small'
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), ovoo_type), center_pos, nil, false, true)
+      else 
+        --其他人
+        -- 设置偏移
+        -- 默认小石头+标准矿场
+        local pos_minecamp = 10
+
+        --日本的矿场无论大小金都是固定距离(因为 1个地图栅格 有 4实体占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格)
+        if player_civ_prefixes == 'jpn' then
+          pos_minecamp = 12.5
+        end
+        
+        local center_pos = AGS_CalculateCenterOffset(stone_position, pos_minecamp, 0) 
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'stone'..AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
+      end
+      
+    end
+
+  end
+
   
   --智慧宫
   if build_type == "landmark_abb" then
@@ -281,7 +342,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
               offset = 12.5
               direction = 'left_top'
               back_pos = player_building_position_table['landmark_abb']
-            elseif i == 5 then
+            elseif i == 6 then
               offset = 12.5
               direction = 'left_down'
               back_pos = player_building_position_table['landmark_abb']
