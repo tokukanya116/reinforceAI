@@ -84,6 +84,25 @@ function AGS_Empire_War_AssignUnitsToResources()
     end
   end
   
+  -- 砍树
+  local function _AssignGatherWood(gid, idx, sid)
+    SGroup_Single(sg_single, sid)
+    
+    local pos_sg_single = SGroup_GetPosition(sg_single)
+    local wood_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, 'wood'))
+    -- 查找周边木头类型 
+    World_GetEntitiesNearPoint(player_id, wood_entities, pos_sg_single, 10, OT_Neutral)
+    EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
+    local closest_wood = AGS_EGroup_GetClosestEntity(wood_entities, pos_sg_single)
+    
+    if closest_wood ~= nil then
+      -- 获取最近的树
+      EGroup_Single(eg_single, closest_wood)
+      LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_single, false)
+    else
+      print("Could not find berries to assign villager! 没找到浆果!")  
+    end
+  end
   
   for idx, player in pairs(PLAYERS) do
     player_id = player.id
@@ -91,7 +110,16 @@ function AGS_Empire_War_AssignUnitsToResources()
       --local player_all_sgroups = 
       --删掉所有的预生成，再重新按照民族生成特殊单位
       --优先调整：杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
-      SGroup_DestroyAllSquads(Player_GetSquads(player_id))
+      --请将此封装为一个函数
+      local player_start_sgroup = Player_GetSquads(player_id)
+      --EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
+      SGroup_DestroyAllSquads(player_start_sgroup)
+      
+      -- 优先调整:要移除掉蒙古的蒙古包
+      --if player_raceName == 'mongol' then
+        --local player_start_sgroup = Player_GetEntities(player_id)
+      --end
+      
       
       -- 根据index获取当前轮到的玩家
       --Game_GetLocalPlayer() 不太确定是否能用
@@ -100,7 +128,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       
-      --生成矿场建筑
+      --生成采集建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
       local stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "stone_mining_camp", player_town_center_pos)
       local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)
@@ -109,6 +137,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       local player_building_position_table = {
         pos_gold_mining_camp = gold_mining_camp ~=nil and Entity_GetPosition(gold_mining_camp) or nil,
         pos_econ_food = econ_food ~=nil and Entity_GetPosition(econ_food) or nil,
+        pos_econ_wood = econ_wood ~=nil and Entity_GetPosition(econ_wood) or nil,
         landmark_abb = nil,
         ovoo = nil,
         tc_mon = nil
@@ -134,15 +163,23 @@ function AGS_Empire_War_AssignUnitsToResources()
       AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos, player_building_position_table)
       --额外生成的单位
       --AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)
+        
+      -- 生成的羊
+      local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-7.5), true)
       
       --生成派发的村民
-      --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
-      local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'])
-      --优先调整：需要对应的sbp和建筑，看看怎么调整
-      local sg_player_econ_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_sheep", 'worker', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-6))
-      local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'])
+      local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
+      local sg_player_econ_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_sheep", 'worker', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-6), true)
+      local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'], true)
+      local sg_player_econ_wood = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_wood", 'worker', player_building_position_table['pos_econ_wood'], true)
       
-      local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-7))
+      --local sg_player_start_sgroup = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'start_sgroup', player_building_position_table)
+      --侦察兵
+      AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
+      --local sg_player_start_official = nil
+      if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
+        AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
+      end
       
       --遍历执行派遣
       if sg_player_goldminer ~= nil then 
@@ -154,12 +191,15 @@ function AGS_Empire_War_AssignUnitsToResources()
       if sg_player_econ_food_berry ~= nil then
         SGroup_ForEach(sg_player_econ_food_berry, _AssignGatherBerry)
       end
+      if sg_player_econ_wood ~= nil then
+        SGroup_ForEach(sg_player_econ_wood, _AssignGatherWood)
+      end
     end
   end
 end
 
 --自动识别sbp类型并返回sgroup
-function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,player_raceName, use_type, sbp_type_suffix, preset_position)
+function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,player_raceName, use_type, sbp_type_suffix, preset_position, need_back)
   --空值，报错拦截
   if not player_id then
     return
@@ -175,6 +215,9 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,player_raceName, us
   end
   if not sbp_type_suffix then
     sbp_type_suffix = ''
+  end
+  if not need_back then
+    need_back = false
   end
   
   
@@ -193,17 +236,29 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,player_raceName, us
       bp_squad = AGS_GetNeutralUnit(AGS_BP_SHEEP)
       count = 5
     end
+  elseif use_type == 'extra' then
+    if sbp_type_suffix == 'scout' then
+      bp_squad = BP_GetSquadBlueprint("unit_scout_1_"..player_civ_prefixes)
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+      return
+    end
+    if sbp_type_suffix == 'official' then
+      --因为这里的地址被替换成了地址表，所以要单独取出 position['...'] 这样 
+      bp_squad = BP_GetSquadBlueprint("unit_official_1_"..player_civ_prefixes)
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      local official_food = AGS_SpawnSquad(player_id, sgroup_name..'_food', bp_squad, position['pos_econ_food'], nil, 1)
+      local official_gold = AGS_SpawnSquad(player_id, sgroup_name.."_gold", bp_squad, position['pos_gold_mining_camp'], nil, 1)
+      return
+    end
   else
+    
   end
   
-  
-  
-  --优先调整：不能简单的return掉
-  --if count == 0 then
-    --return
-  --end
   --返回生成的队伍成员
-  return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+  if need_back and use_type ~= 'extra' then
+    return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+  end
 end
 
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
