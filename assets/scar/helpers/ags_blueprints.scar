@@ -1848,39 +1848,70 @@ function AGS_GetClosestGoldEntity(player_id, position, distance)
 end
 
 -- 目前仅支持浆果(需要匹配鱼，鹿，羊)
-function AGS_GetClosestFoodEntity(player_id, position, distance, food_type)
+function AGS_GetClosestFoodEntity(player_id, food_type, position, distance )
   if not position then
     position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
   end
   if not distance then
     distance = 100
   end
-  if not food_type then --没有其他食物默认浆果
-    food_type = AGS_BP_DEPOSIT_FOOD
+  local bp_type
+
+  if food_type == 'sheep' then --没有其他食物默认浆果
+    food_type = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+    bp_type = 'squad'
+  else
+    food_type = AGS_GetNeutralEntity(AGS_BP_DEPOSIT_FOOD)
+    bp_type = 'entity'
   end
+  
   local closest_distance_sqr = 1000000000000
-  local closest_entity = nil
-  local closest_resource_food_deposit = EGroup_CreateIfNotFound("closest_resource_food_deposit")
+  local closest_food = nil
+  
+  local closest_resource_food_deposit
  
   -- 查找周边食物类型
-  World_GetEntitiesNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Neutral)
-  EGroup_Filter(closest_resource_food_deposit, AGS_GetNeutralEntity(food_type), FILTER_KEEP)
-   
-  local _CheckEntity = function(gid, idx, eid)
-    local entityPosition = Entity_GetPosition(eid)
-    local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+  if bp_type == 'entity' then
+    closest_resource_food_deposit = EGroup_CreateIfNotFound("closest_resource_food_deposit")
+    World_GetEntitiesNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Neutral)
+    EGroup_Filter(closest_resource_food_deposit, food_type, FILTER_KEEP)
     
-    if distance_sqr < closest_distance_sqr then
-      closest_distance_sqr = distance_sqr
-      closest_entity = eid
+    local _CheckEntity = function(gid, idx, eid)
+      local entityPosition = Entity_GetPosition(eid)
+      local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+      
+      if distance_sqr < closest_distance_sqr then
+        closest_distance_sqr = distance_sqr
+        closest_food = eid
+      end
     end
+    
+    if EGroup_Count(closest_resource_food_deposit) ~= 0 then
+      EGroup_ForEach(closest_resource_food_deposit, _CheckEntity)
+    end
+  elseif bp_type == 'squad' then
+      closest_resource_food_deposit = SGroup_CreateIfNotFound("closest_resource_food_deposit")
+      World_GetSquadsNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Player)
+      SGroup_Filter(closest_resource_food_deposit, food_type, FILTER_KEEP)
+      
+      local _CheckSquards = function(gid, idx, sid)
+        local squadPosition = Squad_GetPosition(sid)
+        local distance_sqr = World_DistanceSquaredPointToPoint(squadPosition, position)
+        
+        if distance_sqr < closest_distance_sqr then
+          closest_distance_sqr = distance_sqr
+          closest_food = sid
+        end
+      end
+      
+      if SGroup_Count(closest_resource_food_deposit) ~= 0 then
+        SGroup_ForEach(closest_resource_food_deposit, _CheckSquards)
+      end  
+  else
+    
   end
- 
-  if EGroup_Count(closest_resource_food_deposit) ~= 0 then
-    EGroup_ForEach(closest_resource_food_deposit, _CheckEntity)
-  end  
   
-  return closest_entity
+  return closest_food
 end
 --返回可用的生成点 暂时放弃
 function AGS_GetEntityNumAroundByPosition(player_id, position, distance)
