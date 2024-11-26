@@ -73,14 +73,16 @@ function AGS_Empire_War_AssignUnitsToResources()
     
     -- 查找周边羊类型
     local squad_closest_sheep = AGS_GetClosestFoodEntity(player_id, 'sheep', Util_GetPosition(sid), 15)
+    local sgroup_closest_sheep = SGroup_CreateIfNotFound('sgroup_closest_sheep')
     
     if squad_closest_sheep ~= nil then
-      local sgroup_closest_sheep = SGroup_CreateIfNotFound('sgroup_closest_sheep')
       SGroup_Add(sgroup_closest_sheep, squad_closest_sheep)
       LocalCommand_SquadSquad(player_id, sg_single, SCMD_Gather, sgroup_closest_sheep, false)
     else
       print("Could not find sheeps to assign villager! 没找到羊!")  
     end
+    
+    SGroup_Clear(sgroup_closest_sheep)
   end
   
   -- 砍树
@@ -107,16 +109,23 @@ function AGS_Empire_War_AssignUnitsToResources()
     if not AGS_AI_IsAI(player_id) then 
       --local player_all_sgroups = 
       --删掉所有的预生成，再重新按照民族生成特殊单位
-      --优先调整：杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
-      --请将此封装为一个函数
+      --杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
       local player_start_sgroup = Player_GetSquads(player_id)
-      --EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
-      SGroup_DestroyAllSquads(player_start_sgroup)
+      --优先调整：没找到对应的蓝图，需要修改
+      local function get_kill_sgroup(gid, idx, sid)
+        if Squad_IsOfType(sid, 'scar_scout') or Squad_IsOfType(sid, 'scar_villager') or Squad_IsOfType(sid, 'scar_sheep') then
+          Squad_Destroy(sid)
+        end
+      end
+ 
+      SGroup_ForEach(player_start_sgroup, get_kill_sgroup)
       
-      -- 优先调整:要移除掉蒙古的蒙古包
-      --if player_raceName == 'mongol' then
-        --local player_start_sgroup = Player_GetEntities(player_id)
-      --end
+      --要移除掉蒙古的蒙古包
+      if player_raceName == 'mongol' then
+        local player_start_entities = Player_GetEntities(player_id)
+        EGroup_Filter(player_start_entities, AGS_BP_TC_CAPITAL, FILTER_REMOVE)
+        EGroup_Destroy(player_start_entities)
+      end
       
       
       -- 根据index获取当前轮到的玩家
