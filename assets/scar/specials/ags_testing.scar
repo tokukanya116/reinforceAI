@@ -26,12 +26,15 @@ function AGS_Testing_OnPlay()
 	for _, player in pairs(PLAYERS) do
 		AGS_Print(player.id, player.raceName)
 	end
-  Rule_AddInterval(AGS_Testing_RemoveUnits,600)
+  Rule_AddOneShot(AGS_Testing_Delay,300)
 end		
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
+function AGS_Testing_Delay()
+  Rule_AddInterval(AGS_Testing_RemoveUnits,600)
+end
 
 function AGS_Testing_RemoveGaia()
 	local egroup = EGroup_CreateUnique()
@@ -47,7 +50,13 @@ function AGS_Testing_RemoveUnits()
     if AI_IsAIPlayer(player.id) then
       if Player_IsAlive(player.id)  then
         -- 冲车，叉叉，步弓，肉马
-        SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+        local sgroup_without_gatherer = SGroup_CreateIfNotFound('ai'..tostring(player.id)..'filter_sg')
+        local player_all_sgroups = Player_GetSquads(player.id)
+        local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player.raceName] 
+        bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
+        --SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
+        SGroup_Filter(player_all_sgroups, bp_squad, FILTER_REMOVE , sgroup_without_gatherer)
+        SGroup_DestroyAllSquads(player_all_sgroups)
       end
     end
   end

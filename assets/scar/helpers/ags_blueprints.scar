@@ -65,6 +65,7 @@ AGS_BP_TREASURE_STONE = "resource_pickup_stone"
 AGS_BP_DEPOSIT_GOLD = "gold"
 AGS_BP_DEPOSIT_GOLD_SMALL = "gold_small"
 AGS_BP_DEPOSIT_STONE = "stone"
+AGS_BP_DEPOSIT_STONE_SMALL = "stone_small"
 AGS_BP_DEPOSIT_FOOD = "forage_berry_bush"
 AGS_BP_DEPOSIT_MARKET = "settlement"
 AGS_BP_DEPOSIT_ANIMAL = "animal"
@@ -74,6 +75,7 @@ AGS_BP_OUTPOST = "outpost"
 AGS_BP_TYPE_TRADE = "trade_post"
 AGS_BP_MINING_CAMP = "mining_camp"
 AGS_BP_ECOM_FOOD = "econ_food"
+AGS_BP_ECOM_WOOD = "econ_wood"
 
 AGS_ENTITY_TABLE = {
   neutral = {
@@ -87,6 +89,8 @@ AGS_ENTITY_TABLE = {
     market = "market",
     gold = "resource_gold_deposit",
     gold_small = "resource_gold_deposit_small",
+    stone = "resource_stone_deposit",
+    stone_small = "resource_stone_deposit_small",
     forage_berry_bush = "resource_food_forage_berry_bush" 
   },
   english = {
@@ -247,7 +251,7 @@ AGS_ENTITY_TABLE = {
     pasture = "building_pasture_mon",
     pasture = "building_pasture_mon",
     ovoo_large = "building_stone_deposit_ovoo_large_mon",
-    ovoo_small= "building_stone_deposit_ovoo_small_mon",
+    ovoo_small= "building_stone_deposit_ovoo_mon", --building_stone_deposit_ovoo_small_mon
     ovoo = "building_stone_deposit_ovoo_mon",
     blacksmith = "building_tech_unit_infantry_mon",
     barracks = "building_unit_infantry_mon",
@@ -574,7 +578,7 @@ AGS_ENTITY_TABLE = {
     blacksmith = "building_tech_unit_infantry_control_abb_ha_01",
     university = "building_tech_university_control_abb_ha_01",
     
-    landmark_abb_ha_01 = "building_house_of_wisdom_control_abb_ha_01",
+    landmark_abb = "building_house_of_wisdom_control_abb_ha_01",
   
     wonder_imperial_age = "building_wonder_age4_great_mosque_control_abb_ha_01",
     
@@ -703,103 +707,171 @@ AGS_ENTITY_TABLE = {
 
 AGS_EMPIRE_WAR_SQUAD_NUM_TABLE = {
   english = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 4,
+    econ_food_farm_worker = 8,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   chinese = {
-    econ_food_worker = 11,
+    econ_food_sheep_worker = 11,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 4,
     econ_wood_worker = 6,
-    mining_camp_worker = 4,
+    econ_stone_worker = 0,
     scout = 2,
-    official = 2, -- 命官
+    official = 2 -- 命官
   },
   french = {
-    econ_food_worker = 13,
+    econ_food_sheep_worker = 13,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 6,
     econ_wood_worker = 7,
-    mining_camp_worker = 6,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   hre = {
-    econ_food_worker = 11,
+    econ_food_sheep_worker = 11,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 4,
     econ_wood_worker = 6,
-    mining_camp_worker = 4,
-    scout = 2,
+    econ_stone_worker = 0,
+    monk = 1,
+    scout = 2
   },
-  rus = {  
-    econ_food_worker = 2,
+  rus = {
+    econ_food_sheep_worker = 12,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   abbasid = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 4,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 8,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   mongol = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 12,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
+    econ_stone_worker = 0,
     scout = 1,
+    --khan = 1
   },
   sultanate = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 4,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 8,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    monk = 3,
+    scout = 2
   },
   malian = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 12,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    cow = 2,
+    scout = 2
   },
   ottoman = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 12,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   chinese_ha_01 = {
-    econ_food_worker = 11,
+    econ_food_sheep_worker = 11,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 4,
     econ_wood_worker = 6,
-    mining_camp_worker = 4,
+    econ_stone_worker = 0,
     scout = 2,
-    official = 2, -- 命官
+    official = 2 -- 命官
   },
   french_ha_01 = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 12,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   abbasid_ha_01 = {
-    econ_food_worker = 12,
+    econ_food_sheep_worker = 4,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 8,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
   hre_ha_01 = {
-    econ_food_worker = 10,
+    econ_food_sheep_worker = 10,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 4,
     econ_wood_worker = 6,
-    mining_camp_worker = 4,
-    scout = 2,
+    econ_stone_worker = 0,
+    monk = 1,
+    scout = 2
   },
   japanese = {
-    econ_food_worker = 11,
+    econ_food_sheep_worker = 11,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
     econ_stone_worker = 1,
-    scout = 2,
+    scout = 2
   },
   byzantine={
-    econ_food_worker = 11,
+    econ_food_sheep_worker = 11,
+    econ_food_farm_worker = 0,
+    econ_food_berry_worker = 0,
+    econ_food_deer_worker = 0,
+    econ_gold_worker = 5,
     econ_wood_worker = 6,
-    mining_camp_worker = 5,
-    scout = 2,
+    econ_stone_worker = 0,
+    scout = 2
   },
 }
 
@@ -812,7 +884,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
   },
   chinese = {
     house = 2,
-    Hamlet = 1, --村庄
+    build_village = 1, --村庄
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -836,7 +908,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     mining_camp = 1,
   },
   abbasid = {
-    house = 8,
+    house = 10,
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -866,7 +938,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
   },
   chinese_ha_01 = {
     house = 2,
-    Hamlet = 1, --村庄
+    build_village = 1, --村庄
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -878,7 +950,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     mining_camp = 1,
   },
   abbasid_ha_01 = {
-    house = 4,
+    house = 10,
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
@@ -1658,7 +1730,7 @@ function AGS_RemoveUpgrade(player_id, upgrade)
   end
 end
 
--- 计算实体中心偏移
+-- 计算全图中心偏移
 function AGS_CalculateCenterOffset(start, x_offset, z_offset)
   local x_val = 0
   local z_val = 0
@@ -1776,24 +1848,96 @@ function AGS_GetClosestGoldEntity(player_id, position, distance)
 end
 
 -- 目前仅支持浆果(需要匹配鱼，鹿，羊)
-function AGS_GetClosestFoodEntity(player_id, position, distance, food_type)
+function AGS_GetClosestFoodEntity(player_id, food_type, position, distance )
   if not position then
     position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
   end
   if not distance then
     distance = 100
   end
-  if not food_type then --没有其他食物默认浆果
-    food_type = AGS_BP_DEPOSIT_FOOD
+  local bp_type
+
+  if food_type == 'sheep' then --没有其他食物默认浆果
+    food_type = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+    bp_type = 'squad'
+  else
+    food_type = AGS_GetNeutralEntity(AGS_BP_DEPOSIT_FOOD)
+    bp_type = 'entity'
   end
+  
   local closest_distance_sqr = 1000000000000
-  local closest_entity = nil
-  local closest_resource_food_deposit = EGroup_CreateIfNotFound("closest_resource_food_deposit")
+  local closest_food = nil
+  
+  local closest_resource_food_deposit
  
   -- 查找周边食物类型
-  World_GetEntitiesNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Neutral)
-  EGroup_Filter(closest_resource_food_deposit, AGS_GetNeutralEntity(food_type), FILTER_KEEP)
-   
+  if bp_type == 'entity' then
+    closest_resource_food_deposit = EGroup_CreateIfNotFound("closest_resource_food_deposit")
+    World_GetEntitiesNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Neutral)
+    EGroup_Filter(closest_resource_food_deposit, food_type, FILTER_KEEP)
+    
+    local _CheckEntity = function(gid, idx, eid)
+      local entityPosition = Entity_GetPosition(eid)
+      local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+      
+      if distance_sqr < closest_distance_sqr then
+        closest_distance_sqr = distance_sqr
+        closest_food = eid
+      end
+    end
+    
+    if EGroup_Count(closest_resource_food_deposit) ~= 0 then
+      EGroup_ForEach(closest_resource_food_deposit, _CheckEntity)
+    end
+  elseif bp_type == 'squad' then
+      closest_resource_food_deposit = SGroup_CreateIfNotFound("closest_resource_food_deposit")
+      World_GetSquadsNearPoint(player_id, closest_resource_food_deposit, position, distance, OT_Player)
+      SGroup_Filter(closest_resource_food_deposit, food_type, FILTER_KEEP)
+      
+      local _CheckSquards = function(gid, idx, sid)
+        local squadPosition = Squad_GetPosition(sid)
+        local distance_sqr = World_DistanceSquaredPointToPoint(squadPosition, position)
+        
+        if distance_sqr < closest_distance_sqr then
+          closest_distance_sqr = distance_sqr
+          closest_food = sid
+        end
+      end
+      
+      if SGroup_Count(closest_resource_food_deposit) ~= 0 then
+        SGroup_ForEach(closest_resource_food_deposit, _CheckSquards)
+      end  
+  else
+    
+  end
+  
+  return closest_food
+end
+--返回可用的生成点 暂时放弃
+function AGS_GetEntityNumAroundByPosition(player_id, position, distance)
+  if not player_id then
+    return
+  end
+  if not position then
+    return
+  end
+   if not distance then
+    distance = 10
+  end
+  
+  local closest_entities = EGroup_CreateIfNotFound("closest_entities")
+  -- 生成一个包含8个位置的表，遍历筛选这些点
+  -- 查找周边资源实体类型(限定范围20以内)
+  -- 1.先查自然的实体，超过5个以上把这地址剔除(先判断单个是不是金矿石头，如果是就往旁边偏移3格)
+  -- 2.执行完步骤1则找玩家的，如果有玩家自己的建筑占位直接取反距离再检索？？
+  -- 都不符合直接贴城镇中心生成
+  World_GetEntitiesNearPoint(player_id, closest_entities, position, distance, OT_Neutral)
+  
+  if EGroup_Count(closest_entities) < 2 then
+    World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
+    EGroup_Filter(closest_resource_gold_deposit, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP)
+  end  
+  
   local _CheckEntity = function(gid, idx, eid)
     local entityPosition = Entity_GetPosition(eid)
     local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
@@ -1803,10 +1947,11 @@ function AGS_GetClosestFoodEntity(player_id, position, distance, food_type)
       closest_entity = eid
     end
   end
- 
-  if EGroup_Count(closest_resource_food_deposit) ~= 0 then
-    EGroup_ForEach(closest_resource_food_deposit, _CheckEntity)
-  end  
+  EGroup_ForEach(closest_resource_gold_deposit, _CheckEntity)
+  
+  --if closest_entity ~= nil then
+    --EGroup_Clear(closest_resource_gold_deposit)
+  --end
   
   return closest_entity
 end

@@ -28,10 +28,9 @@ end
 function AGS_Empire_War_PresetExecute()
   --AGS_Print("AGS_Empire_War_PresetExecute")
   AGS_Empire_War_AssignUnitsToResources()
-  --UI_MessageBoxSetText('测试',"浅尝一口?")
 end
 
--- Assign units to resources
+--自动派遣单位采集
 function AGS_Empire_War_AssignUnitsToResources()
   local player_civ
   local player_id
@@ -54,53 +53,158 @@ function AGS_Empire_War_AssignUnitsToResources()
   end
   
   -- 派遣浆果
-  local function _AssignGatherer(gid, idx, sid)
+  local function _AssignGatherBerry(gid, idx, sid)
     SGroup_Single(sg_single, sid)
     
     -- 查找周边浆果类型
-    local e_closest_berry = AGS_GetClosestFoodEntity(player_id)
+    local e_closest_berry = AGS_GetClosestFoodEntity(player_id, 'berry')
 
     if e_closest_berry ~= nil then
       EGroup_Single(eg_single, e_closest_berry)
       LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_single, false)
     else
-      print("Could not find berries to assign villager to! 没找到浆果!")  
+      print("Could not find berries to assign villager! 没找到浆果!")  
     end
   end
-
+  
+  -- 吃羊
+  local function _AssignGatherSheep(gid, idx, sid)
+    SGroup_Single(sg_single, sid)
+    
+    -- 查找周边羊类型
+    local squad_closest_sheep = AGS_GetClosestFoodEntity(player_id, 'sheep')
+    
+    if squad_closest_sheep ~= nil then
+      local sgroup_closest_sheep = SGroup_CreateIfNotFound('sgroup_closest_sheep')
+      SGroup_Add(sgroup_closest_sheep, squad_closest_sheep)
+      --SGroup_Single(sg_single_sheep, squad_closest_sheep)
+      LocalCommand_SquadSquad(player_id, sg_single, SCMD_Gather, sgroup_closest_sheep, false)
+    else
+      print("Could not find sheeps to assign villager! 没找到羊!")  
+    end
+  end
+  
+  -- 砍树
+  local function _AssignGatherWood(gid, idx, sid)
+    SGroup_Single(sg_single, sid)
+    
+    local pos_sg_single = SGroup_GetPosition(sg_single)
+    local wood_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, 'wood'))
+    -- 查找周边木头类型 
+    World_GetEntitiesNearPoint(player_id, wood_entities, pos_sg_single, 10, OT_Neutral)
+    EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
+    local closest_wood = AGS_EGroup_GetClosestEntity(wood_entities, pos_sg_single)
+    
+    if closest_wood ~= nil then
+      -- 获取最近的树
+      EGroup_Single(eg_single, closest_wood)
+      LocalCommand_SquadEntity(player_id, sg_single, SCMD_Gather, eg_single, false)
+    else
+      print("Could not find berries to assign villager! 没找到浆果!")  
+    end
+  end
   
   for idx, player in pairs(PLAYERS) do
     player_id = player.id
     if not AGS_AI_IsAI(player_id) then 
+      --local player_all_sgroups = 
+      --删掉所有的预生成，再重新按照民族生成特殊单位
+      --优先调整：杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
+      --请将此封装为一个函数
+      local player_start_sgroup = Player_GetSquads(player_id)
+      --EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
+      SGroup_DestroyAllSquads(player_start_sgroup)
+      
+      -- 优先调整:要移除掉蒙古的蒙古包
+      --if player_raceName == 'mongol' then
+        --local player_start_sgroup = Player_GetEntities(player_id)
+      --end
+      
+      
       -- 根据index获取当前轮到的玩家
       --Game_GetLocalPlayer() 不太确定是否能用
       localPlayer = World_GetPlayerAt(idx)
       player_raceName = player.raceName
       
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-      --生成矿场建筑
+      
+      --生成采集建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "gold_mining_camp", player_town_center_pos)
-      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)  
-      AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos)
+      local stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "stone_mining_camp", player_town_center_pos)
+      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_food", player_town_center_pos)
+      local econ_wood = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "econ_wood", player_town_center_pos)
+      
+      local player_building_position_table = {
+        pos_gold_mining_camp = gold_mining_camp ~=nil and Entity_GetPosition(gold_mining_camp) or nil,
+        pos_econ_food = econ_food ~=nil and Entity_GetPosition(econ_food) or nil,
+        pos_econ_wood = econ_wood ~=nil and Entity_GetPosition(econ_wood) or nil,
+        landmark_abb = nil,
+        ovoo = nil,
+        tc_mon = nil
+      }
+      
+      --智慧宫
+      if player_raceName == 'abbasid' or player_raceName == 'abbasid_ha_01' then
+        local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, "landmark_abb", player_town_center_pos) 
+        player_building_position_table['landmark_abb'] = Entity_GetPosition(landmark_abb)
+        --Player_AddResource(player.id, RT_Wood, 50)
+      end
+      
+      -- 蒙古(蒙古是直接挪tc到木区的)
+      if player_raceName == 'mongol' then
+        player_building_position_table['ovoo'] = Entity_GetPosition(stone_mining_camp)
+        player_building_position_table['tc_mon'] = Entity_GetPosition(econ_wood)
+        -- 更新蒙古城镇中心地址
+        player_town_center_pos = Entity_GetPosition(econ_wood)
+        --Player_AddResource(player.id, RT_Wood, 50)
+      end
+      
+      -- 额外生成的建筑
+      AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos, player_building_position_table)
+      --额外生成的单位
+      --AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)
+        
+      -- 生成的羊
+      local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-7.5), true)
+      
       --生成派发的村民
-      --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "goldminer", player_town_center_pos)
-      local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "mining_camp", '_worker', Entity_GetPosition(gold_mining_camp))
-      local sg_player_econ_food = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, localPlayer, "econ_food", '_worker', Entity_GetPosition(econ_food))
+      local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
+      local sg_player_econ_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_sheep", 'worker', World_Pos(player_town_center_pos.x, 0, player_town_center_pos.z-6), true)
+      local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'], true)
+      local sg_player_econ_wood = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_wood", 'worker', player_building_position_table['pos_econ_wood'], true)
+      
+      --local sg_player_start_sgroup = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'start_sgroup', player_building_position_table)
+      --侦察兵
+      AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
+      --local sg_player_start_official = nil
+      if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
+        AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
+      end
       
       --遍历执行派遣
-      SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
-      SGroup_ForEach(sg_player_econ_food, _AssignGatherer)
+      if sg_player_goldminer ~= nil then 
+        SGroup_ForEach(sg_player_goldminer, _AssignGoldminer)
+      end
+      if sg_player_econ_food_sheep ~= nil then
+        SGroup_ForEach(sg_player_econ_food_sheep, _AssignGatherSheep)
+      end
+      if sg_player_econ_food_berry ~= nil then
+        SGroup_ForEach(sg_player_econ_food_berry, _AssignGatherBerry)
+      end
+      if sg_player_econ_wood ~= nil then
+        SGroup_ForEach(sg_player_econ_wood, _AssignGatherWood)
+      end
     end
   end
 end
 
 --自动识别sbp类型并返回sgroup
-function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,localPlayer, use_type, sbp_type_suffix, preset_position)
+function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,player_raceName, use_type, sbp_type_suffix, preset_position, need_back)
   --空值，报错拦截
   if not player_id then
     return
   end
-  if not localPlayer then
+  if not player_raceName then
     return
   end
   if not use_type then
@@ -112,28 +216,51 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id,localPlayer, use_ty
   if not sbp_type_suffix then
     sbp_type_suffix = ''
   end
+  if not need_back then
+    need_back = false
+  end
   
   
-  -- 共通参数设置
-  --local player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)] -- 文明后缀 例如 日本 = jpn
+  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
   local bp_squad -- 小队蓝图
   local sgroup_name = AGS_SGroupName(player_id, use_type)
   local count
   local position = preset_position
   
   -- 按类型生成的个体参数
-  --if use_type == "mining_camp" then
+  if sbp_type_suffix == "worker" then
     bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
-    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[Player_GetRaceName(localPlayer)][tostring(use_type) .. sbp_type_suffix]
-  --elseif use_type == "econ_food" then
-    --bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
-    --count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[Player_GetRaceName(localPlayer)][tostring(use_type) .. '_worker']
-  --end
-
-  --返回生成的农民实体
-  return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName][tostring(use_type) .."_".. sbp_type_suffix]
+  elseif sbp_type_suffix == "resource" then
+    if use_type == 'econ_food_resource_sheep' then
+      bp_squad = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+      count = 5
+    end
+  elseif use_type == 'extra' then
+    if sbp_type_suffix == 'scout' then
+      bp_squad = BP_GetSquadBlueprint("unit_scout_1_"..player_civ_prefixes)
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+      return
+    end
+    if sbp_type_suffix == 'official' then
+      --因为这里的地址被替换成了地址表，所以要单独取出 position['...'] 这样 
+      bp_squad = BP_GetSquadBlueprint("unit_official_1_"..player_civ_prefixes)
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      local official_food = AGS_SpawnSquad(player_id, sgroup_name..'_food', bp_squad, position['pos_econ_food'], nil, 1)
+      local official_gold = AGS_SpawnSquad(player_id, sgroup_name.."_gold", bp_squad, position['pos_gold_mining_camp'], nil, 1)
+      return
+    end
+  else
+    
+  end
+  
+  --返回生成的队伍成员
+  if need_back and use_type ~= 'extra' then
+    return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, position, nil, count)
+  end
 end
+
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
 function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, build_type, preset_position)
   --空值，报错拦截
@@ -150,8 +277,6 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
     preset_position = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
   end
   
-  local gold_type 
-  local gold_entities = EGroup_CreateIfNotFound(build_type)
   local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
   local distance = 80
   
@@ -159,6 +284,9 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
   
   -- 金矿
   if build_type == "gold_mining_camp" then
+    local gold_type 
+    local gold_entities = EGroup_CreateIfNotFound(build_type)
+    
     -- 查找周边金矿类型(先查小金，不存在则找大金)
     
     local gold_entity = AGS_GetClosestGoldEntity(player_id, preset_position, distance)
@@ -187,8 +315,13 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
     end
   end
+  
   -- 磨坊
   if build_type == "econ_food" then
+    if player_raceName == 'mongol' then
+      build_entity_callback = nil
+    end
+      
     local forag_bush_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_FOOD))
     -- 查找周边浆果类型
     World_GetEntitiesNearPoint(player_id, forag_bush_entities, preset_position, distance, OT_Neutral)
@@ -200,14 +333,108 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
 
       local forag_bush_entity_position = Entity_GetPosition(forag_bush_entity)
       
-      local center_pos = AGS_CalculateCenterOffset(forag_bush_entity_position, 5, -5) 
+      local center_pos = AGS_CalculateCenterOffset(forag_bush_entity_position, 0, 7.5) 
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_ECOM_FOOD), center_pos, nil, false, true)  
     end
   end
+  
+  --石矿
+  if build_type == "stone_mining_camp" then
+    local stone_type
+    -- 查找周边金矿类型(石料，兼容蒙古？)
+    distance = 120
+    local stone_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_STONE))
+    -- 查找周边石头类型
+    World_GetEntitiesNearPoint(player_id, stone_entities, preset_position, distance, OT_Neutral)
+    EGroup_Filter(stone_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL), FILTER_KEEP)
+    
+    local stone_entity = AGS_EGroup_GetClosestEntity(stone_entities, preset_position)
+    
+    if stone_entity ~= nil then
+      
+      --判断是大石料还是小石料
+      --if Entity_HasBlueprint(stone_entity, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL)) then
+        --stone_type = 'small'
+      --else
+        --stone_type = 'big'
+      --end
+      
+     
+      local stone_position = Entity_GetPosition(stone_entity)
+      local center_pos = AGS_CalculateCenterOffset(stone_position, 0, 0) 
+      --蒙古
+      if Player_GetRaceName(localPlayer) == 'mongol' then
+        --local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
+        local ovoo_type = 'ovoo_small'
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), ovoo_type), center_pos, nil, false, false)
+      else 
+        --其他人
+        -- 设置偏移
+        -- 默认小石头+标准矿场
+        local pos_minecamp = 10
+
+        --日本的矿场无论大小金都是固定距离(因为 1个地图栅格 有 4实体占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格)
+        if player_civ_prefixes == 'jpn' then
+          pos_minecamp = 12.5
+        end
+        
+        local center_pos = AGS_CalculateCenterOffset(stone_position, pos_minecamp, 0) 
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'stone'..AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
+      end
+      
+    end
+
+  end
+
+  -- 木头
+  if build_type == "econ_wood" then
+    distance = 50
+    local wood_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, 'wood'))
+    -- 查找周边木头类型
+    World_GetEntitiesNearPoint(player_id, wood_entities, preset_position, distance, OT_Neutral)
+    EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
+    local TC = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL), 1)
+    
+    local function findTheNearestForestPosition(gid, idx, eid)
+      -- 玩家出生点距离30以上必定是树林
+      -- 只要把距离过近的删除，剩下的一定是树林，取第一个生成伐木场就行
+      if eid ~= nil and Util_GetDistance(eid, TC) <= 25 then
+        EGroup_Remove(wood_entities ,eid)
+        --if Entity_IsOfType(eid, AGS_BP_TREE) == 
+        --Util_GetPositionFromAtoB( MarkerID/Pos a, MarkerID/Pos b, Real distance ) --尝试返回一个从a向b出发，距离多少的点
+      end  
+    end
+    
+    EGroup_ForEach(wood_entities, findTheNearestForestPosition)
+    
+    if wood_entities ~= nil then
+      -- 获取最近城镇中心的树
+      local pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(wood_entities, preset_position))
+      local try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 5)
+      local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
+      
+      if Player_GetRaceName(localPlayer) == 'mongol' then
+        Entity_Destroy(TC)
+        try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 12.5)
+        center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0)
+        --Entity_WarpToPos(TC, Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 12.5))
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_TC_CAPITAL), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_TC_CAPITAL), center_pos, nil, false, true)
+      else
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_WOOD), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), AGS_BP_ECOM_WOOD), center_pos, nil, false, true)
+      end  
+    end
+  end
+  
+  --智慧宫
+  if build_type == "landmark_abb" then
+    local center_pos = AGS_CalculateCenterOffset(preset_position, 0, 30) 
+    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'landmark_abb'), center_pos, nil, false, true)  
+  end
+  
   return build_entity_callback
 end
 --其他额外建筑
-function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, preset_position)
+function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, preset_position, player_building_position_table)
   --空值，报错拦截
   if not player_id then
     return
@@ -218,54 +445,272 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
   if not preset_position then
     preset_position = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
   end
+  if not player_building_position_table then
+    return
+  end
   
   local build_entities = EGroup_CreateIfNotFound('build_entities')
   --local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
   local raceName = Player_GetRaceName(localPlayer)
   local distance
-  local position
+  local back_pos
   
   --local build_entity_callback
   
+ 
   for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do
+    --注:如果排列方向不理想可以offset取反
+    
     -- 房屋
     if build_type == 'house' then
-      if raceName ~= 'mongol' then
-        for i = 1, build_num do
-          distance = 30
-          --local position_offset = World_Pos(0, -20, 0)
-          --AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, "build_house"), AGS_GetCivilizationEntity(Player_GetRaceName(localPlayer), 'house'), nil, position_offset, false, true)
-            AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), preset_position, distance, i)
+      back_pos = preset_position
+      distance = 25
+      direction = 'around'
+      
+      for i = 1, build_num do     
+        -- 除蒙古外的文明
+        if raceName ~= 'mongol' then
+          if i ~= 1 then
+            distance = 0
           end
+          offset = -8
+          
+          -- 特殊文明调整
+          --日本
+          if raceName == 'japanese' then
+            distance = 15
+            back_pos = player_building_position_table['pos_econ_food']
+          end
+          
+          if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
+            distance = 0
+       
+            if i == 1 then
+              offset = 12.5
+              direction = 'left_top'
+              back_pos = player_building_position_table['landmark_abb']
+            elseif i == 6 then
+              offset = 12.5
+              direction = 'left_down'
+              back_pos = player_building_position_table['landmark_abb']
+            else
+              direction = 'line'
+            end
+            
+          end
+          
+          back_pos = AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
+            
+        end
       end
     end
-  
-  end
+    
+    -- 联通电信的村庄
+    if build_type == 'build_village' then
+      distance = 0
+      back_pos = player_building_position_table['pos_gold_mining_camp']
+      --无需返回上一个建筑定位
+      AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), 1, back_pos, distance, 10, 'line', true)
+    end
+  end 
 end
 
--- 返回安全的位置
-function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, position, distance, step)
+--基于传入位置和方向获取偏移定位生成建筑并返回建筑定位 
+--distance表示距离初始点多远的位置(只有第一个建筑需要有用，因为如果是第二个建筑开始就是以第一个建筑定位了)
+--step 表示建筑表里对应建筑的索引
+--offset 表示建筑和建筑之间间隔的偏移量
+--direction 表示预生成的方向 around(多用于房屋 最多4个) column(列：根据x) line(行：根据z)  diagonal(对角应该是左上，左下，右上，右下 left_top left_down right_top right_down)
+--odd_even 奇偶判断
+function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, step, position, distance, offset, direction, odd_even)
   if not player_id then
     return
   end
   if position == nil then
     position = Player_GetStartingPosition(player_id)  
   end
-  if distance == nil then
-    distance = 30 
-  end  
+  if not step then
+    return
+  end
+  if not distance then
+    distance = 0 
+  end
+  if offset == nil then
+    offset = 10
+  end
+  
   local egroupid = EGroup_CreateIfNotFound('build_entities')
 
+  
   local nx = position.x
   local ny = position.y
   local nz = position.z
+  -- 确定初始定位 --方向左为- 右为+，上下同理
   
   local placement = World_Pos(nx + distance, ny, nz)
-  local rotation = World_Pos(nx + distance, ny, nz + 5)
+  
+  
+  --思路：如果是第一个，则按城镇中心定位，不然的话就以上一个建筑为定位，基数+y，偶数+x
+  --如果是是影响格建筑，就第一个先算y的偏移，然后其他以第一个偏移的建筑为基准加减x轴补蓝图
+  --方向左为- 右为+，上下同理
+  --此处的计划是需要两个函数，一个返回当前建筑蓝图和新建筑蓝图的间隙；一个根据方向返回处理后的坐标
+  local build_offset_x = offset
+  local build_offset_z = offset
+  local build_offset_y = offset
+  
+  local placement_offest
+  --布局类型为围绕
+  if direction == 'around' then
+    -- 奇偶数
+    if odd_even then
+      if step % 2 == 0 then
+        build_offset_x = 0
+      else
+        build_offset_z = 0
+      end
+    end
+    
+    --LeftTop = { x = 60, z = 60 },
+    --RightTop = { x = 60, z = -60 },
+    --RightBot = { x = -60, z = -60 },
+    --LeftBot = { x = -60, z = 60 },
+    
+    --第一个不需要偏移，不然定位很怪
+    if step == 1 then
+      build_offset_x = 0
+      build_offset_z = 0
+    end
+    if step == 4 then
+      build_offset_z = -offset
+    end
+    
+  elseif direction == 'line' then
+    build_offset_x = 0
+  elseif direction == 'column' then
+    build_offset_z = 0
+  elseif direction == 'left_down' then
+    build_offset_x = -build_offset_x
+  elseif direction == 'right_top' then
+    build_offset_z = -build_offset_z 
+  elseif direction == 'right_down' then
+    build_offset_x = -build_offset_x
+    build_offset_z = -build_offset_z
+  else
+    
+  end
+  
+  
+  placement_offest = AGS_CalculateCenterOffset(placement, build_offset_x, build_offset_z)
+  
+  local rotation = World_Pos(placement_offest.x, placement_offest.y, placement_offest.z+5)
 
-  local e = Entity_CreateFacing(ebp, player_id, placement, rotation, true)
-  local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement, e))
---PropertyBagGroupID
-  --会出现建筑物虚影但不会立马构造
-  Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 4, rotation, true, false, false)
+  local e = Entity_CreateFacing(ebp, player_id, placement_offest, rotation, true)
+  local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement_offest, e))
+
+  --倒数第二个参数为true会出现建筑物虚影但不会立马构造 --有个缺陷（需要考虑的东西太多，虽然很方便）
+  --Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 1, rotation, true, false, false)
+  local build_entity_callback = AGS_SpawnEntity(player_id, 'build_entities', ebp, safe_spawn, nil, false, true)  
+  
+  --返回坐标
+  return Entity_GetPosition(build_entity_callback)  
+end
+
+function AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)
+  if not player_id then
+    return
+  end
+  if not player_raceName then
+    return
+  end
+  --if not sgroup_type then
+    --return
+  --end
+  if player_town_center_pos == nil then
+    player_town_center_pos = Player_GetStartingPosition(player_id)  
+  end
+  if not player_building_position_table then
+    return
+  end
+  
+  for sgroup_type, sgroup_num in pairs(AGS_EMPIRE_WAR_SGROUP_NUM_TABLE[player_raceName]) do
+    --注:如果排列方向不理想可以offset取反
+    
+    -- 房屋
+    if build_type == 'house' then
+      back_pos = preset_position
+      distance = 20
+      direction = 'around'
+      
+      for i = 1, build_num do     
+        -- 除蒙古外的文明
+        if raceName ~= 'mongol' then
+          if i ~= 1 then
+            distance = 0
+          end
+          offset = -8
+          
+          -- 特殊文明调整
+          --日本
+          if raceName == 'japanese' then
+            distance = 15
+            back_pos = player_building_position_table['pos_econ_food']
+          end
+          
+          if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
+            distance = 0
+       
+            if i == 1 then
+              offset = 12.5
+              direction = 'left_top'
+              back_pos = player_building_position_table['landmark_abb']
+            elseif i == 6 then
+              offset = 12.5
+              direction = 'left_down'
+              back_pos = player_building_position_table['landmark_abb']
+            else
+              direction = 'line'
+            end
+            
+          end
+          
+          back_pos = AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
+            
+        end
+      end
+    end
+    
+    -- 联通电信的村庄
+    if build_type == 'build_village' then
+      distance = 0
+      back_pos = player_building_position_table['pos_gold_mining_camp']
+      --无需返回上一个建筑定位
+      AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), 1, back_pos, distance, 10, 'line', true)
+    end
+  end
+
+  --local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName] 
+  
+  --生成对应民族的单位，相比于随机匹配，一次性生成比较方便
+  local spawn_sheep = SGroup_CreateIfNotFound(tostring(player_id)..'filter_sheep')
+  local sbp_shp = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+  if player_raceName == 'mongol' then
+    
+    --SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
+    --SGroup_Filter(player_all_sgroups, sheeps, FILTER_REMOVE , filter_sheep)
+    local tc_right_bottom_pos = player_building_position_table['tc_mon']
+   
+    --直接重新生成，不要传送了
+    --SGroup_WarpToPos(filter_sheep, World_Pos(tc_right_bottom_pos.x-8, 0, tc_right_bottom_pos.z-10))
+  end
+  
+  if player_raceName == 'mongol' then
+    
+  end
+  
+  
+  
+  
+  extra_sgroup = AGS_SpawnSquad(player_id, spawn_sheep, sbp_shp, nil, World_Pos(-10, 0, -10), 5)
+  return extra_sgroup
+  
+
 end

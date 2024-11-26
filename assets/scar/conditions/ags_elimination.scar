@@ -53,11 +53,12 @@ function AGS_Elimination_OnPlayerAITakeover(context)
         
         if AI_IsAIPlayer(player.id) then --重新设置AI难度为极难
           -- 请对照 scardoc 里 Enum List 对应的 AIDifficultyLevel(由0开始荒谬是1 令人发指是2 荒唐是3 极难是8)
-          AI_SetDifficulty(player.id, 8)
+          AI_SetDifficulty(player.id, 1)
           AI_Enable(player.id, true)
           
           --设置AI可以建造
           Player_SetStateModelBool(player.id, "player_can_construct_structures", true)
+          AGS_PopulationCapacity_Change()
         end
         
 			end
