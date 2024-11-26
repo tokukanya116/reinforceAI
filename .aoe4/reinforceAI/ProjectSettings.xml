@@ -8,16 +8,7 @@
 				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
 					<d2p1:Value>
-						<d2p1:string>assets\locdb</d2p1:string>
-						<d2p1:string>assets\scar\ai</d2p1:string>
-						<d2p1:string>assets\scar\balance</d2p1:string>
-						<d2p1:string>assets\scar\conditions</d2p1:string>
-						<d2p1:string>assets\scar\gamemodes</d2p1:string>
-						<d2p1:string>assets\scar\helpers</d2p1:string>
-						<d2p1:string>assets\scar\replay</d2p1:string>
-						<d2p1:string>assets\scar\specials</d2p1:string>
-						<d2p1:string>assets\scar\startconditions</d2p1:string>
-						<d2p1:string>assets\scar\winconditions</d2p1:string>
+						<d2p1:string>assets\scar\diplomacy\ags_diplomacy_ui.scar</d2p1:string>
 					</d2p1:Value>
 				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 			</d3p1:ExpandedPaths>
@@ -30,6 +21,7 @@
 	</PluginSettings>
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_diplomacy_ui.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\winconditions\ags_game_mode.rdo</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_settled.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_scattered.scar</d3p1:string>
@@ -39,7 +31,6 @@
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\winconditions\ags_game_mode.rdo</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\locdb\Advanced Game Settings.locdb</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\helpers\ags_teams.scar</d3p1:string>
-			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\ai\ags_ai.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>
