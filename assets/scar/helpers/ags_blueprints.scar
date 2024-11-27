@@ -1600,6 +1600,11 @@ AGS_UPGRADE_TABLE = {
       z = -1
     },
   }
+
+AGS_PLAYER_CAN_SPAWN_POSITION = {
+  
+}
+
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
@@ -1969,8 +1974,8 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
   end
   if not distance then
     distance = {
-      x = 0,
-      z = 0
+      x = 1,
+      z = 1
     }
   end
   if not range then
@@ -2003,24 +2008,40 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
   -- 1.先查自然的实体，超过5个以上把这地址剔除(先判断单个是不是金矿石头，如果是就往旁边偏移3格)
   -- 2.执行完步骤1则找玩家的，如果有玩家自己的建筑占位直接取反距离再检索？？
   -- 都不符合直接贴城镇中心生成
-  local closest_entities = EGroup_CreateIfNotFound("closest_entities")
-  World_GetEntitiesNearPoint(player_id, closest_entities, closet_pos, range, OT_Neutral)
   
   
-  local type_table = {
-    'gold', --金矿
-    'stone', --石料
-    'forage_bush' --浆果
-  }
+  for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE) do
+    local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
+    
+    local closest_entities = EGroup_CreateIfNotFound("closest_entities")
+    World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
+    
+    local type_table = {
+      'gold', --金矿
+      'stone', --石料
+      'forage_bush' --浆果
+    }
+    --local 
 
-  -- 直接找到所有的这几种类型的蓝图
-  local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
-  
-  
-  --if EGroup_Count(closest_entities) < 3 and EGroup_HasBlueprint() then
-    --World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
-    --EGroup_Filter(closest_resource_gold_deposit, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP)
-  --end  
+    -- 直接找到所有的这几种类型的蓝图
+    local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
+    -- AGS_PLAYER_CAN_SPAWN_POSITION
+    player_can_spawn_pos_table = {
+      top = nil,
+      bottom = nil,
+      left = nil,
+      right = nil,
+      leftTop = nil,
+      leftBot = nil,
+      rightTop = nil,
+      rightBot = nil,
+    }
+    
+    if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
+      player_can_spawn_pos_table[pos_type] = search_pos
+      --['player_can_spawn_pos_'..tostring(player_id)][pos_type] = search_pos
+    end
+  end
   
   --local _CheckEntity = function(gid, idx, eid)
     --local entityPosition = Entity_GetPosition(eid)

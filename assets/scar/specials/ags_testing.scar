@@ -26,14 +26,14 @@ function AGS_Testing_OnPlay()
 	for _, player in pairs(PLAYERS) do
 		AGS_Print(player.id, player.raceName)
 	end
-  Rule_AddOneShot(AGS_Testing_Delay,300)
+  Rule_AddOneShot(AGS_Testing_Delay, 300)
 end		
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
 function AGS_Testing_Delay()
-  Rule_AddInterval(AGS_Testing_RemoveUnits,600)
+  Rule_AddInterval(AGS_Testing_RemoveUnits, 720)
 end
 
 function AGS_Testing_RemoveGaia()
@@ -44,6 +44,7 @@ function AGS_Testing_RemoveGaia()
 	EGroup_Destroy(egroup)
 end
 
+--优先调整：30分钟后删掉ai多余的伐木场，矿场，铁匠铺，大学
 -- 清空可能会导致单位卡顿的单位
 function AGS_Testing_RemoveUnits()
 	for _, player in pairs(PLAYERS) do
@@ -56,7 +57,7 @@ function AGS_Testing_RemoveUnits()
         bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
         --SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
         SGroup_Filter(player_all_sgroups, bp_squad, FILTER_REMOVE , sgroup_without_gatherer)
-        SGroup_DestroyAllSquads(player_all_sgroups)
+        SGroup_Kill(player_all_sgroups)
       end
     end
   end

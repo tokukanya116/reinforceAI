@@ -8,8 +8,7 @@
 				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
 					<d2p1:Value>
-						<d2p1:string>assets\locdb\Advanced Game Settings_en.csv</d2p1:string>
-						<d2p1:string>assets\locdb\Advanced Game Settings_zh-hans.csv</d2p1:string>
+						<d2p1:string>assets\locdb</d2p1:string>
 						<d2p1:string>assets\scar\diplomacy</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
 					</d2p1:Value>

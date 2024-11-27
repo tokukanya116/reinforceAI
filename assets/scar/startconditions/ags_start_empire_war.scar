@@ -106,7 +106,7 @@ function AGS_Empire_War_AssignUnitsToResources()
   
   for idx, player in pairs(PLAYERS) do
     player_id = player.id
-    if not AGS_AI_IsAI(player_id) then 
+    if not AGS_AI_IsAI(player_id) then
       --local player_all_sgroups = 
       --删掉所有的预生成，再重新按照民族生成特殊单位
       --杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
@@ -138,6 +138,8 @@ function AGS_Empire_War_AssignUnitsToResources()
  
         EGroup_ForEach(player_start_entities, get_kill_entity)
       end
+      
+      --AGS_GetAvailablePosition(player_id, EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1), 'ent', { x = 30,z = 30 }, 15)
       
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       
