@@ -59,7 +59,7 @@ farm:田
 
 ##### **Ability**
 
-注：技能包组需要在 Attributes 先打开读取才能查看(!没有编辑权限，只能调用)
+注：技能包组需要在 Attributes 里 先打开 open Attributes 读取才能查看(!没有编辑权限，只能调用)
 
 ```
 LocalCommand_SquadEntityAbility(player_id, official_gold, eg_single, bp_supervise, true, false)

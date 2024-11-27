@@ -264,6 +264,7 @@ function AGS_GlobalSettings_SetupSettings(options)
     AGS_GlobalSettings_DefineResourceSupSetting(options.section_resource_sup_setting)
   end
   
+  Rule_AddOneShot(AGS_Spawn_Player_Setting, 2)
   Rule_AddOneShot(Reinforce_AI_DefaultSettings,2)
 end
 
@@ -272,7 +273,9 @@ function Reinforce_AI_DefaultSettings()
     --AGS_GS_SETTLEMENT_SETTLED
     --Rule_AddOneShot(ChallengeMission_AssignUnitsToResources, 0)
     Rule_AddOneShot(AGS_GiveResources_ONCE, 4)
+    
     Rule_AddOneShot(AGS_AIMadModel, 780)
+
     --AGS_GLOBAL_SETTINGS.WonderSettings.ScaleCost = wonder_scale_cost_1375
     
     --Rule_AddOneShot(AGS_Spawn_Ram, 900)
@@ -1730,6 +1733,32 @@ function AGS_Spawn_Ram()
             end
             
           --end
+          
+        end
+      end
+    end
+  end
+end
+
+function AGS_Spawn_Player_Setting()
+  for i, player in pairs(PLAYERS) do
+    local player_id = player.id
+    local player_raceName = player.raceName
+    if not AI_IsAIPlayer(player_id) then
+      if Player_IsAlive(player_id) then
+  
+        local prefix = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
+      
+        if prefix ~= nil then
+          local TC =  EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL), 1)
+          
+          --local trade_carts = Player_GetEntityCountByUnitType(player_id,"trade_cart")
+          
+          if TC then
+            for s=1, 4 do
+              Entity_QueueProductionItemByPBG( TC, PITEM_Spawn, BP_GetSquadBlueprint("unit_villager_1_"..prefix) )
+            end
+          end
           
         end
       end

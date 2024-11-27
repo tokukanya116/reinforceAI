@@ -93,7 +93,7 @@ function AGS_Empire_War_AssignUnitsToResources()
     -- 查找周边木头类型 
     World_GetEntitiesNearPoint(player_id, wood_entities, Util_GetPosition(sid), 15, OT_Neutral)
     EGroup_Filter(wood_entities, AGS_BP_TREE, FILTER_KEEP)
-    local closest_wood = AGS_EGroup_GetClosestEntity(wood_entities, Util_GetPosition(sid), 15)
+    local closest_wood = AGS_EGroup_GetClosestEntity(wood_entities, Util_GetPosition(sid))
     
     if closest_wood ~= nil then
       -- 获取最近的树
@@ -120,18 +120,24 @@ function AGS_Empire_War_AssignUnitsToResources()
  
       SGroup_ForEach(player_start_sgroup, get_kill_sgroup)
       
-      --要移除掉蒙古的蒙古包
-      if player_raceName == 'mongol' then
-        local player_start_entities = Player_GetEntities(player_id)
-        EGroup_Filter(player_start_entities, AGS_BP_TC_CAPITAL, FILTER_REMOVE)
-        EGroup_Destroy(player_start_entities)
-      end
-      
-      
       -- 根据index获取当前轮到的玩家
       --Game_GetLocalPlayer() 不太确定是否能用
       localPlayer = World_GetPlayerAt(idx)
       player_raceName = player.raceName
+      
+      --要移除掉蒙古的蒙古包
+      if player_raceName == 'mongol' then
+        local player_start_entities = Player_GetEntities(player_id)
+        --EGroup_Filter(player_start_entities, AGS_BP_TC_CAPITAL, FILTER_REMOVE)
+   
+        local function get_kill_entity(gid, idx, eid)
+          if Entity_IsOfType(eid, 'scar_house') then
+            Entity_Destroy(eid)
+          end
+        end
+ 
+        EGroup_ForEach(player_start_entities, get_kill_entity)
+      end
       
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       
@@ -212,6 +218,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       if sg_player_econ_wood ~= nil then
         SGroup_ForEach(sg_player_econ_wood, _AssignGatherWood)
       end
+      
     end
   end
 end
@@ -632,8 +639,6 @@ function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, step, posi
     
   end
   
-  
-  
   placement_offest = AGS_CalculateCenterOffset(placement, build_offset_x, build_offset_z)
   
   local rotation = World_Pos(placement_offest.x, placement_offest.y, placement_offest.z+5)
@@ -649,103 +654,101 @@ function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, step, posi
   return Entity_GetPosition(build_entity_callback)  
 end
 
-function AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)
-  if not player_id then
-    return
-  end
-  if not player_raceName then
-    return
-  end
-  --if not sgroup_type then
+--function AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)
+  --if not player_id then
     --return
   --end
-  if player_town_center_pos == nil then
-    player_town_center_pos = Player_GetStartingPosition(player_id)  
-  end
-  if not player_building_position_table then
-    return
-  end
+  --if not player_raceName then
+    --return
+  --end
+  ----if not sgroup_type then
+    ----return
+  ----end
+  --if player_town_center_pos == nil then
+    --player_town_center_pos = Player_GetStartingPosition(player_id)  
+  --end
+  --if not player_building_position_table then
+    --return
+  --end
   
-  for sgroup_type, sgroup_num in pairs(AGS_EMPIRE_WAR_SGROUP_NUM_TABLE[player_raceName]) do
-    --注:如果排列方向不理想可以offset取反
+  --for sgroup_type, sgroup_num in pairs(AGS_EMPIRE_WAR_SGROUP_NUM_TABLE[player_raceName]) do
+    ----注:如果排列方向不理想可以offset取反
     
-    -- 房屋
-    if build_type == 'house' then
-      back_pos = preset_position
-      distance = 20
-      direction = 'around'
+    ---- 房屋
+    --if build_type == 'house' then
+      --back_pos = preset_position
+      --distance = 20
+      --direction = 'around'
       
-      for i = 1, build_num do     
-        -- 除蒙古外的文明
-        if raceName ~= 'mongol' then
-          if i ~= 1 then
-            distance = 0
-          end
-          offset = -8
+      --for i = 1, build_num do     
+        ---- 除蒙古外的文明
+        --if raceName ~= 'mongol' then
+          --if i ~= 1 then
+            --distance = 0
+          --end
+          --offset = -8
           
-          -- 特殊文明调整
-          --日本
-          if raceName == 'japanese' then
-            distance = 15
-            back_pos = player_building_position_table['pos_econ_food']
-          end
+          ---- 特殊文明调整
+          ----日本
+          --if raceName == 'japanese' then
+            --distance = 15
+            --back_pos = player_building_position_table['pos_econ_food']
+          --end
           
-          if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
-            distance = 0
+          --if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
+            --distance = 0
        
-            if i == 1 then
-              offset = 12.5
-              direction = 'left_top'
-              back_pos = player_building_position_table['landmark_abb']
-            elseif i == 6 then
-              offset = 12.5
-              direction = 'left_down'
-              back_pos = player_building_position_table['landmark_abb']
-            else
-              direction = 'line'
-            end
+            --if i == 1 then
+              --offset = 12.5
+              --direction = 'left_top'
+              --back_pos = player_building_position_table['landmark_abb']
+            --elseif i == 6 then
+              --offset = 12.5
+              --direction = 'left_down'
+              --back_pos = player_building_position_table['landmark_abb']
+            --else
+              --direction = 'line'
+            --end
             
-          end
+          --end
           
-          back_pos = AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
+          --back_pos = AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
             
-        end
-      end
-    end
+        --end
+      --end
+    --end
     
-    -- 联通电信的村庄
-    if build_type == 'build_village' then
-      distance = 0
-      back_pos = player_building_position_table['pos_gold_mining_camp']
-      --无需返回上一个建筑定位
-      AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), 1, back_pos, distance, 10, 'line', true)
-    end
-  end
+    ---- 联通电信的村庄
+    --if build_type == 'build_village' then
+      --distance = 0
+      --back_pos = player_building_position_table['pos_gold_mining_camp']
+      ----无需返回上一个建筑定位
+      --AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), 1, back_pos, distance, 10, 'line', true)
+    --end
+  --end
 
-  --local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName] 
+  ----local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName] 
   
-  --生成对应民族的单位，相比于随机匹配，一次性生成比较方便
-  local spawn_sheep = SGroup_CreateIfNotFound(tostring(player_id)..'filter_sheep')
-  local sbp_shp = AGS_GetNeutralUnit(AGS_BP_SHEEP)
-  if player_raceName == 'mongol' then
+  ----生成对应民族的单位，相比于随机匹配，一次性生成比较方便
+  --local spawn_sheep = SGroup_CreateIfNotFound(tostring(player_id)..'filter_sheep')
+  --local sbp_shp = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+  --if player_raceName == 'mongol' then
     
-    --SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
-    --SGroup_Filter(player_all_sgroups, sheeps, FILTER_REMOVE , filter_sheep)
-    local tc_right_bottom_pos = player_building_position_table['tc_mon']
+    ----SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
+    ----SGroup_Filter(player_all_sgroups, sheeps, FILTER_REMOVE , filter_sheep)
+    --local tc_right_bottom_pos = player_building_position_table['tc_mon']
    
-    --直接重新生成，不要传送了
-    --SGroup_WarpToPos(filter_sheep, World_Pos(tc_right_bottom_pos.x-8, 0, tc_right_bottom_pos.z-10))
-  end
+    ----直接重新生成，不要传送了
+    ----SGroup_WarpToPos(filter_sheep, World_Pos(tc_right_bottom_pos.x-8, 0, tc_right_bottom_pos.z-10))
+  --end
   
-  if player_raceName == 'mongol' then
+  --if player_raceName == 'mongol' then
     
-  end
+  --end
   
   
-  
-  
-  extra_sgroup = AGS_SpawnSquad(player_id, spawn_sheep, sbp_shp, nil, World_Pos(-10, 0, -10), 5)
-  return extra_sgroup
+  --extra_sgroup = AGS_SpawnSquad(player_id, spawn_sheep, sbp_shp, nil, World_Pos(-10, 0, -10), 5)
+  --return extra_sgroup
   
 
-end
+--end
