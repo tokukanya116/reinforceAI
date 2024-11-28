@@ -1602,7 +1602,14 @@ AGS_UPGRADE_TABLE = {
   }
 
 AGS_PLAYER_CAN_SPAWN_POSITION = {
-  
+  player_1 = nil,
+  player_2 = nil,
+  player_3 = nil,
+  player_4 = nil,
+  player_5 = nil,
+  player_6 = nil,
+  player_7 = nil,
+  player_8 = nil
 }
 
 ---------------------------------------------------------------------------------------------------
@@ -1962,8 +1969,11 @@ end
 --并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
 --是否写入全局 need_global
 --是否需要返回 need_back
-function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_safe, need_global, need_back)
+function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_type, distance, range, need_back, need_safe, need_global )
   if not player_id then
+    return
+  end
+  if not player_idx then
     return
   end
   if not base_element then
@@ -1981,14 +1991,14 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
   if not range then
     range = 40
   end
+  if not need_back then
+    need_back = true
+  end
   if not need_safe then
-    need_safe = true
+    need_safe = false
   end
   if not need_global then
     need_global = false
-  end
-  if not need_back then
-    need_back = false
   end
   
   local closet_pos
@@ -2001,14 +2011,19 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     closet_pos = Squad_GetPosition(base_element)
   end
   
-  --AGS_LAYOUT_TABLE
-
-  -- 生成一个包含8个位置的表，遍历筛选这些点
-  -- 查找周边资源实体类型(限定范围20以内)
-  -- 1.先查自然的实体，超过5个以上把这地址剔除(先判断单个是不是金矿石头，如果是就往旁边偏移3格)
-  -- 2.执行完步骤1则找玩家的，如果有玩家自己的建筑占位直接取反距离再检索？？
-  -- 都不符合直接贴城镇中心生成
-  
+  --临时存放表
+  local player_can_spawn_pos_table = {
+    player_id = player_id,
+    player_idx = player_idx,
+    top = nil,
+    bottom = nil,
+    left = nil,
+    right = nil,
+    leftTop = nil,
+    leftBot = nil,
+    rightTop = nil,
+    rightBot = nil,
+  }
   
   for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE) do
     local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
@@ -2021,44 +2036,53 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
       'stone', --石料
       'forage_bush' --浆果
     }
-    --local 
-
+    
     -- 直接找到所有的这几种类型的蓝图
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
-    -- AGS_PLAYER_CAN_SPAWN_POSITION
-    player_can_spawn_pos_table = {
-      top = nil,
-      bottom = nil,
-      left = nil,
-      right = nil,
-      leftTop = nil,
-      leftBot = nil,
-      rightTop = nil,
-      rightBot = nil,
-    }
-    
+
     if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
       player_can_spawn_pos_table[pos_type] = search_pos
-      --['player_can_spawn_pos_'..tostring(player_id)][pos_type] = search_pos
     end
   end
   
-  --local _CheckEntity = function(gid, idx, eid)
-    --local entityPosition = Entity_GetPosition(eid)
-    --local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
+  -- 是否需要返回可以安全spawn的位置(只有不需要写入全局，且需要返回时才有用)
+  if need_back then
+    if need_safe then
+      
+      --重新遍历地址
+      for k, v in pairs(player_can_spawn_pos_table) do
+        if not k == 'player_id' and not k == 'player_idx' and  v ~= nil then
+          
+        end
+        
+        --local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
+        
+        --local closest_entities = EGroup_CreateIfNotFound("closest_entities")
+        --World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
+        
+        --local type_table = {
+          --'gold', --金矿
+          --'stone', --石料
+          --'forage_bush' --浆果
+        --}
+        
+        ---- 直接找到所有的这几种类型的蓝图
+        --local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
+
+        --if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
+          --player_can_spawn_pos_table[pos_type] = search_pos
+        --end
+      end
+      
+    end
     
-    --if distance_sqr < closest_distance_sqr then
-      --closest_distance_sqr = distance_sqr
-      --closest_entity = eid
-    --end
-  --end
-  --EGroup_ForEach(closest_resource_gold_deposit, _CheckEntity)
+    return player_can_spawn_pos_table
+  end
+   
+  if need_global then
+    AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)] = player_can_spawn_pos_table
+  end
   
-  ----if closest_entity ~= nil then
-    ----EGroup_Clear(closest_resource_gold_deposit)
-  ----end
-  
-  --return closest_entity
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点
