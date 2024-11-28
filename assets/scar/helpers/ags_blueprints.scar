@@ -2045,6 +2045,10 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
     end
   end
   
+  if need_global then
+    AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)] = player_can_spawn_pos_table
+  end
+  
   -- 是否需要返回可以安全spawn的位置(只有不需要写入全局，且需要返回时才有用)
   if need_back then
     if need_safe then
@@ -2078,11 +2082,23 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
     
     return player_can_spawn_pos_table
   end
-   
-  if need_global then
-    AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)] = player_can_spawn_pos_table
+  
+end
+
+function AGS_GetFirstAvailablePositionAndFilterOut(player_idx)
+  if not player_idx then
+    return nil
   end
   
+  local first_pos
+  for k, v in pairs(AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)]) do
+    if not k == 'player_id' and not k == 'player_idx' and v ~= nil then
+      first_pos = v
+      AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)][k] = nil
+      break
+    end
+  end
+  return first_pos
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点

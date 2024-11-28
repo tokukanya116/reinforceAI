@@ -140,7 +140,7 @@ function AGS_Empire_War_AssignUnitsToResources()
         EGroup_ForEach(player_start_entities, get_kill_entity)
       end
       
-      AGS_GetAvailablePosition(player_id, player_idx, EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1), 'ent', { x = 20,z = 25 }, 15, true, true, true)
+      AGS_GetAvailablePosition(player_id, player_idx, EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1), 'ent', { x = 40,z = 35 }, 15, false, false, true)
       
       player_town_center_pos = Entity_GetPosition( EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
       
@@ -179,7 +179,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       end
       
       -- 额外生成的建筑
-      AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, player_town_center_pos, player_building_position_table)
+      AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, player_idx, player_town_center_pos, player_building_position_table)
       --额外生成的单位
       --AGS_Empire_War_Extra_Generate_Sgroup_PreSetting(player_id, player_raceName, player_town_center_pos, player_building_position_table)  
       
@@ -478,13 +478,17 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, localPlayer, bui
   
   return build_entity_callback
 end
+
 --其他额外建筑
-function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlayer, preset_position, player_building_position_table)
+function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, player_idx, preset_position, player_building_position_table)
   --空值，报错拦截
   if not player_id then
     return
   end
-  if not localPlayer then
+  if not player_raceName then
+    return
+  end
+  if not player_idx then
     return
   end
   if not preset_position then
@@ -496,7 +500,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
   
   local build_entities = EGroup_CreateIfNotFound('build_entities')
   --local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[Player_GetRaceName(localPlayer)]
-  local raceName = Player_GetRaceName(localPlayer)
+  local raceName = player_raceName
   local distance
   local back_pos
   
@@ -515,39 +519,53 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, localPlaye
       for i = 1, build_num do     
         -- 除蒙古外的文明
         if raceName ~= 'mongol' then
-          if i ~= 1 then
-            distance = 0
-          end
-          offset = -8
+          --if i ~= 1 then
+          --distance = 0
+          --end
+          --offset = -8
           
-          -- 特殊文明调整
-          --日本
-          if raceName == 'japanese' then
+          ---- 特殊文明调整
+          ----日本
+          --if raceName == 'japanese' then
+          --distance = 15
+          --back_pos = player_building_position_table['pos_econ_food']
+          --end
+          
+          --if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
+          --distance = 0
+          
+          --if i == 1 then
+          --offset = 12.5
+          --direction = 'left_top'
+          --back_pos = player_building_position_table['landmark_abb']
+          --elseif i == 6 then
+          --offset = 12.5
+          --direction = 'left_down'
+          --back_pos = player_building_position_table['landmark_abb']
+          --else
+          --direction = 'line'
+          --end
+          
+          --AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)]
+          -- 还需调整：能生成，但是没找到正确定位
+          if i == 1 then
+            back_pos = AGS_GetFirstAvailablePositionAndFilterOut(player_idx)
             distance = 15
-            back_pos = player_building_position_table['pos_econ_food']
-          end
-          
-          if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
+            offset = -8
+            direction = 'line'
+          else
             distance = 0
-       
-            if i == 1 then
-              offset = 12.5
-              direction = 'left_top'
-              back_pos = player_building_position_table['landmark_abb']
-            elseif i == 6 then
-              offset = 12.5
-              direction = 'left_down'
-              back_pos = player_building_position_table['landmark_abb']
-            else
-              direction = 'line'
-            end
-            
           end
           
+          --AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
+          
+          -- 还需调整：能生成，但是没找到正确定位
           back_pos = AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, AGS_GetCivilizationEntity(raceName, build_type), i, back_pos, distance, offset, direction, true) 
-            
+          
+          
         end
       end
+      
     end
     
     -- 联通电信的村庄
@@ -566,6 +584,98 @@ end
 --direction 表示预生成的方向 around(多用于房屋 最多4个) column(列：根据x) line(行：根据z)  diagonal(对角应该是左上，左下，右上，右下 left_top left_down right_top right_down)
 --odd_even 奇偶判断
 function AGS_Empire_War_ReturnSafeSpawnPositionInArea(player_id, ebp, step, position, distance, offset, direction, odd_even)
+  if not player_id then
+    return
+  end
+  if position == nil then
+    position = Player_GetStartingPosition(player_id)  
+  end
+  if not step then
+    return
+  end
+  if not distance then
+    distance = 0 
+  end
+  if offset == nil then
+    offset = 10
+  end
+  
+  local egroupid = EGroup_CreateIfNotFound('build_entities')
+
+  
+  local nx = position.x
+  local ny = position.y
+  local nz = position.z
+  -- 确定初始定位 --方向左为- 右为+，上下同理
+  
+  local placement = World_Pos(nx, ny, nz + distance)
+  
+  
+  --思路：如果是第一个，则按城镇中心定位，不然的话就以上一个建筑为定位，基数+y，偶数+x
+  --如果是是影响格建筑，就第一个先算y的偏移，然后其他以第一个偏移的建筑为基准加减x轴补蓝图
+  --方向左为- 右为+，上下同理
+  --此处的计划是需要两个函数，一个返回当前建筑蓝图和新建筑蓝图的间隙；一个根据方向返回处理后的坐标
+  local build_offset_x = offset
+  local build_offset_z = offset
+  local build_offset_y = offset
+  
+  local placement_offest
+  --布局类型为围绕
+  if direction == 'around' then
+    -- 奇偶数
+    if odd_even then
+      if step % 2 == 0 then
+        build_offset_x = 0
+      else
+        build_offset_z = 0
+      end
+    end
+    
+    --LeftTop = { x = 60, z = 60 },
+    --RightTop = { x = 60, z = -60 },
+    --RightBot = { x = -60, z = -60 },
+    --LeftBot = { x = -60, z = 60 },
+    
+    --第一个不需要偏移，不然定位很怪
+    if step == 1 then
+      build_offset_x = 0
+      build_offset_z = 0
+    end
+    if step == 4 then
+      build_offset_z = -offset
+    end
+    
+  elseif direction == 'line' then
+    build_offset_x = 0
+  elseif direction == 'column' then
+    build_offset_z = 0
+  elseif direction == 'left_down' then
+    build_offset_x = -build_offset_x
+  elseif direction == 'right_top' then
+    build_offset_z = -build_offset_z 
+  elseif direction == 'right_down' then
+    build_offset_x = -build_offset_x
+    build_offset_z = -build_offset_z
+  else
+    
+  end
+  
+  placement_offest = AGS_CalculateCenterOffset(placement, build_offset_x, build_offset_z)
+  
+  local rotation = World_Pos(placement_offest.x, placement_offest.y, placement_offest.z+5)
+
+  local e = Entity_CreateFacing(ebp, player_id, placement_offest, rotation, true)
+  local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement_offest, e))
+
+  --倒数第二个参数为true会出现建筑物虚影但不会立马构造 --有个缺陷（需要考虑的东西太多，虽然很方便）
+  --Util_CreateEntities(player_id, egroupid, ebp, safe_spawn, 1, rotation, true, false, false)
+  local build_entity_callback = AGS_SpawnEntity(player_id, 'build_entities', ebp, safe_spawn, nil, false, true)  
+  
+  --返回坐标
+  return Entity_GetPosition(build_entity_callback)  
+end
+
+function AGS_Empire_War_ReturnSafeSpawnPositionInAreaB(player_id, ebp, step, position, distance, offset, direction, odd_even)
   if not player_id then
     return
   end
