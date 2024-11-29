@@ -1564,6 +1564,54 @@ AGS_UPGRADE_TABLE = {
   },
 }
 
+--上下就是z 左右就是x
+--布局模板
+  AGS_LAYOUT_TABLE = {
+    top = {
+      x = 1,
+      z = 0
+    },
+    bottom = {
+      x = -1,
+      z = 0
+    },
+    left = {
+      x = 0,
+      z = 1
+    },
+    right = {
+      x = 0,
+      z = -1
+    },
+    leftTop = {
+      x = 1,
+      z = 1
+    },
+    leftBot = {
+      x = -1,
+      z = 1
+    },
+    rightTop = {
+      x = 1,
+      z = -1
+    },
+     rightBot = {
+      x = -1,
+      z = -1
+    },
+  }
+
+AGS_PLAYER_CAN_SPAWN_POSITION = {
+  player_1 = nil,
+  player_2 = nil,
+  player_3 = nil,
+  player_4 = nil,
+  player_5 = nil,
+  player_6 = nil,
+  player_7 = nil,
+  player_8 = nil
+}
+
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
@@ -1913,16 +1961,165 @@ function AGS_GetClosestFoodEntity(player_id, food_type, position, distance )
   
   return closest_food
 end
---返回可用的生成点 暂时放弃
-function AGS_GetEntityNumAroundByPosition(player_id, position, distance)
+
+--返回可用的生成点
+--必须传入玩家id player_id
+--必须传入 实体，小队 base_element element_type(假定是具体类型，减少判断时间)
+--根据传入实体或小队生成8个方向的定位 
+--并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
+--是否写入全局 need_global
+--是否需要返回 need_back
+function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_type, distance, range, need_back, need_safe, need_global )
   if not player_id then
     return
   end
-  if not position then
+  if not player_idx then
     return
   end
-   if not distance then
-    distance = 10
+  if not base_element then
+    return
+  end
+  if not element_type then
+    return
+  end
+  if not distance then
+    distance = {
+      x = 1,
+      z = 1
+    }
+  end
+  if not range then
+    range = 40
+  end
+  if not need_back then
+    need_back = true
+  end
+  if not need_safe then
+    need_safe = false
+  end
+  if not need_global then
+    need_global = false
+  end
+  
+  local closet_pos
+  
+  if element_type == 'ent' then
+    closet_pos = Entity_GetPosition(base_element)
+  end
+  
+  if element_type == 'sqd' then
+    closet_pos = Squad_GetPosition(base_element)
+  end
+  
+  --临时存放表
+  local player_can_spawn_pos_table = {
+    player_id = player_id,
+    player_idx = player_idx,
+    top = nil,
+    bottom = nil,
+    left = nil,
+    right = nil,
+    leftTop = nil,
+    leftBot = nil,
+    rightTop = nil,
+    rightBot = nil,
+  }
+  
+  for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE) do
+    local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
+    
+    local closest_entities = EGroup_CreateIfNotFound("closest_entities")
+    World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
+    
+    local type_table = {
+      'gold', --金矿
+      'stone', --石料
+      'forage_bush' --浆果
+    }
+    
+    -- 直接找到所有的这几种类型的蓝图
+    local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
+
+    if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
+      player_can_spawn_pos_table[pos_type] = search_pos
+    end
+  end
+  
+  if need_global then
+    AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)] = player_can_spawn_pos_table
+  end
+  
+  -- 是否需要返回可以安全spawn的位置(只有不需要写入全局，且需要返回时才有用)
+  if need_back then
+    if need_safe then
+      
+      --重新遍历地址
+      for k, v in pairs(player_can_spawn_pos_table) do
+        if not k == 'player_id' and not k == 'player_idx' and  v ~= nil then
+          
+        end
+        
+        --local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
+        
+        --local closest_entities = EGroup_CreateIfNotFound("closest_entities")
+        --World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
+        
+        --local type_table = {
+          --'gold', --金矿
+          --'stone', --石料
+          --'forage_bush' --浆果
+        --}
+        
+        ---- 直接找到所有的这几种类型的蓝图
+        --local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
+
+        --if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
+          --player_can_spawn_pos_table[pos_type] = search_pos
+        --end
+      end
+      
+    end
+    
+    return player_can_spawn_pos_table
+  end
+  
+end
+
+function AGS_GetFirstAvailablePositionAndFilterOut(player_idx)
+  if not player_idx then
+    return nil
+  end
+  
+  local first_pos
+  for k, v in pairs(AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)]) do
+    if not k == 'player_id' and not k == 'player_idx' and v ~= nil then
+      first_pos = v
+      AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)][k] = nil
+      break
+    end
+  end
+  return first_pos
+end
+
+--返回根据A元素朝向B元素并向指定元素位移多少的一个点
+--必须传入玩家id player_id
+--必须传入 实体，小队 base_element element_type(假定是具体类型，减少判断时间)
+--根据传入实体或小队生成8个方向的定位 
+--并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 distance
+--是否写入全局 need_global
+--是否需要返回 need_back
+function AGS_GetAvailablePositionPointToPoint(player_id, base_element, element_type, distance, need_global, need_back)
+  if not player_id then
+    return
+  end
+  if not base_element then
+    return
+  end
+  if not element_type then
+    return
+  end
+  if not distance then
+    distance = 40
   end
   
   local closest_entities = EGroup_CreateIfNotFound("closest_entities")

@@ -397,7 +397,7 @@
 396,"Provides quick way to play King of the Hill on any map.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/search?q=AOE4-AdvancedGameSettings",提供在任何地图上玩山丘之王的快捷方式。\n\n源代码、反馈、错误报告和对模式的贡献可前往：\nhttps://github.com/Woprok/AOE4-AdvancedGameSettings
 397,,支援
 398,,资源支援
-399,,十三分钟后每分钟获得资源
+399,,开局9分钟后，每30秒会根据开局选择的等级放送资源
 400,,资源基数(肉/金/木/石):\n玩家:(300/300/150/150)\nAI:除石料外全部x2(2倍战损)\n例:选 选项2 表示 基数x2
 401,,默认(x1.25)
 402,,资源基数*1.25
@@ -407,7 +407,7 @@
 407,,资源基数*2.5
 408,,疯狂(x3)
 409,,资源基数*3
-410,,帝国战争
+410,,帝国战争(测试版)
 412,,以帝国战争模板开始
 413,,加强AI_V2(持续更新中)
 414,,纯加强AI(荒谬，令人发指的，荒唐)\n开局9分钟后，每30秒会根据开局选择的等级放送资源\n默认禁用海军\nai比玩家多75人口\n请配合同名捆绑包一起食用(加强AI捆绑包V2)

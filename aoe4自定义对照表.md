@@ -2,8 +2,10 @@
 AI_CreateEncounter 514 好像是给ai创建一个目标
 ```
 
+##### 控制台命令
+
 ```
-控制台命令
+
 FOW_ForceRevealAllUnblockedAreas() 开全图
 localPlayer = World_GetPlayerAt(index) 找玩家
 AI_SetDifficulty(localPlayer, 3) 重设难度
@@ -44,8 +46,27 @@ farm:田
 如需要生成新ui，参考 ags_diplomacy_ui.scar
 ```
 
-###### scar 超级有用的脚本
+##### scar  脚本
+
+**超级有用的脚本**
+
 ```
 返回a向b的方向 1935
 计算两个实体的距离 857
+根据 字符串 直接返回一个 技能包蓝图 560 (注意事项看 Ability)
+根据 技能包原型的蓝图id 返回 一个技能蓝图 566 (注意事项看 Ability)
 ```
+
+##### **Ability**
+
+注：技能包组需要在 Attributes 里 先打开 open Attributes 读取才能查看(!没有编辑权限，只能调用)
+
+```
+LocalCommand_SquadEntityAbility(player_id, official_gold, eg_single, bp_supervise, true, false)
+```
+
+##### 其他
+
+###### 异常
+
+实体生成错误会导致资源变成不可选(但游戏能正常运行且不报错，需要逐行注释差错)

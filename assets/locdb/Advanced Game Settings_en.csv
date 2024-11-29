@@ -397,7 +397,7 @@
 396,,,,KOTH,,"Provides quick way to play King of the Hill on any map.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/search?q=AOE4-AdvancedGameSettings"
 397,,,,,,Support
 398,,,,,,Resource
-399,,,,,,Get resources per minute after 13 minutes
+399,,,,,,"After the first 9 minutes, resources are released every 30 seconds based on the level selected for the start"
 400,,,,,,ResourceBase(food/gold/wood/stone):\nPlayer:300/300/150/100\nAI:expect stone all*2(2 Combat loss)
 401,,,,,,Weak(ResourceBase*1.25)
 402,,,,,,ResourceBase*1.25
@@ -407,7 +407,7 @@
 407,,,,,,ResourceBase*2.5
 408,,,,,,Very Hard(ResourceBase*3)
 409,,,,,,ResourceBase*3
-410,,,,,,Empire_war
+410,,,,,,Empire_war(test)
 412,,,,,,Start with the Empire_war
 413,,,,Mod Title,,reinforceAI_V2(Ongoing update)
 414,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
