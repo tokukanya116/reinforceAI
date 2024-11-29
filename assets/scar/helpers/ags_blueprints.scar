@@ -1566,41 +1566,51 @@ AGS_UPGRADE_TABLE = {
 
 --上下就是z 左右就是x
 --布局模板
-  AGS_LAYOUT_TABLE = {
-    top = {
+AGS_LAYOUT_TABLE = {
+    OFFSET_FRONT = {
       x = 1,
       z = 0
     },
-    bottom = {
+    OFFSET_BACK = {
       x = -1,
       z = 0
     },
-    left = {
+    OFFSET_LEFT = {
       x = 0,
       z = 1
     },
-    right = {
+    OFFSET_RIGHT = {
       x = 0,
       z = -1
     },
-    leftTop = {
+    OFFSET_FRONT_LEFT = {
       x = 1,
       z = 1
     },
-    leftBot = {
+    OFFSET_BACK_LEFT = {
       x = -1,
       z = 1
     },
-    rightTop = {
+    OFFSET_FRONT_RIGHT = {
       x = 1,
       z = -1
     },
-     rightBot = {
+     OFFSET_BACK_RIGHT = {
       x = -1,
       z = -1
     },
   }
 
+AGS_LAYOUT_TABLE_A = {
+  OFFSET_FRONT,
+  OFFSET_BACK,
+  OFFSET_LEFT,
+  OFFSET_RIGHT,
+  OFFSET_FRONT_LEFT,
+  OFFSET_BACK_LEFT,
+  OFFSET_FRONT_RIGHT,
+  OFFSET_BACK_RIGHT,
+}
 AGS_PLAYER_CAN_SPAWN_POSITION = {
   player_1 = nil,
   player_2 = nil,
@@ -1962,14 +1972,46 @@ function AGS_GetClosestFoodEntity(player_id, food_type, position, distance )
   return closest_food
 end
 
---返回可用的生成点
+--? @shortdesc Returns a position at the edge of the building's footprint. The optional parameter 'offset' specifies
+--? which side of the building should be used. Possible parameters are OFFSET_FRONT, OFFSET_BACK, OFFSET_LEFT,
+--? OFFSET_RIGHT, OFFSET_FRONT_LEFT, OFFSET_FRONT_RIGHT, OFFSET_BACK_LEFT, OFFSET_BACK_RIGHT
+--? @args Entity/EGroup building, OFFSET offset
+--? @result Position
+function AGS_Building_GetSpawnPosition(building, offset, other_offset)
+  if offset == nil then
+    offset = OFFSET_FRONT
+  end
+  if other_offset == nil then
+    other_offset = 0
+  end
+  if scartype(building) == ST_EGROUP then
+    building = EGroup_GetEntityAt(building, 1)
+  end
+  local building_position = Entity_GetPosition(building)
+  local building_heading = Entity_GetHeading(building)
+  local building_radius = 6
+  if Entity_IsOfType(building, "town_center") then
+    building_radius = 8
+  end
+  if offset % 2 == 1 then
+    building_radius = building_radius * 1.4142 --sqrt(2) --buildings are square, not round. so corners are farther out 
+  end
+  building_radius = building_radius + 0.5 --adding a bit of buffer room because it looks better
+  local position = World_GetOffsetPosition(building_position, building_heading, offset, building_radius + other_offset)
+  local y = World_GetHeightAt(position.x, position.z)
+  return World_Pos(position.x, y, position.z)
+end
+
+
+--返回可用的生成点(大概方位和可用空地)
 --必须传入玩家id player_id
 --必须传入 实体，小队 base_element element_type(假定是具体类型，减少判断时间)
 --根据传入实体或小队生成8个方向的定位 
 --并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
 --是否写入全局 need_global
 --是否需要返回 need_back
-function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_type, distance, range, need_back, need_safe, need_global )
+--AGS_GetAvailablePosition(player_id, player_idx, TC_CAPITAL, 'ent', { x = 30,z = 30 }, 15, false, false, true)
+function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_type, distance, range, need_back, need_one, need_global )
   if not player_id then
     return
   end
@@ -1982,6 +2024,7 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   if not element_type then
     return
   end
+  --用于计算偏移量（目前不太需要这个值）
   if not distance then
     distance = {
       x = 1,
@@ -1994,8 +2037,8 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   if not need_back then
     need_back = true
   end
-  if not need_safe then
-    need_safe = false
+  if not need_one then
+    need_one = false
   end
   if not need_global then
     need_global = false
@@ -2004,7 +2047,8 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   local closet_pos
   
   if element_type == 'ent' then
-    closet_pos = Entity_GetPosition(base_element)
+    --closet_pos = Entity_GetPosition(base_element)
+    closet_pos = base_element
   end
   
   if element_type == 'sqd' then
@@ -2015,18 +2059,22 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   local player_can_spawn_pos_table = {
     player_id = player_id,
     player_idx = player_idx,
-    top = nil,
-    bottom = nil,
-    left = nil,
-    right = nil,
-    leftTop = nil,
-    leftBot = nil,
-    rightTop = nil,
-    rightBot = nil,
+    OFFSET_FRONT_POS = nil,
+    OFFSET_BACK_POS = nil,
+    OFFSET_LEFT_POS = nil,
+    OFFSET_RIGHT_POS = nil,
+    OFFSET_FRONT_LEFT_POS = nil,
+    OFFSET_BACK_LEFT_POS = nil,
+    OFFSET_FRONT_RIGHT_POS = nil,
+    OFFSET_BACK_RIGHT_POS = nil,
   }
   
-  for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE) do
-    local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
+  
+  for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE_A) do
+    --local search_pos = World_Pos(distance.x * pos_value.x + closet_pos.x, 0, distance.z * pos_value.z + closet_pos.z) 
+    
+    -- 这个是已经朝向实体的某个方向的定位为基点了
+    local search_pos = AGS_Building_GetSpawnPosition(closet_pos, pos_type, range)
     
     local closest_entities = EGroup_CreateIfNotFound("closest_entities")
     World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
@@ -2034,14 +2082,15 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
     local type_table = {
       'gold', --金矿
       'stone', --石料
-      'forage_bush' --浆果
+      'forage_bush', --浆果
+      'tree'
     }
     
     -- 直接找到所有的这几种类型的蓝图
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
 
     if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
-      player_can_spawn_pos_table[pos_type] = search_pos
+      player_can_spawn_pos_table[pos_type..'_POS'] = search_pos
     end
   end
   
@@ -2051,32 +2100,19 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   
   -- 是否需要返回可以安全spawn的位置(只有不需要写入全局，且需要返回时才有用)
   if need_back then
-    if need_safe then
+    if need_one then
       
       --重新遍历地址
+      local one_pos
       for k, v in pairs(player_can_spawn_pos_table) do
-        if not k == 'player_id' and not k == 'player_idx' and  v ~= nil then
-          
+        if k ~= 'player_id' and k ~= 'player_idx' then
+          one_pos = v
+          if one_pos ~=nil then
+            break
+          end
         end
-        
-        --local search_pos = World_Pos(closet_pos.x + (distance.x * pos_value.x), 0, closet_pos.z + (distance.z * pos_value.z)) 
-        
-        --local closest_entities = EGroup_CreateIfNotFound("closest_entities")
-        --World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
-        
-        --local type_table = {
-          --'gold', --金矿
-          --'stone', --石料
-          --'forage_bush' --浆果
-        --}
-        
-        ---- 直接找到所有的这几种类型的蓝图
-        --local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
-
-        --if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
-          --player_can_spawn_pos_table[pos_type] = search_pos
-        --end
       end
+      return one_pos
       
     end
     
@@ -2085,6 +2121,7 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   
 end
 
+--返回从全局地址表里可用的区域，并将已使用的移除(!只用于城镇中心的初始设置)
 function AGS_GetFirstAvailablePositionAndFilterOut(player_idx)
   if not player_idx then
     return nil
@@ -2092,13 +2129,33 @@ function AGS_GetFirstAvailablePositionAndFilterOut(player_idx)
   
   local first_pos
   for k, v in pairs(AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)]) do
-    if not k == 'player_id' and not k == 'player_idx' and v ~= nil then
+    if k ~= 'player_id' and k ~= 'player_idx' then
+      
       first_pos = v
       AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)][k] = nil
-      break
+      
+      if first_pos ~=nil then
+        break
+      end
+      
     end
   end
+  
   return first_pos
+end
+
+--在一个位置附近返回一个可以安全放置该蓝图的位置
+function AGS_GetSafeSpawnPositionByEPB(player_id, ebp, position )
+  if not player_id then
+    return
+  end
+  if position == nil then
+    return  
+  end
+  local rotation = World_Pos(position.x, position.y, position.z + 5)
+
+  return World_GetSpawnablePosition(position, Entity_CreateFacing(ebp, player_id, position, rotation, true))
+   
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点
