@@ -420,8 +420,8 @@ AGS_ENTITY_TABLE = {
     university = "building_tech_university_mal",
     
     econ_ranch = "building_econ_ranch_mal", -- 牛栏
-    econ_open_pit_mine = "building_econ_ranch_mal", -- 露天矿区
-    econ_open_pit_mine_small = "building_econ_ranch_mal", -- 小露天矿区
+    econ_open_pit_mine = "building_open_pit_mine_mal", -- 露天矿区
+    econ_open_pit_mine_small = "building_open_pit_mine_small_mal", -- 小露天矿区
     
     landmark_defense_age1 = "building_landmark_age1_landmarka_mal",
     landmark_defense_age2 = "building_landmark_age2_landmarkd_control_mal",
@@ -929,6 +929,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     econ_wood = 1,
     econ_food = 1,
     mining_camp = 1,
+    econ_open_pit_mine = 1
   },
   ottoman = {
     house = 4,
@@ -2010,12 +2011,9 @@ end
 --并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
 --是否写入全局 need_global
 --是否需要返回 need_back
---AGS_GetAvailablePosition(player_id, player_idx, TC_CAPITAL, 'ent', { x = 30,z = 30 }, 15, false, false, true)
-function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_type, distance, range, need_back, need_one, need_global )
+--AGS_GetAvailablePosition(player_id, TC_CAPITAL, 'ent', { x = 30,z = 30 }, 15, false, false, true)
+function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
   if not player_id then
-    return
-  end
-  if not player_idx then
     return
   end
   if not base_element then
@@ -2034,14 +2032,8 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   if not range then
     range = 40
   end
-  if not need_back then
-    need_back = true
-  end
   if not need_one then
     need_one = false
-  end
-  if not need_global then
-    need_global = false
   end
   
   local closet_pos
@@ -2057,8 +2049,6 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   
   --临时存放表
   local player_can_spawn_pos_table = {
-    player_id = player_id,
-    player_idx = player_idx,
     OFFSET_FRONT_POS = nil,
     OFFSET_BACK_POS = nil,
     OFFSET_LEFT_POS = nil,
@@ -2071,7 +2061,6 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
   
   
   for pos_type, pos_value in pairs(AGS_LAYOUT_TABLE_A) do
-    --local search_pos = World_Pos(distance.x * pos_value.x + closet_pos.x, 0, distance.z * pos_value.z + closet_pos.z) 
     
     -- 这个是已经朝向实体的某个方向的定位为基点了
     local search_pos = AGS_Building_GetSpawnPosition(closet_pos, pos_type, range)
@@ -2083,41 +2072,34 @@ function AGS_GetAvailablePosition(player_id, player_idx, base_element, element_t
       'gold', --金矿
       'stone', --石料
       'forage_bush', --浆果
-      'tree'
+      --'tree'
     }
     
     -- 直接找到所有的这几种类型的蓝图
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
 
     if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
-      player_can_spawn_pos_table[pos_type..'_POS'] = search_pos
+      player_can_spawn_pos_table[pos_type] = search_pos
     end
   end
   
-  if need_global then
-    AGS_PLAYER_CAN_SPAWN_POSITION['player_'..tostring(player_idx)] = player_can_spawn_pos_table
-  end
-  
-  -- 是否需要返回可以安全spawn的位置(只有不需要写入全局，且需要返回时才有用)
-  if need_back then
-    if need_one then
-      
-      --重新遍历地址
-      local one_pos
-      for k, v in pairs(player_can_spawn_pos_table) do
-        if k ~= 'player_id' and k ~= 'player_idx' then
-          one_pos = v
-          if one_pos ~=nil then
-            break
-          end
+  -- 是否需要返回一个
+  if need_one then
+    --重新遍历地址
+    local one_pos
+    for k, v in pairs(player_can_spawn_pos_table) do
+      if k ~= 'player_id' and k ~= 'player_idx' then
+        one_pos = v
+        if one_pos ~=nil then
+          break
         end
       end
-      return one_pos
-      
     end
+    return one_pos
     
-    return player_can_spawn_pos_table
   end
+    
+  return player_can_spawn_pos_table 
   
 end
 
@@ -2153,9 +2135,9 @@ function AGS_GetSafeSpawnPositionByEPB(player_id, ebp, position )
     return  
   end
   local rotation = World_Pos(position.x, position.y, position.z + 5)
-
-  return World_GetSpawnablePosition(position, Entity_CreateFacing(ebp, player_id, position, rotation, true))
-   
+  -- 需要先构造到地图
+  local e = Entity_CreateFacing(ebp, player_id, position, rotation, true)
+  return Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(position, e))
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点

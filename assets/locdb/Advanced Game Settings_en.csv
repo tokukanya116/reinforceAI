@@ -410,7 +410,7 @@
 410,,,,,,Empire_war(test)
 412,,,,,,Start with the Empire_war
 413,,,,Mod Title,,reinforceAI_V2(Ongoing update)
-414,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
+414,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the option\nDisable Navy\nai has more 35 population(The maximum population of 275 or more will result in a card model, which will automatically clean every 12 minutes, requiring the test mode to be turned on)\nImperial War Mode is still in the testing phase, if an error occurs, uncheck the box and it will work normally\nPlease use it with a bundle of the same name(reinforceAI_bundle)\nComments or feedback: 1033498641@qq.com"
 415,,,,,,Default
 416,,,,,,Enable_test_mode
 417,,,,,,Impossible(ResourceBase*4)

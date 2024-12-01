@@ -17,9 +17,9 @@ Core_RegisterModule(AGS_POPULATION_CAPACITY_MODULE)
 
 function AGS_PopulationCapacity_UpdateModuleSettings()
 	AGS_Print("AGS_PopulationCapacity_UpdateModuleSettings")
-	--if AGS_GLOBAL_SETTINGS.MaximumPopulation == 200 and AGS_GLOBAL_SETTINGS.MinimumPopulation == 0 then
-		--Core_UnregisterModule(AGS_POPULATION_CAPACITY_MODULE)
-	--end
+	if AGS_GLOBAL_SETTINGS.MaximumPopulation == 200 and AGS_GLOBAL_SETTINGS.MinimumPopulation == 0 then
+		Core_UnregisterModule(AGS_POPULATION_CAPACITY_MODULE)
+	end
 end
 
 function AGS_PopulationCapacity_AdjustSettings()
@@ -47,7 +47,7 @@ function AGS_PopulationCapacity_Change()
 		if Player_IsHuman(player.id) == true then
 			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation)
 		else
-			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 50)
+			AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 35)
 		end	
 		
 		AGS_PopulationCapacity_SetMinPopulation(player, AGS_GLOBAL_SETTINGS.MinimumPopulation) 

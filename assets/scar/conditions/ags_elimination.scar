@@ -58,7 +58,8 @@ function AGS_Elimination_OnPlayerAITakeover(context)
           
           --设置AI可以建造
           Player_SetStateModelBool(player.id, "player_can_construct_structures", true)
-          AGS_PopulationCapacity_Change()
+          --待调整动态人口
+          --AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 50)
         end
         
 			end

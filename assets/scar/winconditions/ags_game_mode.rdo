@@ -682,10 +682,11 @@
 								<DataProperty Name="m_enumItems" Type="Object">
 									<DataValue Name="WinCondition::OptionEnumItemUIDescriptor">15748700775760411028</DataValue>
 									<DataValue Name="WinCondition::OptionEnumItemUIDescriptor">1475490425081183847</DataValue>
-									<DataValue Name="WinCondition::OptionEnumItemUIDescriptor">7600091759953502495</DataValue>
+									<DataValue Name="WinCondition::OptionEnumItemUIDescriptor">11453715862599177140</DataValue>
+									<DataValue Name="WinCondition::OptionEnumItemUIDescriptor">11741761903622145797</DataValue>
 									<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/-->
 									<DataObject Name="" Type="WinCondition::OptionEnumItemUIDescriptor" Id="1475490425081183847" OwnerId="14780382222316629320">
-										<DataProperty Name="m_key" Type="String" Value="max_population_250"/>
+										<DataProperty Name="m_key" Type="String" Value="max_population_225"/>
 										<DataProperty Name="m_feSummaryName" Type="Object">
 											<DataValue Name="util::ReflectLocString">5391950978599905709</DataValue>
 											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
@@ -694,13 +695,41 @@
 												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
 												<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-												<DataProperty Name="m_locStringKey" Type="Int32" Value="158"/>
+												<DataProperty Name="m_locStringKey" Type="Int32" Value="157"/>
 											</DataObject>
 										</DataProperty>
 										<DataProperty Name="m_feName" Type="Object">
 											<DataValue Name="util::ReflectLocString">10300236449371346221</DataValue>
 											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
 											<DataObject Name="" Type="util::ReflectLocString" Id="10300236449371346221" OwnerId="1475490425081183847">
+												<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
+												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
+												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
+												<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
+												<DataProperty Name="m_locStringKey" Type="Int32" Value="157"/>
+											</DataObject>
+										</DataProperty>
+										<DataProperty Name="m_isDefaultValue" Type="Bool" Value="false"/>
+										<DataProperty Name="m_devOnly" Type="Bool" Value="false"/>
+									</DataObject>
+									<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/-->
+									<DataObject Name="" Type="WinCondition::OptionEnumItemUIDescriptor" Id="11453715862599177140" OwnerId="14780382222316629320">
+										<DataProperty Name="m_key" Type="String" Value="max_population_250"/>
+										<DataProperty Name="m_feSummaryName" Type="Object">
+											<DataValue Name="util::ReflectLocString">11679248136697149274</DataValue>
+											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
+											<DataObject Name="" Type="util::ReflectLocString" Id="11679248136697149274" OwnerId="11453715862599177140">
+												<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
+												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
+												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
+												<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
+												<DataProperty Name="m_locStringKey" Type="Int32" Value="158"/>
+											</DataObject>
+										</DataProperty>
+										<DataProperty Name="m_feName" Type="Object">
+											<DataValue Name="util::ReflectLocString">160389543761063625</DataValue>
+											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
+											<DataObject Name="" Type="util::ReflectLocString" Id="160389543761063625" OwnerId="11453715862599177140">
 												<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
 												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
@@ -712,28 +741,28 @@
 										<DataProperty Name="m_devOnly" Type="Bool" Value="false"/>
 									</DataObject>
 									<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/-->
-									<DataObject Name="" Type="WinCondition::OptionEnumItemUIDescriptor" Id="7600091759953502495" OwnerId="14780382222316629320">
-										<DataProperty Name="m_key" Type="String" Value="max_population_300"/>
+									<DataObject Name="" Type="WinCondition::OptionEnumItemUIDescriptor" Id="11741761903622145797" OwnerId="14780382222316629320">
+										<DataProperty Name="m_key" Type="String" Value="max_population_275"/>
 										<DataProperty Name="m_feSummaryName" Type="Object">
-											<DataValue Name="util::ReflectLocString">17609648999368650354</DataValue>
+											<DataValue Name="util::ReflectLocString">9735215610888660654</DataValue>
 											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
-											<DataObject Name="" Type="util::ReflectLocString" Id="17609648999368650354" OwnerId="7600091759953502495">
+											<DataObject Name="" Type="util::ReflectLocString" Id="9735215610888660654" OwnerId="11741761903622145797">
 												<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
 												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
 												<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-												<DataProperty Name="m_locStringKey" Type="Int32" Value="160"/>
+												<DataProperty Name="m_locStringKey" Type="Int32" Value="159"/>
 											</DataObject>
 										</DataProperty>
 										<DataProperty Name="m_feName" Type="Object">
-											<DataValue Name="util::ReflectLocString">12411155626072623117</DataValue>
+											<DataValue Name="util::ReflectLocString">9754029305664159038</DataValue>
 											<!--WinCondition/WinCondition::OptionsUIDescriptor/WinCondition::OptionSectionUIDescriptor/WinCondition::EnumerationOptionUIDescriptor/WinCondition::OptionEnumItemUIDescriptor/util::ReflectLocString/-->
-											<DataObject Name="" Type="util::ReflectLocString" Id="12411155626072623117" OwnerId="7600091759953502495">
+											<DataObject Name="" Type="util::ReflectLocString" Id="9754029305664159038" OwnerId="11741761903622145797">
 												<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
 												<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
 												<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
 												<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-												<DataProperty Name="m_locStringKey" Type="Int32" Value="160"/>
+												<DataProperty Name="m_locStringKey" Type="Int32" Value="159"/>
 											</DataObject>
 										</DataProperty>
 										<DataProperty Name="m_isDefaultValue" Type="Bool" Value="false"/>

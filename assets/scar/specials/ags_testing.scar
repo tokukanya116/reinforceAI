@@ -33,6 +33,7 @@ end
 -- Functions:
 ---------------------------------------------------------------------------------------------------
 function AGS_Testing_Delay()
+  --Rule_AddInterval(AGS_Testing_RemoveEntities, 900)
   Rule_AddInterval(AGS_Testing_RemoveUnits, 720)
 end
 
@@ -47,6 +48,10 @@ end
 --优先调整：30分钟后删掉ai多余的伐木场，矿场，铁匠铺，大学
 -- 清空可能会导致单位卡顿的单位
 function AGS_Testing_RemoveUnits()
+  if AGS_GLOBAL_SETTINGS.MaximumPopulation < 275 then
+    return
+  end
+  
 	for _, player in pairs(PLAYERS) do
     if AI_IsAIPlayer(player.id) then
       if Player_IsAlive(player.id)  then
@@ -58,6 +63,22 @@ function AGS_Testing_RemoveUnits()
         --SGroup_Filter(farm,,AGS_GetCivilizationUnit(AGS_BP_VILLAGER),player_all_sgroups)
         SGroup_Filter(player_all_sgroups, bp_squad, FILTER_REMOVE , sgroup_without_gatherer)
         SGroup_Kill(player_all_sgroups)
+      end
+    end
+  end
+end
+
+function AGS_Testing_RemoveEntities()
+  for _, player in pairs(PLAYERS) do
+    if AI_IsAIPlayer(player.id) then
+      if Player_IsAlive(player.id)  then
+        -- 冲车，叉叉，步弓，肉马
+        local egroup_without_gatherer = EGroup_CreateIfNotFound('ai'..tostring(player.id)..'filter_eg')
+        local player_all_egroups = Player_GetEntities(player.id)
+
+        bp_entities = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ECOM_WOOD)
+        EGroup_Filter(player_all_egroups, bp_entities, FILTER_REMOVE, egroup_without_gatherer)
+        EGroup_Kill(egroup_without_gatherer)
       end
     end
   end
