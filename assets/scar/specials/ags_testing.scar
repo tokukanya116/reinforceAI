@@ -112,7 +112,23 @@ function AGS_Testing_SpawnTest()
 	end
 end
 
-
+AGS_TESTING_CORNERS = {
+  LeftTop = { x = 60, z = 60 },
+  RightTop = { x = 60, z = -60 },
+  RightBot = { x = -60, z = -60 },
+  LeftBot = { x = -60, z = 60 },
+  LeftTopStep = { x = 0, z = -1 },
+  RightTopStep = { x = -1, z = 0 },
+  RightBotStep = { x = 0, z = 1 },
+  LeftBotStep = { x = 1, z = 0 },
+  WallLength = 120, -- Determined by this table, too lazy to make it completely dynamic.
+  StepCount = 12, -- Equals WallLength/StepSize.
+  StepSize = 10,
+  GateMiddleTop = { x = 60, z = 0 },
+  GateMiddleBot = { x = -60, z = 0 },
+  GateMiddleRight = { x = 0, z = -60 },
+  GateMiddleLeft = { x = 0, z = 60 },
+}
 
 -- 石墙生成有点问题，所以仅能测试
 function AGS_Testing_CreateWalls()
@@ -128,8 +144,8 @@ end
 
 function AGS_Testing_WallAroundPosition(player, wall_bp, gate_bp, center_position)
   -- New vars
-  local step_size = AGS_Testing_CORNERS.StepSize
-  local step_count = AGS_Testing_CORNERS.StepCount
+  local step_size = AGS_TESTING_CORNERS.StepSize
+  local step_count = AGS_TESTING_CORNERS.StepCount
   -- Wall helper funcs
   local AGS_Testing_Wall = function(idx_end, corner, step)
     local start_at = World_Pos(0, 0, 0)
@@ -150,25 +166,25 @@ function AGS_Testing_WallAroundPosition(player, wall_bp, gate_bp, center_positio
   --  LocalCommand_PlayerPlaceAndConstructEntitiesPlanned(player.id, gate_bp, start_at, face_at, false, false)
   --end
   -- left top corner
-  AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.LeftTop, AGS_Testing_CORNERS.LeftTopStep)
+  AGS_Testing_Wall(step_count, AGS_TESTING_CORNERS.LeftTop, AGS_TESTING_CORNERS.LeftTopStep)
   -- right top corner
-  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.RightTop, AGS_Testing_CORNERS.RightTopStep)
+  --AGS_Testing_Wall(step_count, AGS_TESTING_CORNERS.RightTop, AGS_TESTING_CORNERS.RightTopStep)
   -- right bot corner
-  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.RightBot, AGS_Testing_CORNERS.RightBotStep)
+  --AGS_Testing_Wall(step_count, AGS_TESTING_CORNERS.RightBot, AGS_TESTING_CORNERS.RightBotStep)
   -- left bot corner
-  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.LeftBot, AGS_Testing_CORNERS.LeftBotStep)
+  --AGS_Testing_Wall(step_count, AGS_TESTING_CORNERS.LeftBot, AGS_TESTING_CORNERS.LeftBotStep)
   -- construct 
   local walls = Player_GetEntitiesFromType(player.id, AGS_BP_ANY_WALL)
   EGroup_ForEach(walls, AGS_Testing_Construct)
   
   -- middle top
-  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleTop, 10, 0)
+  --AGS_Testing_Gate(AGS_TESTING_CORNERS.GateMiddleTop, 10, 0)
   -- middle bot
-  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleBot, 10, 0)
+  --AGS_Testing_Gate(AGS_TESTING_CORNERS.GateMiddleBot, 10, 0)
   -- middle right
-  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleRight, 0, 10)
+  --AGS_Testing_Gate(AGS_TESTING_CORNERS.GateMiddleRight, 0, 10)
   -- middle left
-  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleLeft, 0, 10)
+  --AGS_Testing_Gate(AGS_TESTING_CORNERS.GateMiddleLeft, 0, 10)
   -- construct
   --local gates = Player_GetEntitiesFromType(player.id, AGS_BP_ANY_GATE)
   --EGroup_ForEach(gates, AGS_Testing_Construct)
