@@ -24,7 +24,10 @@ end
 
 function AGS_Testing_OnPlay()
 	for _, player in pairs(PLAYERS) do
-		AGS_Print(player.id, player.raceName)
+		--AGS_Print(player.id, player.raceName)
+    if player.raceName == 'chinese' then
+      AGS_Testing_CreateWalls()  
+    end
 	end
   Rule_AddOneShot(AGS_Testing_Delay, 300)
 end		
@@ -107,4 +110,80 @@ function AGS_Testing_SpawnTest()
 		local sbp_shp = BP_GetSquadBlueprint("unit_supply_cart_chi")
 		local sbp_shp = BP_GetSquadBlueprint("unit_militia_cmp_chi")
 	end
+end
+
+
+
+-- 石墙生成有点问题，所以仅能测试
+function AGS_Testing_CreateWalls()
+  for _, player in pairs(PLAYERS) do
+    if player.raceName ~= AGS_CIV_MONGOL then
+      local palisade_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_WALL)
+      local palisade_gate_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_GATE)
+      local spawn_position = AGS_Starts_GetStartPosition(player.id)      
+      AGS_Testing_WallAroundPosition(player, palisade_blueprint, palisade_gate_blueprint, spawn_position)
+    end    
+  end  
+end
+
+function AGS_Testing_WallAroundPosition(player, wall_bp, gate_bp, center_position)
+  -- New vars
+  local step_size = AGS_Testing_CORNERS.StepSize
+  local step_count = AGS_Testing_CORNERS.StepCount
+  -- Wall helper funcs
+  local AGS_Testing_Wall = function(idx_end, corner, step)
+    local start_at = World_Pos(0, 0, 0)
+    local close_at = World_Pos(0, 0, 0)
+    start_at = AGS_Testing_StartCoordinates(center_position, corner)
+    for i=1, idx_end do 
+      close_at = AGS_Testing_AdjustCoordinates(start_at, step, step_size)
+      LocalCommand_PlayerPlaceAndConstructSlottedSplinePlanned(player.id, wall_bp, start_at, close_at, false, false)
+      start_at = close_at
+    end
+  end
+  local AGS_Testing_Construct = function(gid, idx, eid)
+    Entity_ForceSelfConstruct(eid)
+  end
+  --local AGS_Testing_Gate = function(corner, x_off, z_off)
+  --  local start_at = AGS_Testing_StartCoordinates(center_position, corner)
+  --  local face_at = AGS_CalculateCenterOffset(start_at, x_off, z_off)
+  --  LocalCommand_PlayerPlaceAndConstructEntitiesPlanned(player.id, gate_bp, start_at, face_at, false, false)
+  --end
+  -- left top corner
+  AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.LeftTop, AGS_Testing_CORNERS.LeftTopStep)
+  -- right top corner
+  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.RightTop, AGS_Testing_CORNERS.RightTopStep)
+  -- right bot corner
+  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.RightBot, AGS_Testing_CORNERS.RightBotStep)
+  -- left bot corner
+  --AGS_Testing_Wall(step_count, AGS_Testing_CORNERS.LeftBot, AGS_Testing_CORNERS.LeftBotStep)
+  -- construct 
+  local walls = Player_GetEntitiesFromType(player.id, AGS_BP_ANY_WALL)
+  EGroup_ForEach(walls, AGS_Testing_Construct)
+  
+  -- middle top
+  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleTop, 10, 0)
+  -- middle bot
+  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleBot, 10, 0)
+  -- middle right
+  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleRight, 0, 10)
+  -- middle left
+  --AGS_Testing_Gate(AGS_Testing_CORNERS.GateMiddleLeft, 0, 10)
+  -- construct
+  --local gates = Player_GetEntitiesFromType(player.id, AGS_BP_ANY_GATE)
+  --EGroup_ForEach(gates, AGS_Testing_Construct)
+end
+
+
+function AGS_Testing_StartCoordinates(spawn, corner)
+  -- start corner coordinates
+  local x_str = spawn.x + corner.x
+  local z_str = spawn.z + corner.z
+  return World_Pos(x_str, World_GetHeightAt(x_str, z_str), z_str)
+end
+
+function AGS_Testing_AdjustCoordinates(start, step, step_size)
+  local x_end = start.x + step.x * step_size
+  local z_end = start.z + step.z * step_size  
+  return World_Pos(x_end, World_GetHeightAt(x_end, z_end), z_end)
 end
