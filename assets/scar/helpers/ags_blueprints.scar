@@ -156,6 +156,12 @@ AGS_ENTITY_TABLE = {
     pagoda = "building_dynasty_pagoda_control_chi", --宝塔
     build_village = "building_dynasty_village_control_chi", --村庄
     
+    --朝代（直接升级无效，要当做技能蓝图用）
+    dummy_dynasty_0 = 'building_dummy_dynasty_0_chi',
+    dummy_dynasty_1 = 'building_dummy_dynasty_1_chi',
+    dummy_dynasty_2 = 'building_dummy_dynasty_2_chi',
+    dummy_dynasty_3 = 'building_dummy_dynasty_3_chi',
+    
     landmark_defense_age1 = "building_landmark_age1_gatehouse_control_chi",
     landmark_defense_age2 = "building_landmark_age2_clocktower_control_chi",
     landmark_defense_age3 = "building_landmark_age3_great_wall_control_chi",
@@ -1692,7 +1698,7 @@ function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_o
   
   -- 必须先位移在生成到地图上，不然位置占位会出错
   Entity_ForceConstruct(e)
-  Entity_SnapToGridAndGround(e, false)
+  Entity_SnapToGridAndGround(e, true)
   Entity_Spawn(e)
   local eg = EGroup_CreateIfNotFound(egroup_name) 
   EGroup_Add(eg, e)

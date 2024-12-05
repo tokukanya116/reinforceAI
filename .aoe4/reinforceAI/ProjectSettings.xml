@@ -24,6 +24,8 @@
 	</PluginSettings>
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_global_settings.scar</d3p1:string>
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\specials\ags_testing.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_fortified.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\winconditions\ags_game_mode.rdo</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\ags_global_settings.scar</d3p1:string>
@@ -32,8 +34,6 @@
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\ags_cardinal.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_diplomacy_ui.scar</d3p1:string>
-			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_settled.scar</d3p1:string>
-			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_scattered.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>

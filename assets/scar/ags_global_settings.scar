@@ -538,6 +538,8 @@ function AGS_GlobalSettings_DefineResourceSupSetting(category)
     elseif category.option_setting_resource_amount.enum_value == category.option_setting_resource_amount.enum_items.resource_4 then
       AGS_GLOBAL_SETTINGS.ResourceSupRate = 4
     end  
+  
+    AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_MAXIMUM
 end
   
 ---------------------------------------------------------------------------------------------------

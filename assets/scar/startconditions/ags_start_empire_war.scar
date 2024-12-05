@@ -525,6 +525,10 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       --back_pos = player_building_position_table['pos_gold_mining_camp']
       back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
+      
+      local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
+      local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
+      AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
     end
     
     --拜占庭蓄水池
@@ -646,6 +650,35 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       end
     end
   
+     -- 尝试石墙(毫无作用！！！石墙本体无论是直接spawn还是槽位构造，都无法生成)
+    if build_type == 'great_wall' then
+      -- 用于接收返回的建筑实体(一般返回第一个建筑用于定位)
+      local back_ent
+      
+
+      if raceName == 'mongol' then
+        return
+      end
+      
+      --local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
+      
+      ----if player.raceName == AGS_CIV_CHINESE then
+      --local stone_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
+      ----local stone_wall_blueprint2 = BP_GetSlotItemBlueprint('building_defense_wall_chi')
+      --local stone_wall_bastion_blueprint = AGS_GetCivilizationEntity(raceName, AGS_BP_ANY_BASTION)
+      --local stone_wall_gate_blueprint = AGS_GetCivilizationEntity(raceName, AGS_BP_ANY_GATE)
+      ----local spawn_position = AGS_Starts_GetStartPosition(player.id)      
+      ----AGS_Fortified_WallAroundPosition(player, palisade_blueprint, palisade_gate_blueprint, spawn_position)
+      ----end   
+      
+      --local bp_squad = BP_GetSquadBlueprint("unit_villager_1_chi")
+      --local pos_start = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_FRONT, 10)
+       --local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
+      --local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
+      --AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
+      --local sss = AGS_SpawnSquad(player_id, "wall_worker", bp_squad, pos_start, nil, 1)
+      --LocalCommand_PlayerSquadConstructSlottedSpline(player_id, sss, stone_wall_blueprint,pos_start, pos_end, false)
+    end
     
   end 
 end
