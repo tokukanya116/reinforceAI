@@ -526,6 +526,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
       
+      --BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade
       local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
       local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
       AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
