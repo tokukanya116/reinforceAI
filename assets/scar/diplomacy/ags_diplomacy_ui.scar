@@ -250,7 +250,7 @@ function Diplomacy_CreateUI()
               <ColumnDefinition Width="150" />  
               <ColumnDefinition Width="200" /> 
               <ColumnDefinition Width="200" />
-              <ColumnDefinition Width="80" />
+              <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
 						
 						<!--  Header labels  -->
@@ -345,7 +345,7 @@ function Diplomacy_CreateUI()
 										<ColumnDefinition Width="150" />  
 										<ColumnDefinition Width="200" /> 
 										<ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="200" />
 									</Grid.ColumnDefinitions>
              
                                     <!--定义每一行高度 -->
@@ -630,17 +630,18 @@ function Diplomacy_CreateUI()
 									</ItemsControl>
                   
                   <!-- UnitGift buttons -->
-                  <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,0,0">
+                  <Grid Grid.Column="4" VerticalAlignment="Center"  Margin="16,20" Visibility="{Binding [is_unitgift_visable], Converter={StaticResource BoolToVis}}">
                     <Button Content="{esUtility:LocString $11161243}"
                       Command="{Binding [command][unit_gift]}"
-                      Style="{StaticResource DiplomacyResourceButtonStyle}"
-                      Margin="0,0,12,0" IsTabStop="False"
+                      Style="{StaticResource HUDPrimaryRaisedTextButton}"
+                      Margin="16,30" IsTabStop="False"
+                      IsEnabled="{Binding [is_enabled]}"
                       esUtility:AudioAttachedProperty.PreviewMouseLeftButtonUpSound="sfx_ui_hud_inGame_tribute_send_play">
                     </Button>
-                    <!--IsEnabled="{Binding [total_resources][amount], Converter={StaticResource GreaterCompare}, ConverterParameter=0}"-->
                   </Grid>
-									
-									<Rectangle Grid.Row="1" Grid.ColumnSpan="4"
+                  <!--IsEnabled="{Binding [total_resources][amount], Converter={StaticResource GreaterCompare}, ConverterParameter=0}"-->
+                  
+									<Rectangle Grid.Row="1" Grid.ColumnSpan="5"
 											   Style="{StaticResource DiplomacyHorizontalSeparatorStyle}" />
 								</Grid>
 							</DataTemplate>
@@ -832,7 +833,7 @@ function Diplomacy_UpdateDataContext()
 			context_player.is_diplomacy_visible = not context_player.is_local and not context_player.is_eliminated 
 		end
 		
-		
+		--这里是设定按钮是否启用的限制条件
 		--Individual resource buttons
 		for j, resource in pairs(context_player.tribute) do
 			
@@ -880,6 +881,7 @@ function Diplomacy_UpdateDataContext()
 				resource.opacity = 0.44
 			end
 		end
+    
 	end	
 	Diplomacy_UpdateUI()
 end
@@ -933,34 +935,36 @@ function Diplomacy_CreateDataContext()
 	
 	local CreatePlayerDataContext = function(player)
 		local player_local = Core_GetPlayersTableEntry(Game_GetLocalPlayer())
-		local context_player = { 	
-				player_index = player.index,
-				is_local = player.isLocal,
-				is_eliminated = player.isEliminated,
-				name = {
-					text = Player_GetDisplayName(player.id).LocString,
-					color = UI_GetColourAsString(Player_GetUIColour(player.id)),
-					tooltip = Diplomacy_RelationToTooltipConverter(player, player_local),
-				},			
-				civ_flag = string.format("pack://application:,,,/WPFGUI;component/%s.png", string.gsub(World_GetRaceIcon(Player_GetRace(player.id)), "\\", "/" )),
-				team = {
-					number = player.AGS_Team.index, --player.team.index,
-					name = Diplomacy_FormatTeamNumber(player.AGS_Team.index), --Diplomacy_FormatTeamNumber(player.team.index)
-				},
-				age = _diplomacy.age[Player_GetCurrentAge(player.id)],
-				is_visible = true,																	-- whether to show this row at all
-				is_score_visible = true,				
-				is_tribute_visible = not player.isLocal,	
-				is_diplomacy_visible = not player.isLocal,			
-				is_tribute_enabled = _diplomacy.tribute.is_enabled and _diplomacy.tribute.is_market_built,-- and not player.isLocal,
-				relationTooltip = Diplomacy_RelationToTooltipConverter(player_local, player),
-				relationToolTipHeader = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:238"),
-				is_ally = Player_ObserveRelationship(player.id, player_local.id) == R_ALLY,
-				is_neutral = Player_ObserveRelationship(player.id, player_local.id) == R_NEUTRAL,
-				is_enemy = Player_ObserveRelationship(player.id, player_local.id) == R_ENEMY,
-				relations = {},
-				tribute = {},				
-		}
+    local context_player = { 	
+      player_index = player.index,
+      is_local = player.isLocal,
+      is_eliminated = player.isEliminated,
+      name = {
+        text = Player_GetDisplayName(player.id).LocString,
+        color = UI_GetColourAsString(Player_GetUIColour(player.id)),
+        tooltip = Diplomacy_RelationToTooltipConverter(player, player_local),
+      },			
+      civ_flag = string.format("pack://application:,,,/WPFGUI;component/%s.png", string.gsub(World_GetRaceIcon(Player_GetRace(player.id)), "\\", "/" )),
+      team = {
+        number = player.AGS_Team.index, --player.team.index,
+        name = Diplomacy_FormatTeamNumber(player.AGS_Team.index), --Diplomacy_FormatTeamNumber(player.team.index)
+      },
+      age = _diplomacy.age[Player_GetCurrentAge(player.id)],
+      is_visible = true,																	-- whether to show this row at all
+      is_score_visible = true,				
+      is_tribute_visible = not player.isLocal,	
+      is_diplomacy_visible = not player.isLocal,			
+      is_tribute_enabled = _diplomacy.tribute.is_enabled and _diplomacy.tribute.is_market_built,-- and not player.isLocal,
+      relationTooltip = Diplomacy_RelationToTooltipConverter(player_local, player),
+      relationToolTipHeader = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:238"),
+      is_ally = Player_ObserveRelationship(player.id, player_local.id) == R_ALLY,
+      is_neutral = Player_ObserveRelationship(player.id, player_local.id) == R_NEUTRAL,
+      is_enemy = Player_ObserveRelationship(player.id, player_local.id) == R_ENEMY,
+      is_unitgift_visable = Player_ObserveRelationship(player.id, player_local.id) == R_ALLY and not player.isLocal, -- 仅需满足是同盟玩家且不是自己就行
+      relations = {},
+      tribute = {}, 
+      unitgift = {},
+    }
 		
 		for j, relation in ipairs(_diplomacy.relations) do
 			table.insert(context_player.relations, {
@@ -991,6 +995,7 @@ function Diplomacy_CreateDataContext()
 				},
 			})
 		end
+    
 		return context_player
 	end
 	

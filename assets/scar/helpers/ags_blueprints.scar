@@ -923,9 +923,7 @@ AGS_EMPIRE_WAR_ENTITY_NUM_TABLE = {
     mining_camp = 1,
   },
   mongol = {
-    econ_wood = 1,
     econ_food = 1,
-    mining_camp = 1,
   },
   sultanate = {
     house = 4,

@@ -155,9 +155,11 @@ function AGS_Empire_War_AssignUnitsToResources()
         TC_CAPITAL = TC_CAPITAL,
         player_town_center_pos = player_town_center_pos,
         pos_gold_mining_camp = gold_mining_camp ~=nil and Entity_GetPosition(gold_mining_camp) or nil,
+        pos_stone_mining_camp = stone_mining_camp ~=nil and Entity_GetPosition(stone_mining_camp) or nil,
         pos_econ_food = econ_food ~=nil and Entity_GetPosition(econ_food) or nil,
         pos_econ_wood = econ_wood ~=nil and Entity_GetPosition(econ_wood) or nil,
         ent_gold_mining_camp = gold_mining_camp ~=nil and gold_mining_camp or nil,
+        ent_stone_mining_camp = stone_mining_camp ~=nil and stone_mining_camp or nil,
         ent_econ_food = econ_food ~=nil and econ_food or nil,
         ent_econ_wood = econ_wood ~=nil and econ_wood or nil,
         landmark_abb = nil,
@@ -173,7 +175,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       
       -- 蒙古(蒙古是直接挪tc到木区的)
       if player_raceName == 'mongol' then
-        player_building_position_table['ovoo'] = player_building_position_table['pos_gold_mining_camp']
+        player_building_position_table['ovoo'] = player_building_position_table['pos_stone_mining_camp']
         player_building_position_table['tc_mon'] = player_building_position_table['pos_econ_wood']
         -- 更新蒙古城镇中心地址
         player_town_center_pos = player_building_position_table['pos_econ_wood']

@@ -137,6 +137,13 @@ function Diplomacy_ClearTribute()
 	Diplomacy_UpdateDataContext()
 end
 
+function Diplomacy_UnitGift()
+  for i, context_player in pairs(_diplomacy.data_context.players) do 
+    print('拿到返回了吗？')
+    --建议写一个直接spawn单位的脚本用于测试
+  end
+  Diplomacy_UpdateDataContext()
+end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------

@@ -228,6 +228,7 @@ function AGS_Diplomacy_Create(relations)
 			headerRelations = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:234"),
       -- 单位赠予标题
       unitGift = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:419"),
+      unitGiftFormatter = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:420"),
 		},
 		cue = {							-- Event cue template (shown when player changes relationship or receives tribute) 
 			lifetime = 10.0,
