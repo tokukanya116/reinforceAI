@@ -227,6 +227,7 @@ function Diplomacy_CreateUI()
     </Button>
 	
 	<!-- Diplomacy panel -->
+  <!-- 这里就是外交弹窗的布局 -->
 	<Grid Grid.Row="1"
 		  Panel.ZIndex="1"
 		  Visibility="{Binding [is_ui_expanded], Converter={StaticResource BoolToVis}}">
@@ -241,21 +242,26 @@ function Diplomacy_CreateUI()
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
+          
+           <!-- 头部标签 -->
 					<Grid Grid.Row="0" Margin="0,0,0,3">
-	                    <Grid.ColumnDefinitions>
-	                        <ColumnDefinition MaxWidth="315" />
-	                        <ColumnDefinition Width="150" />
-	                        <ColumnDefinition Width="200" />
-	                        <ColumnDefinition Width="200" />
-	                    </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition MaxWidth="315" />
+              <ColumnDefinition Width="150" />  
+              <ColumnDefinition Width="200" /> 
+              <ColumnDefinition Width="200" />
+              <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
 						
 						<!--  Header labels  -->
+            <!-- 最顶上的标签 -->
 	                    <esControls:Marquee Grid.Row="0" Grid.Column="0">
 							<!-- "PLAYER" -->
 	                        <TextBlock Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}"
 	                                   Text="{esUtility:LocString $11164878}" /> 
 	                    </esControls:Marquee>
 	
+            
 	                    <Grid Grid.Row="0" Grid.Column="1">
 	                        <Grid.ColumnDefinitions>
 	                            <ColumnDefinition Width="*" />
@@ -304,20 +310,45 @@ function Diplomacy_CreateUI()
 	                                       Text="{Binding [headerRelations]}" />
 	                        </esControls:Marquee>
 	                    </Grid>
+                      
+                       <Grid Grid.Row="0" Grid.Column="4">
+                          <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*" />
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="*" />
+                          </Grid.ColumnDefinitions>
+  
+                          <esControls:Marquee Grid.Column="1"
+                                                        MarqueeType="Alternate" Speed="60">
+                <!-- "单位赠送" -->
+                              <TextBlock Margin="4,0" HorizontalAlignment="Center"
+                                         Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}"
+                                         Text="{Binding [unitGift]}" />
+                          </esControls:Marquee>
+                      </Grid>
+            
 					</Grid>
+          
+           <!-- 原文：矩形 可能是指分割线 -->
 					<Rectangle Grid.Row="1"
                                Style="{StaticResource DiplomacyHorizontalSeparatorStyle}" />
-					<!-- Player list -->
+					
+          <!-- Player list -->
+          <!--玩家每一行的内容 -->
 					<ItemsControl Grid.Row="2" ItemsSource="{Binding [players]}" IsTabStop="False">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>								
-								<Grid Visibility="{Binding [is_visible], Converter={StaticResource BoolToVis}}">
+                <Grid Visibility="{Binding [is_visible], Converter={StaticResource BoolToVis}}">
+                  <!--定义每一列宽度 -->
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition MaxWidth="315" />
 										<ColumnDefinition Width="150" />  
 										<ColumnDefinition Width="200" /> 
 										<ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="80" />
 									</Grid.ColumnDefinitions>
+             
+                                    <!--定义每一行高度 -->
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -597,6 +628,17 @@ function Diplomacy_CreateUI()
 											</DataTemplate>
 										</ItemsControl.ItemTemplate>
 									</ItemsControl>
+                  
+                  <!-- UnitGift buttons -->
+                  <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,0,0">
+                    <Button Content="{esUtility:LocString $11161243}"
+                      Command="{Binding [command][unit_gift]}"
+                      Style="{StaticResource DiplomacyResourceButtonStyle}"
+                      Margin="0,0,12,0" IsTabStop="False"
+                      esUtility:AudioAttachedProperty.PreviewMouseLeftButtonUpSound="sfx_ui_hud_inGame_tribute_send_play">
+                    </Button>
+                    <!--IsEnabled="{Binding [total_resources][amount], Converter={StaticResource GreaterCompare}, ConverterParameter=0}"-->
+                  </Grid>
 									
 									<Rectangle Grid.Row="1" Grid.ColumnSpan="4"
 											   Style="{StaticResource DiplomacyHorizontalSeparatorStyle}" />

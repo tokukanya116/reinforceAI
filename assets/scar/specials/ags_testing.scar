@@ -23,17 +23,10 @@ function AGS_Testing_UpdateModuleSettings()
 end
 
 function AGS_Testing_OnPlay()
-	for _, player in pairs(PLAYERS) do
-    --if player.raceName == AGS_CIV_CHINESE then
-      --local stone_wall_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_WALL)
-      --local stone_wall_bastion_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_BASTION)
-      --local stone_wall_gate_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_GATE)
-      ----local spawn_position = AGS_Starts_GetStartPosition(player.id)      
-      ----AGS_Fortified_WallAroundPosition(player, palisade_blueprint, palisade_gate_blueprint, spawn_position)
-    --end    
-		--AGS_Print(player.id, player.raceName)
-	end
+  --开局5分钟后执行
   Rule_AddOneShot(AGS_Testing_Delay, 300)
+  --开局后25分钟检查
+  Rule_AddOneShot(AGS_Testing_Delay_sec, 1500)
 end		
 
 ---------------------------------------------------------------------------------------------------
@@ -42,6 +35,23 @@ end
 function AGS_Testing_Delay()
   --Rule_AddInterval(AGS_Testing_RemoveEntities, 900)
   Rule_AddInterval(AGS_Testing_RemoveUnits, 720)
+end
+
+function AGS_Testing_Delay_sec()
+  for _, player in pairs(PLAYERS) do
+    if player.raceName == AGS_CIV_CHINESE then
+      if AI_IsAIPlayer(player.id) then
+        if Player_IsAlive(player.id) then
+          AGS_Testing_AIChineseTryUpgradeDynasty(player.id)
+          --local stone_wall_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_WALL)
+          --local stone_wall_bastion_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_BASTION)
+          --local stone_wall_gate_blueprint = AGS_GetCivilizationEntity(player.raceName, AGS_BP_ANY_GATE)
+          ----local spawn_position = AGS_Starts_GetStartPosition(player.id)      
+          ----AGS_Fortified_WallAroundPosition(player, palisade_blueprint, palisade_gate_blueprint, spawn_position)
+        end
+      end
+    end    
+  end
 end
 
 function AGS_Testing_RemoveGaia()
@@ -94,6 +104,18 @@ end
 -- Returns option from command line like "-cheat" by asking for "cheat"
 function AGS_Testing_HasCommandLineOption(option_name)
 	return Misc_IsCommandLineOptionSet(option_name)
+end
+
+function AGS_Testing_AIChineseTryUpgradeDynasty(player_id)
+  --BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade --player_dynasty3_chi
+  if Player_HasBuilding(player_id, 'spirit_way') then
+    local dynasty2_blueprint = BP_GetUpgradeBlueprint('player_dynasty2_chi')
+    local dynasty3_blueprint = BP_GetUpgradeBlueprint('player_dynasty3_chi')
+    
+    --Player_RemoveUpgrade
+    LocalCommand_PlayerUpgrade( player_id, dynasty3_blueprint, true, false )
+    Player_RemoveUpgrade(player_id, dynasty2_blueprint)
+  end
 end
 
 function AGS_Testing_SpawnTest()

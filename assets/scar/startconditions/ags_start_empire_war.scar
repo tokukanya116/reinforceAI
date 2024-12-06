@@ -144,12 +144,6 @@ function AGS_Empire_War_AssignUnitsToResources()
       TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1)
   
       player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
-    
-        --智慧宫
-      if player_raceName == 'abbasid' or player_raceName == 'abbasid_ha_01' then
-        local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "landmark_abb", player_town_center_pos, player_building_position_table) 
-        player_building_position_table['landmark_abb'] = landmark_abb
-      end
       
       --生成采集建筑
       local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "gold_mining_camp", player_town_center_pos, player_building_position_table)
@@ -170,6 +164,12 @@ function AGS_Empire_War_AssignUnitsToResources()
         ovoo = nil,
         tc_mon = nil
       }
+    
+      --智慧宫
+      if player_raceName == 'abbasid' or player_raceName == 'abbasid_ha_01' then
+        local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "landmark_abb", player_town_center_pos, player_building_position_table) 
+        player_building_position_table['landmark_abb'] = landmark_abb
+      end
       
       -- 蒙古(蒙古是直接挪tc到木区的)
       if player_raceName == 'mongol' then
@@ -526,10 +526,10 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
       
-      --BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade
-      local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
-      local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
-      AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
+      ----BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade
+      --local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
+      --local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
+      --AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
     end
     
     --拜占庭蓄水池
