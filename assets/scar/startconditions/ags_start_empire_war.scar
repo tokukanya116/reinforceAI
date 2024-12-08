@@ -108,7 +108,7 @@ function AGS_Empire_War_AssignUnitsToResources()
   for idx, player in pairs(PLAYERS) do
     player_id = player.id
     player_idx = idx
-    --if not AGS_AI_IsAI(player_id) then
+    if not AGS_AI_IsAI(player_id) then
       --local player_all_sgroups = 
       --删掉所有的预生成，再重新按照民族生成特殊单位
       --杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
@@ -226,7 +226,7 @@ function AGS_Empire_War_AssignUnitsToResources()
         SGroup_ForEach(sg_player_econ_wood, _AssignGatherWood)
       end
       
-    --end
+    end
   end
 end
 

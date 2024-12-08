@@ -629,13 +629,14 @@ function Diplomacy_CreateUI()
 										</ItemsControl.ItemTemplate>
 									</ItemsControl>
                   
-                  <!-- UnitGift buttons -->
+                  <!-- UnitGift buttons CommandParameter="{Binding [unitGiftParameter]}"-->
                   <Grid Grid.Column="4" VerticalAlignment="Center"  Margin="16,20" Visibility="{Binding [is_unitgift_visable], Converter={StaticResource BoolToVis}}">
                     <Button Content="{esUtility:LocString $11161243}"
-                      Command="{Binding [command][unit_gift]}"
+                      Command="{Binding [unitGiftClickedCommand]}"
+                      CommandParameter="{Binding [unitGiftParameter]}"
                       Style="{StaticResource HUDPrimaryRaisedTextButton}"
                       Margin="16,30" IsTabStop="False"
-                      IsEnabled="{Binding [is_enabled]}"
+                      IsEnabled="{Binding [true]}"
                       esUtility:AudioAttachedProperty.PreviewMouseLeftButtonUpSound="sfx_ui_hud_inGame_tribute_send_play">
                     </Button>
                   </Grid>
@@ -961,6 +962,9 @@ function Diplomacy_CreateDataContext()
       is_neutral = Player_ObserveRelationship(player.id, player_local.id) == R_NEUTRAL,
       is_enemy = Player_ObserveRelationship(player.id, player_local.id) == R_ENEMY,
       is_unitgift_visable = Player_ObserveRelationship(player.id, player_local.id) == R_ALLY and not player.isLocal, -- 仅需满足是同盟玩家且不是自己就行
+      --unit_gift = UI_CreateCommand("Diplomacy_UnitGift"),
+      unitGiftClickedCommand = UI_CreateCommand("Diplomacy_UnitGift"),
+      unitGiftParameter = tostring(player.index),
       relations = {},
       tribute = {}, 
       unitgift = {},
