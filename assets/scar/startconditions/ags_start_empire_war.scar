@@ -34,7 +34,6 @@ end
 function AGS_Empire_War_AssignUnitsToResources()
   local player_civ
   local player_id
-  local localPlayer
   local player_town_center_pos
   local TC_CAPITAL
   local player_raceName
@@ -122,9 +121,6 @@ function AGS_Empire_War_AssignUnitsToResources()
  
       SGroup_ForEach(player_start_sgroup, get_kill_sgroup)
       
-      -- 根据index获取当前轮到的玩家
-      --Game_GetLocalPlayer() 不太确定是否能用
-      localPlayer = World_GetPlayerAt(idx)
       player_raceName = player.raceName
       
       --要移除掉蒙古的蒙古包
@@ -146,10 +142,10 @@ function AGS_Empire_War_AssignUnitsToResources()
       player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
       
       --生成采集建筑
-      local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "gold_mining_camp", player_town_center_pos, player_building_position_table)
-      local stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "stone_mining_camp", player_town_center_pos, player_building_position_table)
-      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "econ_food", player_town_center_pos, player_building_position_table)
-      local econ_wood = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "econ_wood", player_town_center_pos, player_building_position_table)
+      local gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "gold_mining_camp", nil, player_building_position_table)
+      local stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "stone_mining_camp", nil, player_building_position_table)
+      local econ_food = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "econ_food", nil, player_building_position_table)
+      local econ_wood = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "econ_wood", nil, player_building_position_table)
       
       local player_building_position_table = {
         TC_CAPITAL = TC_CAPITAL,
@@ -164,20 +160,20 @@ function AGS_Empire_War_AssignUnitsToResources()
         ent_econ_wood = econ_wood ~=nil and econ_wood or nil,
         landmark_abb = nil,
         ovoo = nil,
-        tc_mon = nil
       }
     
       --智慧宫
       if player_raceName == 'abbasid' or player_raceName == 'abbasid_ha_01' then
-        local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "landmark_abb", player_town_center_pos, player_building_position_table) 
+        local landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, "landmark_abb", nil, player_building_position_table) 
         player_building_position_table['landmark_abb'] = landmark_abb
       end
       
       -- 蒙古(蒙古是直接挪tc到木区的)
       if player_raceName == 'mongol' then
         player_building_position_table['ovoo'] = player_building_position_table['pos_stone_mining_camp']
-        player_building_position_table['tc_mon'] = player_building_position_table['pos_econ_wood']
-        -- 更新蒙古城镇中心地址
+        
+        -- 更新蒙古城镇中心实体和地址
+        TC_CAPITAL = player_building_position_table['ent_econ_wood']
         player_town_center_pos = player_building_position_table['pos_econ_wood']
         --Player_AddResource(player.id, RT_Wood, 50)
       end
@@ -203,11 +199,9 @@ function AGS_Empire_War_AssignUnitsToResources()
       local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'], true)
       local sg_player_econ_wood = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_wood", 'worker', player_building_position_table['pos_econ_wood'], true)
       
-      --local sg_player_start_sgroup = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'start_sgroup', player_building_position_table)
-      
       --侦察兵
       AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
-      local sg_player_start_official = nil
+
       if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
         AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
       end
@@ -422,8 +416,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
         --stone_type = 'small'
       --else
         --stone_type = 'big'
-      --end
-      
+      --end    
      
       local stone_position = Entity_GetPosition(stone_entity)
       local center_pos = AGS_CalculateCenterOffset(stone_position, 0, 0) 
@@ -524,21 +517,14 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
     
     -- 联通电信的村庄
     if build_type == 'build_village' then
-      --back_pos = player_building_position_table['pos_gold_mining_camp']
       back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
-      
-      ----BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade
-      --local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
-      --local pos_end = AGS_Building_GetSpawnPosition( player_building_position_table['TC_CAPITAL'], OFFSET_BACK, 20)
-      --AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
     end
     
     --拜占庭蓄水池
     if build_type == 'cistern' then
       --水池 应当部署在金矿，朝向磨坊
       back_pos = World_GetOffsetPositionRelativeToFacingTarget(player_building_position_table['pos_gold_mining_camp'], player_building_position_table['pos_econ_food'], 15)
-      --position = AGS_GetAvailablePosition(player_id, player_building_position_table['ent_econ_food'], 'ent', nil, 15, true )
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
     end
     
@@ -625,8 +611,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
             end
           end
           
-          --return 会终止部分生成
-          --return 
+          --return --此处会终止之后的生成，慎用
           
         --马里露天金矿  
         elseif raceName == 'malian' then
@@ -644,6 +629,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
               position = AGS_GetAvailablePosition(player_id, player_building_position_table['TC_CAPITAL'], 'ent', nil, 10, true )
             end
             back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, position) 
+            
           else
             back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, nil, back_ent)
           end
@@ -653,15 +639,15 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       end
     end
   
-     -- 尝试石墙(毫无作用！！！石墙本体无论是直接spawn还是槽位构造，都无法生成)
-    if build_type == 'great_wall' then
+    -- 尝试石墙(毫无作用！！！石墙本体无论是直接spawn还是槽位构造，都无法生成)
+    --if build_type == 'great_wall' then
       -- 用于接收返回的建筑实体(一般返回第一个建筑用于定位)
-      local back_ent
+      --local back_ent
       
 
-      if raceName == 'mongol' then
-        return
-      end
+      --if raceName == 'mongol' then
+        --return
+      --end
       
       --local great_wall_blueprint = AGS_GetCivilizationEntity(raceName, 'landmark_defense_age3')
       
@@ -681,7 +667,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       --AGS_SpawnEntity(player_id, 'build_entities', great_wall_blueprint, pos_end, nil, false, true)
       --local sss = AGS_SpawnSquad(player_id, "wall_worker", bp_squad, pos_start, nil, 1)
       --LocalCommand_PlayerSquadConstructSlottedSpline(player_id, sss, stone_wall_blueprint,pos_start, pos_end, false)
-    end
+    --end
     
   end 
 end

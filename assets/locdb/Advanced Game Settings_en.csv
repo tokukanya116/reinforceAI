@@ -1,7 +1,7 @@
 ﻿ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
-1,,,,Mod Title,,reinforceAI_V2(Ongoing update)
-2,,,,Mod Page Description,,Personal mods based on AGS:reinforceAI
-3,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the opening\nDisable Navy\nai has more 75 population\nPlease use it with a bundle of the same name(reinforceAI_bundle)"
+1,,,,Mod Title,,Advanced Game Settings
+2,,,,Mod Page Description,,"Continuing from suspended development, this mod extends Age of Empires 4 standard game mode with new options and truly gives you an ability to customize match settings.\n\nThis mod contains additional win conditions like Score, King of the Hill, Wonder Rush, and others. It provides new starting conditions like Nomad or Fortified, and it enables many new options including Treaty & Diplomacy, Age Restrictions, Handicaps, and more.\n\nHelp, feedback, bug reports, and contributions for this mod variant can be found at: \nhttps://github.com/joshuasachtleben/AOE4-AdvancedGameSettings"
+3,,,,Mod Gamemode Description,,"Advanced Game Settings provides you with a variety of match options and win conditions to customize your game and play it how you want to.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/joshuasachtleben/AOE4-AdvancedGameSettings"
 4,,,,Option Header,,Win Conditions
 5,,,,Annihilation Option,,Annihilation
 6,,,,Annihilation Option,,"Destroy all enemies. This option is required, unless you wish for player to be never eliminated even if he loses everything."
@@ -418,3 +418,4 @@
 419,,,,,,unitGift(test)
 420,,,,,,gift
 421,,,,,,Gift selected units to Allies
+422,,,,,,need pop cap
