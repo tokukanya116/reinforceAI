@@ -138,6 +138,7 @@ function Diplomacy_ClearTribute()
 end
 
 function Diplomacy_UnitGift(parameter)
+  --会不同步！！需要检查
   -- 获得赠予玩家的
   local gift_player_index = tonumber(parameter)
   local sg_unit_selection = SGroup_CreateIfNotFound("sg_unit_selection")
@@ -170,13 +171,14 @@ function Diplomacy_UnitGift(parameter)
       local maxPop = Player_GetCurrentPopulationCap(player_id, CT_Personnel)
       --local curPop = Player_GetCurrentPopulation(player, CT_Personnel)
       -- 需要转化为
-      if (curpop - maxpop) > 0 then
+      -- if (curpop - maxpop) > 0 then
       SGroup_SetPlayerOwner(sg_unit_gift, player_id)
-      end
+      --end
       SGroup_Clear(sg_unit_gift)
+      Diplomacy_UpdateDataContext()
+      return
     end
   end
-  Diplomacy_UpdateDataContext()
 end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
