@@ -60,6 +60,7 @@ function AGS_Objectives_CreateFromCore(core, template)
 	return new_objective
 end
 
+--目标？
 function AGS_Objectives_PresentWrap(obj_id, obj_state, obj_title, obj_title_param)
 	return {
 		id = obj_id,

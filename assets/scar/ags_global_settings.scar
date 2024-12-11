@@ -539,7 +539,11 @@ function AGS_GlobalSettings_DefineResourceSupSetting(category)
       AGS_GLOBAL_SETTINGS.ResourceSupRate = 4
     end  
   
-    AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_MAXIMUM
+    if AGS_GLOBAL_SETTINGS.IsTestMode then
+      AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_MAXIMUM
+      AGS_GLOBAL_SETTINGS.MapVision = AGS_GS_MAP_VISION_REVEALED -- 地图视野 --AGS_GS_MAP_VISION_REVEALED --AGS_GS_MAP_VISION_EXPLORED
+    end
+    
 end
   
 ---------------------------------------------------------------------------------------------------

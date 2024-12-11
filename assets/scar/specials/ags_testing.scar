@@ -24,20 +24,26 @@ end
 
 function AGS_Testing_OnPlay()
   --开局5分钟后执行
-  Rule_AddOneShot(AGS_Testing_Delay, 300)
-  --开局后25分钟检查
-  Rule_AddOneShot(AGS_Testing_Delay_sec, 1500)
+  Rule_AddOneShot(AGS_Testing_Delay_5min, 300)
+  --开局10分钟后执行
+  Rule_AddOneShot(AGS_Testing_Delay_10min, 10)
+  --开局后25分钟检查强制ai联通进唐朝
+  Rule_AddOneShot(AGS_Testing_Delay_Dynasty, 1500)
 end		
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
-function AGS_Testing_Delay()
+function AGS_Testing_Delay_5min()
   --Rule_AddInterval(AGS_Testing_RemoveEntities, 900)
   Rule_AddInterval(AGS_Testing_RemoveUnits, 720)
 end
 
-function AGS_Testing_Delay_sec()
+function AGS_Testing_Delay_10min()
+  Rule_AddInterval(AGS_Testing_Reset_AI_Attack_Target, 10)
+end
+
+function AGS_Testing_Delay_Dynasty()
   for _, player in pairs(PLAYERS) do
     if player.raceName == AGS_CIV_CHINESE then
       if AI_IsAIPlayer(player.id) then
@@ -54,15 +60,32 @@ function AGS_Testing_Delay_sec()
   end
 end
 
-function AGS_Testing_RemoveGaia()
-	local egroup = EGroup_CreateUnique()
-	World_GetAllNeutralEntities(egroup)
-	EGroup_Filter(egroup, "animal", FILTER_KEEP)
-	EGroup_DestroyAllEntities(egroup)    		
-	EGroup_Destroy(egroup)
+function AGS_Testing_Reset_AI_Attack_Target()
+  for _, player in pairs(PLAYERS) do
+    if AI_IsAIPlayer(player.id) then
+      if Player_IsAlive(player.id) then
+        --杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
+        local player_attack_sgroup = Player_GetSquads(player.id)
+        --优先调整：没找到对应的蓝图，需要修改
+        local function get_player_sgroup_plane_to_attack(gid, idx, sid)
+          if Squad_IsOfType(sid, 'scar_scout') or Squad_IsOfType(sid, 'scar_villager') or Squad_IsOfType(sid, 'scar_sheep') then
+            SGroup_Remove(player_attack_sgroup, sid)
+          end
+        end
+        
+        local enemy = Player_FindFirstEnemyPlayer(player.id)
+        AGS_Print(player.raceName.."当前敌人"..tostring(enemy))
+        local TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(enemy.id, AGS_BP_TC_CAPITAL),1)
+        local player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
+ 
+        SGroup_ForEach(player_attack_sgroup, get_player_sgroup_plane_to_attack)
+        Cmd_AttackMove( player_attack_sgroup, player_town_center_pos, true, "", 60, false, false )
+        --AIPlayer_UpdateSkirmishAttackAndCaptureTasks(player.id)
+      end
+    end   
+  end
 end
 
---优先调整：30分钟后删掉ai多余的伐木场，矿场，铁匠铺，大学
 -- 清空可能会导致单位卡顿的单位
 function AGS_Testing_RemoveUnits()
   if AGS_GLOBAL_SETTINGS.MaximumPopulation < 275 then
@@ -101,11 +124,6 @@ function AGS_Testing_RemoveEntities()
   end
 end
 
--- Returns option from command line like "-cheat" by asking for "cheat"
-function AGS_Testing_HasCommandLineOption(option_name)
-	return Misc_IsCommandLineOptionSet(option_name)
-end
-
 function AGS_Testing_AIChineseTryUpgradeDynasty(player_id)
   --BP_GetUpgradeBlueprint --Cmd_InstantUpgrade Cmd_Upgrade --LocalCommand_PlayerUpgrade --player_dynasty3_chi
   if Player_HasBuilding(player_id, 'spirit_way') then
@@ -116,6 +134,19 @@ function AGS_Testing_AIChineseTryUpgradeDynasty(player_id)
     LocalCommand_PlayerUpgrade( player_id, dynasty3_blueprint, true, false )
     Player_RemoveUpgrade(player_id, dynasty2_blueprint)
   end
+end
+
+function AGS_Testing_RemoveGaia()
+  local egroup = EGroup_CreateUnique()
+  World_GetAllNeutralEntities(egroup)
+  EGroup_Filter(egroup, "animal", FILTER_KEEP)
+  EGroup_DestroyAllEntities(egroup)        
+  EGroup_Destroy(egroup)
+end
+
+-- Returns option from command line like "-cheat" by asking for "cheat"
+function AGS_Testing_HasCommandLineOption(option_name)
+  return Misc_IsCommandLineOptionSet(option_name)
 end
 
 function AGS_Testing_SpawnTest()
@@ -136,4 +167,10 @@ function AGS_Testing_SpawnTest()
 		local sbp_shp = BP_GetSquadBlueprint("unit_supply_cart_chi")
 		local sbp_shp = BP_GetSquadBlueprint("unit_militia_cmp_chi")
 	end
+end
+
+function AGS_Testing_Find_Enemy()
+  --先遍历玩家表，查出敌对关系
+  --把敌人全写到新表
+  --根据首都城镇中心是否摧毁判断要不要找下一个敌人
 end

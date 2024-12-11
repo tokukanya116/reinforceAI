@@ -400,28 +400,36 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
     local stone_type
     -- 查找周边金矿类型(石料)
     distance = 120
-    local stone_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, AGS_BP_DEPOSIT_STONE))
+    local stone_entities = EGroup_CreateIfNotFound('stone_entities')
+    local filter_entities = EGroup_CreateIfNotFound('filter_entities')
     -- 查找周边石头类型
     World_GetEntitiesNearPoint(player_id, stone_entities, preset_position, distance, OT_Neutral)
-    EGroup_Filter(stone_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL), FILTER_KEEP)
+    EGroup_Filter(stone_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE), FILTER_KEEP, filter_entities)
+    
+    if EGroup_Count(stone_entities) == 0 then
+      --World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
+      EGroup_Filter(filter_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL), FILTER_KEEP, stone_entities)
+    end
+    
+    --需要添加大石头支持
     
     local stone_entity = AGS_EGroup_GetClosestEntity(stone_entities, preset_position)
     
     if stone_entity ~= nil then
       
       --判断是大石料还是小石料
-      --if Entity_HasBlueprint(stone_entity, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL)) then
-        --stone_type = 'small'
-      --else
-        --stone_type = 'big'
-      --end    
+      if Entity_HasBlueprint(stone_entity, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL)) then
+        stone_type = 'small'
+      else
+        stone_type = 'big'
+      end    
      
       local stone_position = Entity_GetPosition(stone_entity)
       local center_pos = AGS_CalculateCenterOffset(stone_position, 0, 0) 
       --蒙古
       if player_raceName == 'mongol' then
-        --local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
-        local ovoo_type = 'ovoo_small'
+        local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
+        --local ovoo_type = 'ovoo_small'
         build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(player_raceName, ovoo_type), center_pos, nil, false, false)
       else 
         --其他
