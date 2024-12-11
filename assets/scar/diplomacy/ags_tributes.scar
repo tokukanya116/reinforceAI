@@ -171,14 +171,13 @@ function Diplomacy_UnitGift(parameter)
       local maxPop = Player_GetCurrentPopulationCap(player_id, CT_Personnel)
       --local curPop = Player_GetCurrentPopulation(player, CT_Personnel)
       -- 需要转化为
-      -- if (curpop - maxpop) > 0 then
-      SGroup_SetPlayerOwner(sg_unit_gift, player_id)
+      --if (tonumber(curpop) - tonumber(maxpop)) > 0 then
+        --SGroup_SetPlayerOwner(sg_unit_gift, player_id)
       --end
-      SGroup_Clear(sg_unit_gift)
-      Diplomacy_UpdateDataContext()
-      return
+      --SGroup_Clear(sg_unit_gift)
     end
   end
+  Diplomacy_UpdateDataContext()
 end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
