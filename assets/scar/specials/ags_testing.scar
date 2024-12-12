@@ -71,14 +71,15 @@ function AGS_Testing_Reset_AI_Attack_Target()
           end
         end
         
-        local enemy = Core_GetPlayersTableEntry(Player_FindFirstEnemyPlayer(player.id))
+        --local enemy = Core_GetPlayersTableEntry(Player_FindFirstEnemyPlayer(player.id))
         
         --AGS_Print(player.raceName.."当前敌人"..tostring(enemy.PlayerID))
-        local TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(enemy.id, AGS_BP_TC_CAPITAL), 1)
-        local player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
+        --local TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(enemy.id, AGS_BP_TC_CAPITAL), 1)
+        --local player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
+        local world_center = World_Pos(0, 0, 0)
  
         SGroup_ForEach(player_attack_sgroup, get_player_sgroup_plane_to_attack)
-        Cmd_AttackMove( player_attack_sgroup, player_town_center_pos, true, "", 60, false, false )
+        Cmd_AttackMove( player_attack_sgroup, world_center, true, "", 60, false, false )
         --AIPlayer_UpdateSkirmishAttackAndCaptureTasks(player.id)
       end
     end   
