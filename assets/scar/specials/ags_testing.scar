@@ -26,7 +26,7 @@ function AGS_Testing_OnPlay()
   --开局5分钟后执行
   Rule_AddOneShot(AGS_Testing_Delay_5min, 300)
   --开局10分钟后执行
-  Rule_AddOneShot(AGS_Testing_Delay_10min, 10)
+  Rule_AddOneShot(AGS_Testing_Delay_10min, 600)
   --开局后25分钟检查强制ai联通进唐朝
   Rule_AddOneShot(AGS_Testing_Delay_Dynasty, 1500)
 end		
@@ -40,7 +40,7 @@ function AGS_Testing_Delay_5min()
 end
 
 function AGS_Testing_Delay_10min()
-  Rule_AddInterval(AGS_Testing_Reset_AI_Attack_Target, 10)
+  Rule_AddInterval(AGS_Testing_Reset_AI_Attack_Target, 120)
 end
 
 function AGS_Testing_Delay_Dynasty()
@@ -64,18 +64,17 @@ function AGS_Testing_Reset_AI_Attack_Target()
   for _, player in pairs(PLAYERS) do
     if AI_IsAIPlayer(player.id) then
       if Player_IsAlive(player.id) then
-        --杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
         local player_attack_sgroup = Player_GetSquads(player.id)
-        --优先调整：没找到对应的蓝图，需要修改
         local function get_player_sgroup_plane_to_attack(gid, idx, sid)
           if Squad_IsOfType(sid, 'scar_scout') or Squad_IsOfType(sid, 'scar_villager') or Squad_IsOfType(sid, 'scar_sheep') then
             SGroup_Remove(player_attack_sgroup, sid)
           end
         end
         
-        local enemy = Player_FindFirstEnemyPlayer(player.id)
-        AGS_Print(player.raceName.."当前敌人"..tostring(enemy))
-        local TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(enemy.id, AGS_BP_TC_CAPITAL),1)
+        local enemy = Core_GetPlayersTableEntry(Player_FindFirstEnemyPlayer(player.id))
+        
+        --AGS_Print(player.raceName.."当前敌人"..tostring(enemy.PlayerID))
+        local TC_CAPITAL =  EGroup_GetEntityAt(Player_GetEntitiesFromType(enemy.id, AGS_BP_TC_CAPITAL), 1)
         local player_town_center_pos = Entity_GetPosition( TC_CAPITAL )
  
         SGroup_ForEach(player_attack_sgroup, get_player_sgroup_plane_to_attack)
