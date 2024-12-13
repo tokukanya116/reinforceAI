@@ -65,6 +65,8 @@ function AGS_Diplomacy_LateInitializations()
 	if _diplomacy ~= nil then 
 		Network_RegisterEvent("Diplomacy_ChangeRelationNtw")
 		Network_RegisterEvent("Diplomacy_SendTributeNtw")
+    -- 必须要往客户端注入
+    Network_RegisterEvent("Diplomacy_UnitGiftNtw")
 		
 		-- Initial age
 		for _, context_player in pairs(_diplomacy.data_context.players) do				

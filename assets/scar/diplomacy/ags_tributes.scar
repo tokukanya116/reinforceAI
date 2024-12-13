@@ -78,6 +78,69 @@ function Diplomacy_SendTributeNtw(playerID, data)
 	Core_CallDelegateFunctions("OnTributeSent", tribute_data)   
 end
 
+function Diplomacy_UnitGiftNtw(playerID, data)
+  local sender = Core_GetPlayersTableEntry(playerID)
+  --local unit_gift_data = {}
+  local chunks = string.split(data ,"|")  
+  
+  for i = 1, #chunks do 
+    local parts = string.split(chunks[i])
+    if #parts == 2 then 
+      local receiver = Core_GetPlayersTableEntryFromIndex(tonumber(parts[2]))
+      local unit_gift = { 
+        have_give = tonumber(parts[1]) ~= 0 or false,
+        sender = sender,    
+        receiver = receiver,
+      }    
+      --table.insert(unit_gift_data, unit_gift)
+      
+      
+      
+      if unit_gift.have_give then
+        local sg_unit_selection = SGroup_CreateIfNotFound("sg_unit_selection")
+        local sg_unit_gift = SGroup_CreateIfNotFound("sg_unit_gift")
+  
+        local function squadGetOwner(gid, idx, sid)
+          --must local player
+          if Squad_IsOwnedByPlayer(sid, sender.id) then
+            SGroup_Add(sg_unit_gift, sid)
+            SGroup_Remove(sg_unit_selection, sid)
+          end
+        end
+  
+        Misc_GetSelectedSquads( sg_unit_selection, false )
+  
+        if SGroup_Count(sg_unit_selection) then
+          SGroup_ForEach(sg_unit_selection, squadGetOwner)
+        end
+        
+        local curpop = Player_GetTotalPopulation(unit_gift.receiver.id)
+        local maxPop = Player_GetCurrentPopulationCap(unit_gift.receiver.id, CT_Personnel)
+        
+        if Core_Compare(maxPop, curpop ,IS_GREATER_THAN_OR_EQUAL) then
+          SGroup_SetPlayerOwner(sg_unit_gift, unit_gift.receiver.id)
+        end
+        SGroup_Clear(sg_unit_gift)
+        
+      end
+            
+      --提示部分
+      --if unit_gift.receiver.isLocal and not unit_gift.receiver.isEliminated then
+        --Diplomacy_ShowEventCue(unit_gift)
+      --elseif sender.isLocal and (unit_gift.food > 0 or unit_gift.wood > 0 or unit_gift.gold > 0 or unit_gift.stone > 0) then
+        --local cue = _diplomacy.cue
+        --local text = Loc_FormatText(11164677, Player_GetDisplayName(unit_gift.receiver.id))    -- "Tribute sent to %1PLAYER_NAME%"
+        --UI_CreateEventCueClickable(-1, cue.lifetime, 0, cue.repeatTime, text, cue.desc, cue.template, cue.icon, cue.sfx, cue.color.r, cue.color.g, cue.color.b, cue.color.a, cue.style, nothing)
+      --end
+    end
+  end  
+  
+  _diplomacy.tribute.is_in_progress = false
+  Diplomacy_UpdateDataContext()
+  Rule_AddOneShot(Rule_Diplomacy_UpdateUI, 0)
+    
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Callbacks:
 ---------------------------------------------------------------------------------------------------
@@ -138,47 +201,17 @@ function Diplomacy_ClearTribute()
 end
 
 function Diplomacy_UnitGift(parameter)
-  -- 会不同步！！ 只能单人模式自己用
-  -- 获得赠予玩家的
-  local gift_player_index = tonumber(parameter)
-  local sg_unit_selection = SGroup_CreateIfNotFound("sg_unit_selection")
-  local sg_unit_gift = SGroup_CreateIfNotFound("sg_unit_gift")
-  local local_player = Core_GetPlayersTableEntry(Game_GetLocalPlayer())
-  local function squadGetOwner(gid, idx, sid)
-    --必须是自己的才能送
-    if Squad_IsOwnedByPlayer(sid, local_player.id) then
-      SGroup_Add(sg_unit_gift, sid)
-      --在框选单位里移除
-      SGroup_Remove(sg_unit_selection, sid)
+  local unit_gift_data = ""
+  
+  for i, player in pairs(_diplomacy.data_context.players) do
+    local receiver = 0
+    if player.player_index == tonumber(parameter) then
+      receiver = tonumber(parameter)
     end
+    unit_gift_data = string.format("%s%d,%d|", unit_gift_data, receiver, player.player_index)    
   end
   
-  --拿到鼠标选中单位
-  Misc_GetSelectedSquads( sg_unit_selection, false )
-  
-  --没有选中的东西就返回
-  if not SGroup_Count(sg_unit_selection) then
-    return
-  else
-    SGroup_ForEach(sg_unit_selection, squadGetOwner)
-  end
-  
-  for i, context_player in pairs(_diplomacy.data_context.players) do 
-    
-    if context_player.player_index == gift_player_index then
-      local player_id = World_GetPlayerAt(context_player.player_index) 
-      local curpop = Player_GetTotalPopulation(player_id)
-      local maxPop = Player_GetCurrentPopulationCap(player_id, CT_Personnel)
-      --local curPop = Player_GetCurrentPopulation(player, CT_Personnel)
-      -- 需要转化为
-      --Core_IsPlayerOnPlayerTeam( )
-      if Core_Compare(maxPop, curpop ,IS_GREATER_THAN_OR_EQUAL) then
-        SGroup_SetPlayerOwner(sg_unit_gift, player_id)
-      end
-      SGroup_Clear(sg_unit_gift)
-    end
-  end
-  Diplomacy_UpdateDataContext()
+  Network_CallEvent("Diplomacy_UnitGiftNtw", unit_gift_data)    
 end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
