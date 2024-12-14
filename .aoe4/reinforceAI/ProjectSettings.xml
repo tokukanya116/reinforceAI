@@ -8,7 +8,7 @@
 				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
 					<d2p1:Value>
-						<d2p1:string>assets\locdb</d2p1:string>
+						<d2p1:string>assets\locdb\Advanced Game Settings_en.csv</d2p1:string>
 						<d2p1:string>assets\scar\diplomacy</d2p1:string>
 						<d2p1:string>assets\scar\replay</d2p1:string>
 						<d2p1:string>assets\scar\specials</d2p1:string>
@@ -26,7 +26,7 @@
 					<d3p1:Column>1</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\diplomacy\ags_tributes.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>187</d3p1:Line>
+					<d3p1:Line>219</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
