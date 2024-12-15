@@ -404,7 +404,7 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_sul",
     defense_wall = "building_defense_wall_sul",
     defense_wall_gate = "building_defense_wall_gate_sul",
-    monk = "unit_monk_3_sul",
+    monk = "unit_monk_2_sul",
   },
   malian = {
     castle = "building_defense_keep_mal",

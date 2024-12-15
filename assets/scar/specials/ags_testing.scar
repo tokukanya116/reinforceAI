@@ -23,6 +23,7 @@ function AGS_Testing_UpdateModuleSettings()
 end
 
 function AGS_Testing_OnPlay()
+  AGS_Testing_CreateObjective()
   --开局5分钟后执行
   Rule_AddOneShot(AGS_Testing_Delay_5min, 300)
   --开局10分钟后执行
@@ -173,4 +174,27 @@ function AGS_Testing_Find_Enemy()
   --先遍历玩家表，查出敌对关系
   --把敌人全写到新表
   --根据首都城镇中心是否摧毁判断要不要找下一个敌人
+end
+
+--参数
+AGS_TSETING_OBJECTIVES_CONQUEST = {
+  reason = WR_NONE,
+  title = "$64c5019a145c4e4da448dbd3adeea61e:425", 
+  title_lost = Loc_Empty(),
+  title_victory = Loc_Empty(),
+  description = Loc_Empty(),
+  icon = "icons\\races\\common\\victory_conditions\\victory_condition_conquest",
+  data_template = "ConquestObjectiveTemplate",
+  data_template_or = "ConquestObjectiveTemplate",
+  priority = OT_Primary,
+  parent = 0,
+  telemetry = "conquestObj",
+  alert = "icons\\event_queue_high_priority_large",
+}
+
+--模板
+
+function AGS_Testing_CreateObjective() 
+  AGS_TSETING_CONQUEST_OBJECTIVE = AGS_Objectives_Create(AGS_TSETING_OBJECTIVES_CONQUEST, AGS_GS_LOCAL_PLAYER)
+  AGS_Objectives_Set(AGS_TSETING_CONQUEST_OBJECTIVE, OS_Incomplete, true)
 end
