@@ -194,7 +194,7 @@ function AGS_Empire_War_AssignUnitsToResources()
       -- 生成的羊
       local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
       
-       -- 额外生成的建筑
+      -- 额外生成的建筑
       AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, nil, player_building_position_table)
       
       --生成派发的村民
@@ -207,9 +207,9 @@ function AGS_Empire_War_AssignUnitsToResources()
       AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
 
       --朝廷命官
-      --if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
-        --AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
-      --end
+      if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
+        AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
+      end
       
       
       if player_raceName == 'sultanate' then
@@ -414,7 +414,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
      local stone_entity
     
     -- 查找周边金矿类型(石料)
-    distance = 120
+    distance = 80
     local stone_entities = EGroup_CreateIfNotFound('stone_entities')
     local filter_entities = EGroup_CreateIfNotFound('filter_entities')
     -- 查找周边石头类型
@@ -550,21 +550,21 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
     end
     
-    --罗斯哨塔+狩猎小屋
-    --wodden_fort
-    --hunting_cabin
-    if build_type == 'wodden_fort' then
-      --应当部署在伐木场旁边
-      back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_econ_wood'], OFFSET_FRONT, 0)
-      AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
-    end  
+    ----罗斯哨塔+狩猎小屋
+    ----wodden_fort
+    ----hunting_cabin
+    --if build_type == 'wodden_fort' then
+      ----应当部署在伐木场旁边
+      --back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_econ_wood'], OFFSET_FRONT, 0)
+      --AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
+    --end  
     
-    if build_type == 'hunting_cabin' then
-      --应当部署在伐木场旁边
-      back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_econ_wood'], OFFSET_BACK, 0)
-      --position = AGS_GetAvailablePosition(player_id, player_building_position_table['ent_econ_food'], 'ent', nil, 15, true )
-      AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
-    end  
+    --if build_type == 'hunting_cabin' then
+      ----应当部署在伐木场旁边
+      --back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_econ_wood'], OFFSET_BACK, 0)
+      ----position = AGS_GetAvailablePosition(player_id, player_building_position_table['ent_econ_food'], 'ent', nil, 15, true )
+      --AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
+    --end  
     
     --if build_type == 'monastery' then
       --清真寺 应当部署在磨坊，朝向伐木场
@@ -650,10 +650,10 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
             else
               position = AGS_GetAvailablePosition(player_id, player_building_position_table['TC_CAPITAL'], 'ent', nil, 10, true )
             end
-            back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, position) 
+            back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, position, nil, need_safe) 
             
           else
-            back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, nil, back_ent)
+            back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, nil, back_ent, nil, need_safe)
           end
           
         end
@@ -696,7 +696,7 @@ end
 
 
 -- 所有的建筑排列都在此生成
-function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, position, back_ent, offset)
+function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, position, back_ent, offset, need_safe)
   if not player_id then
     return
   end
@@ -713,6 +713,10 @@ function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, p
 
   if step ~= 1 then
     position = AGS_Building_GetSpawnPosition( back_ent, offset )
+  end
+  
+  if need_safe then
+    position = AGS_GetSafeSpawnPositionByEPB( ebp, position )
   end
   
   --倒数第二个参数为true会出现建筑物虚影但不会立马构造 --有个缺陷（需要考虑的东西太多，虽然很方便）

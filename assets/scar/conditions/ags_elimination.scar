@@ -51,7 +51,7 @@ function AGS_Elimination_OnPlayerAITakeover(context)
 				-- This should IMHO be updated in case something relies on it.(别拿这个变量去耦合其它参数)
 				player.isHuman = false
         
-        if AI_IsAIPlayer(player.id) then --重新设置AI难度为极难
+        --if AI_IsAIPlayer(player.id) then --重新设置AI难度为极难
           -- 请对照 scardoc 里 Enum List 对应的 AIDifficultyLevel(由0开始荒谬是1 令人发指是2 荒唐是3 极难是8)
           AI_SetDifficulty(player.id, 3)
           AI_Enable(player.id, true)
@@ -60,7 +60,7 @@ function AGS_Elimination_OnPlayerAITakeover(context)
           Player_SetStateModelBool(player.id, "player_can_construct_structures", true)
           --待调整动态人口
           --AGS_PopulationCapacity_ApplyMaxCapPopulation(player, AGS_GLOBAL_SETTINGS.MaximumPopulation + 50)
-        end
+        --end
         
 			end
 		end		

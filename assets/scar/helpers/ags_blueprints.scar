@@ -2012,6 +2012,32 @@ function AGS_Building_GetSpawnPosition(building, offset, other_offset)
   return World_Pos(position.x, y, position.z)
 end
 
+--写一个查找区域有障碍物就返回
+function AGS_Building_GetPositionAroundHasEntities(ebp, distance)
+  if not ebp then
+    return
+  end
+  if other_offset == nil then
+    other_offset = 0
+  end
+  if scartype(building) == ST_EGROUP then
+    building = EGroup_GetEntityAt(building, 1)
+  end
+  local building_position = Entity_GetPosition(building)
+  local building_heading = Entity_GetHeading(building)
+  local building_radius = 6
+  if Entity_IsOfType(building, "town_center") then
+    building_radius = 8
+  end
+  if offset % 2 == 1 then
+    building_radius = building_radius * 1.4142 --sqrt(2) --buildings are square, not round. so corners are farther out 
+  end
+  building_radius = building_radius + 0.5 --adding a bit of buffer room because it looks better
+  local position = World_GetOffsetPosition(building_position, building_heading, offset, building_radius + other_offset)
+  local y = World_GetHeightAt(position.x, position.z)
+  return World_Pos(position.x, y, position.z)
+end
+
 
 --返回可用的生成点(大概方位和可用空地)
 --必须传入玩家id player_id
@@ -2126,11 +2152,7 @@ function AGS_GetSafeSpawnPositionByEPB( ebp, position )
   --return Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(position, e))
   
   local safe_spawn = World_GetSpawnablePosition(position, e)
-  Entity_WarpToPos(e, safe_spawn)
-  
-  Entity_Spawn(e)
-  Entity_ForceConstruct(e)
-  Entity_SnapToGridAndGround(e, false)
+  return safe_spawn
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点
