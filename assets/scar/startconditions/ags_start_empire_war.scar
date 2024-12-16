@@ -539,8 +539,10 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
     
     -- 联通电信的村庄
     if build_type == 'build_village' then
-      back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
-      AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
+      local pos = player_building_position_table['pos_econ_food']
+      back_pos =  World_GetOffsetPositionRelativeToFacingTarget(player_building_position_table['pos_gold_mining_camp'], World_Pos(pos.x + 5, 0, pos.z), 10)
+      --back_pos = AGS_Building_GetSpawnPosition(player_building_position_table['ent_gold_mining_camp'], nil, 5)
+      AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos, nil, true)
     end
     
     --拜占庭蓄水池

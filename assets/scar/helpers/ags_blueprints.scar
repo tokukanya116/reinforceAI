@@ -2151,8 +2151,7 @@ function AGS_GetSafeSpawnPositionByEPB( ebp, position )
   local e = Entity_CreateENVFacing(ebp, position, rotation, true)
   --return Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(position, e))
   
-  local safe_spawn = World_GetSpawnablePosition(position, e)
-  return safe_spawn
+  return World_GetSpawnablePosition(position, e)
 end
 
 --返回根据A元素朝向B元素并向指定元素位移多少的一个点
