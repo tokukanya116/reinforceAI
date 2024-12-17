@@ -195,8 +195,12 @@ function Diplomacy_UnitGift(parameter)
   
   local function squadGetOwner(gid, idx, sid)
     --must local player
+    
     if Squad_IsOwnedByPlayer(sid, sender.id) then
-      unit_gift_data = unit_gift_data .. tostring(sid.SquadID) .. ','
+      if not Squad_IsOfType(sid, 'scar_villager') or not Squad_IsOfType(sid, 'scar_official') or not Squad_IsOfType(sid, 'scar_trade_cart') or not Squad_IsOfType(sid, 'king') or not Squad_IsOfType(sid, 'scar_monk') or not Squad_IsOfType(sid, 'scar_khan') then
+        unit_gift_data = unit_gift_data .. tostring(sid.SquadID) .. ','
+      end
+     
     end
   end
   
