@@ -197,7 +197,13 @@ function Diplomacy_UnitGift(parameter)
     --must local player
     
     if Squad_IsOwnedByPlayer(sid, sender.id) then
-      if not Squad_IsOfType(sid, 'scar_villager') or not Squad_IsOfType(sid, 'scar_official') or not Squad_IsOfType(sid, 'scar_trade_cart') or not Squad_IsOfType(sid, 'king') or not Squad_IsOfType(sid, 'scar_monk') or not Squad_IsOfType(sid, 'scar_khan') then
+      if not Squad_IsOfType(sid, 'scar_villager') and
+        not Squad_IsOfType(sid, 'scar_official') and 
+        not Squad_IsOfType(sid, 'scar_trade_cart') and 
+        not Squad_IsOfType(sid, 'king') and 
+        not Squad_IsOfType(sid, 'scar_monk') and 
+        not Squad_IsOfType(sid, 'scar_khan') and
+        not Squad_IsOfType(sid, 'jeanne_d_arc') then
         unit_gift_data = unit_gift_data .. tostring(sid.SquadID) .. ','
       end
      

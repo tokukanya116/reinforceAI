@@ -2042,7 +2042,7 @@ end
 --返回可用的生成点(大概方位和可用空地)
 --必须传入玩家id player_id
 --必须传入 实体，小队 base_element element_type(假定是具体类型，减少判断时间)
---根据传入实体或小队生成8个方向的定位 
+--根据传入实体或小队生成8个方向的定位 distance 暂未使用
 --并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
 --是否写入全局 need_global
 --是否需要返回 need_back
@@ -2107,6 +2107,7 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
       'gold', --金矿
       'stone', --石料
       'forage_bush', --浆果
+      'building'
       --'tree'
     }
     
