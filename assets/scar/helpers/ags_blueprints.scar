@@ -2117,7 +2117,7 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
     --EGroup_Count(closest_neutral_entities) < 3 and
 
-    if not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and not EGroup_Count(closest_player_entities) then
+    if not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and EGroup_Count(closest_player_entities) == 0 then
       local tree_ebp_table = BP_GetEntityBlueprintsWithType('tree')
       if EGroup_HasBlueprint(closest_neutral_entities, tree_ebp_table, true) then
         EGroup_Destroy(closest_neutral_entities)
