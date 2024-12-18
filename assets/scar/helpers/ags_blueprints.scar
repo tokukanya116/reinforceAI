@@ -2100,21 +2100,29 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     -- 这个是已经朝向实体的某个方向的定位为基点了
     local search_pos = AGS_Building_GetSpawnPosition(closet_pos, pos_type, range)
     
-    local closest_entities = EGroup_CreateIfNotFound("closest_entities")
-    World_GetEntitiesNearPoint(player_id, closest_entities, search_pos, range, OT_Neutral)
+    local closest_neutral_entities = EGroup_CreateIfNotFound("closest_neutral_entities")
+    local closest_player_entities = EGroup_CreateIfNotFound("closest_player_entities")
+    World_GetEntitiesNearPoint(player_id, closest_neutral_entities, search_pos, range, OT_Neutral)
+    World_GetEntitiesNearPoint(player_id, closest_player_entities, search_pos, range, OT_Player)
     
     local type_table = {
       'gold', --金矿
       'stone', --石料
       'forage_bush', --浆果
-      'building'
+      --'building'
       --'tree'
     }
     
     -- 直接找到所有的这几种类型的蓝图
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
+    --EGroup_Count(closest_neutral_entities) < 3 and
 
-    if EGroup_Count(closest_entities) < 3 and not EGroup_HasBlueprint(closest_entities, ebp_table, false) then
+    if not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and not EGroup_Count(closest_player_entities) then
+      local tree_ebp_table = BP_GetEntityBlueprintsWithType('tree')
+      if EGroup_HasBlueprint(closest_neutral_entities, tree_ebp_table, true) then
+        EGroup_Destroy(closest_neutral_entities)
+      end
+      
       player_can_spawn_pos_table[pos_type] = search_pos
     end
   end

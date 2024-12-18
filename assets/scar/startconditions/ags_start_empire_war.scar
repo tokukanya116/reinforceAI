@@ -80,7 +80,7 @@ function AGS_Empire_War_StartUnitsSetting(player_id, player_raceName)
 end
 
 --自动派遣单位采集
-function AGS_Empire_War_AssignUnitsToResources(context)
+function AGS_Empire_War_AssignUnitsToResources(content)
   -- 派遣挖矿
   local function _AssignGoldminer(gid, idx, sid)
     SGroup_Single(sg_single, sid)
@@ -147,7 +147,7 @@ function AGS_Empire_War_AssignUnitsToResources(context)
     end
   end
   
-  local content = Table_Copy(context)
+  --local content = context
   
   local tc_capital =  EGroup_GetEntityAt( Player_GetEntitiesFromType( content.player_id, AGS_BP_TC_CAPITAL ), 1)
   local tc_capital_pos = Entity_GetPosition( tc_capital )
@@ -157,8 +157,6 @@ function AGS_Empire_War_AssignUnitsToResources(context)
   local ent_stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", content.start_pos, nil)
   local ent_econ_food = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", content.start_pos, nil)
   local ent_econ_wood = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", content.start_pos, nil) 
-  
- 
   
   --必定存在的特殊建筑
   local landmark_abb
@@ -185,18 +183,27 @@ function AGS_Empire_War_AssignUnitsToResources(context)
   --local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
   
   table.insert(content.building_table, {
-      --ent_gold_mining_camp = 
       tc_capital = tc_capital,
       ent_gold_mining_camp = ent_gold_mining_camp,
       ent_stone_mining_camp = ent_stone_mining_camp,
       ent_econ_food = ent_econ_food,
       ent_econ_wood = ent_econ_wood,
       landmark_abb = landmark_abb,
-      ovoo = ovoo 
+      ovoo = ovoo
   })
   
+  --local building_table = {
+     --tc_capital,
+     --ent_gold_mining_camp,
+     --ent_stone_mining_camp,
+     --ent_econ_food,
+     --ent_econ_wood,
+     --landmark_abb,
+     --ovoo 
+  --}
+  
   ---- 额外生成的建筑
-  AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_raceName, nil, content.building_table)
+  AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_raceName, nil, content.building_table[1])
   
   ----生成派发的村民
   --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
@@ -254,96 +261,6 @@ function AGS_Empire_War_Start_Setting()
   end
 end
 
-
-
---自动识别sbp类型并返回sgroup
-function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, use_type, sbp_type_suffix, preset_position, need_back)
-  --空值，报错拦截
-  if not player_id then
-    return
-  end
-  if not player_raceName then
-    return
-  end
-  if not use_type then
-    return
-  end
-  if not preset_position then
-    preset_position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
-  end
-  if not sbp_type_suffix then
-    sbp_type_suffix = ''
-  end
-  if not need_back then
-    need_back = false
-  end
-  
-  
-  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
-  local bp_squad -- 小队蓝图
-  local sgroup_name = AGS_SGroupName(player_id, use_type)
-  local count
-  
-  -- 按类型生成的个体参数
-  if sbp_type_suffix == "worker" then
-    bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
-    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName][tostring(use_type) .."_".. sbp_type_suffix]
-  elseif sbp_type_suffix == "resource" then
-    if use_type == 'econ_food_resource_sheep' then
-      bp_squad = AGS_GetNeutralUnit(AGS_BP_SHEEP)
-      count = 5
-    end
-  elseif use_type == 'extra' then
-    if sbp_type_suffix == 'scout' then
-      bp_squad = BP_GetSquadBlueprint("unit_scout_1_"..player_civ_prefixes)
-      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
-      AGS_SpawnSquad(player_id, sgroup_name, bp_squad, preset_position, nil, count)
-      return
-    end
-    
-    if sbp_type_suffix == 'official' then
-      --因为这里的地址被替换成了地址表，所以要单独取出 preset_position['...'] 这样 
-      bp_squad = BP_GetSquadBlueprint("unit_official_1_"..player_civ_prefixes)
-      -- 监督
-      --local bp_supervise = BP_GetAbilityBlueprint('official_supervise_building_target_chi')
-      local official_food = AGS_SpawnSquad(player_id, sgroup_name..'_food', bp_squad, preset_position['pos_econ_food'], nil, 1)
-      local official_gold = AGS_SpawnSquad(player_id, sgroup_name.."_gold", bp_squad, preset_position['pos_gold_mining_camp'], nil, 1)
-      
-      --local player_entities = Player_GetEntities(player_id)
-      
-      -- 遍历查找需要监督的建筑
-      --local function supervise(gid,idx,eid)
-        --EGroup_Single(eg_single, eid)
-        
-        --if eid['EntityID'] == preset_position['ent_econ_food']['EntityID'] then
-          --LocalCommand_SquadEntityAbility(player_id, official_food, eg_single, bp_supervise, true, false)
-        --elseif eid['EntityID'] == preset_position['ent_gold_mining_camp']['EntityID'] then
-          --LocalCommand_SquadEntityAbility(player_id, official_gold, eg_single, bp_supervise, true, false)
-        --else
-        --end
-      --end
-      
-      --EGroup_ForEach(player_entities, supervise)
-    end
-    
-    --清真寺学者
-    if sbp_type_suffix == 'monk' then
-      --因为这里的地址被替换成了地址表，所以要单独取出 preset_position['...'] 这样 
-      bp_squad = BP_GetSquadBlueprint("unit_monk_2_sul")
-      count = 2
-
-      AGS_SpawnSquad(player_id, sgroup_name..'_monk', bp_squad, preset_position['player_town_center_pos'], nil, count)
-    end
-  else
-    
-  end
-  
-  --返回生成的队伍成员
-  if need_back and use_type ~= 'extra' then
-    return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, preset_position, nil, count)
-  end
-end
-
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
 function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, build_type, preset_position, building_ent)
   --空值，报错拦截
@@ -364,6 +281,15 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   local distance = 80
   
   local build_entity_callback
+  
+  --智慧宫
+  if build_type == "landmark_abb" then
+    --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
+    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, building_ent, 'ent', nil, 60, true ) 
+      --树可以删
+    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
+  end
+  
   
   -- 金矿
   if build_type == "gold_mining_camp" then
@@ -490,7 +416,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
 
   -- 木头
   if build_type == "econ_wood" then
-    distance = 50
+    distance = 90
     local wood_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, 'wood'))
     -- 查找周边木头类型
     World_GetEntitiesNearPoint(player_id, wood_entities, preset_position, distance, OT_Neutral)
@@ -526,32 +452,28 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       end  
     end
   end
-  
-  --智慧宫
-  if build_type == "landmark_abb" then
-    --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, building_ent, 'ent', nil, 20, true ) 
-    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
-  end
-  
+ 
   return build_entity_callback
 end
 
---其他额外建筑(千万不能改变building_table)
-function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, preset_position, building_table)
-  --空值，报错拦截
+--其他额外建筑(千万不能改变context)
+function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, preset_position, context)
   if not player_id then
     return
   end
   if not player_raceName then
     return
   end
-  if not preset_position then
-     preset_position = building_table[1][tc_capital][Position]
-  end
-  if not building_table then
+  if not context then
     return
   end
+  -- 取出出来的都是字符串，转化效率和直接调用方法差不多
+  --local single = context[1]
+  --空值，报错拦截
+  if not preset_position then
+     preset_position = Entity_GetPosition( context.tc_capital )
+  end
+  
   
   local build_entities = EGroup_CreateIfNotFound('build_entities')
   local raceName = player_raceName
@@ -571,7 +493,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
     --拜占庭蓄水池
     if build_type == 'cistern' then
       --水池 应当部署在金矿，朝向磨坊
-      back_pos = World_GetOffsetPositionRelativeToFacingTarget(building_table[1][ent_gold_mining_camp][Position], building_table[1][ent_econ_food][Position], 15)
+      back_pos = World_GetOffsetPositionRelativeToFacingTarget(Entity_GetPosition( context.ent_gold_mining_camp ), preset_position, 20)
       AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, 1, back_pos)
     end
     
@@ -613,7 +535,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
         
         --阿巴斯 需要黄金时代
         if raceName == 'abbasid' or raceName == 'abbasid_ha_01' then
-          local landmark_abb =  building_table[1]['landmark_abb']
+          local landmark_abb =  context.landmark_abb
           local corners_pos --四个角的定位
           local next_pos_offset -- i+1
           local last_pos_offset -- i+2
@@ -671,13 +593,15 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
             --根据城镇中心找第一个可用 地址区域 并生成
             local position 
             if raceName == 'japanese' then
-              position = AGS_GetAvailablePosition(player_id, building_table[1]['ent_econ_food'], 'ent', nil, 0, true )
+              position = AGS_GetAvailablePosition(player_id, context.ent_econ_food, 'ent', nil, 0, true )
             else
-              position = AGS_GetAvailablePosition(player_id, building_table[1]['TC_CAPITAL'], 'ent', nil, 10, true )
+              -- 根据城镇中心找
+              position = AGS_GetAvailablePosition(player_id, context.tc_capital, 'ent', nil, 20, true )
             end
             back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, position, nil, need_safe) 
             
           else
+            position = AGS_GetAvailablePosition(player_id, back_ent, 'ent', nil, 15, true )
             back_ent = AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, build_ebp, i, nil, back_ent, nil, need_safe)
           end
           
@@ -719,7 +643,6 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
   end 
 end
 
-
 -- 所有的建筑排列都在此生成
 function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, position, back_ent, offset, need_safe)
   if not player_id then
@@ -749,4 +672,92 @@ function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, p
   build_entity_callback = AGS_SpawnEntity(player_id, 'build_entities', ebp, position, nil, false, true)   
   
   return build_entity_callback
+end
+
+--自动识别sbp类型并返回sgroup
+function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, use_type, sbp_type_suffix, preset_position, need_back)
+  --空值，报错拦截
+  if not player_id then
+    return
+  end
+  if not player_raceName then
+    return
+  end
+  if not use_type then
+    return
+  end
+  if not preset_position then
+    preset_position = Entity_GetPosition(EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL),1))
+  end
+  if not sbp_type_suffix then
+    sbp_type_suffix = ''
+  end
+  if not need_back then
+    need_back = false
+  end
+  
+  
+  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
+  local bp_squad -- 小队蓝图
+  local sgroup_name = AGS_SGroupName(player_id, use_type)
+  local count
+  
+  -- 按类型生成的个体参数
+  if sbp_type_suffix == "worker" then
+    bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
+    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName][tostring(use_type) .."_".. sbp_type_suffix]
+  elseif sbp_type_suffix == "resource" then
+    if use_type == 'econ_food_resource_sheep' then
+      bp_squad = AGS_GetNeutralUnit(AGS_BP_SHEEP)
+      count = 5
+    end
+  elseif use_type == 'extra' then
+    if sbp_type_suffix == 'scout' then
+      bp_squad = BP_GetSquadBlueprint("unit_scout_1_"..player_civ_prefixes)
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      AGS_SpawnSquad(player_id, sgroup_name, bp_squad, preset_position, nil, count)
+      return
+    end
+    
+    if sbp_type_suffix == 'official' then
+      --因为这里的地址被替换成了地址表，所以要单独取出 preset_position['...'] 这样 
+      bp_squad = BP_GetSquadBlueprint("unit_official_1_"..player_civ_prefixes)
+      -- 监督
+      --local bp_supervise = BP_GetAbilityBlueprint('official_supervise_building_target_chi')
+      local official_food = AGS_SpawnSquad(player_id, sgroup_name..'_food', bp_squad, preset_position['pos_econ_food'], nil, 1)
+      local official_gold = AGS_SpawnSquad(player_id, sgroup_name.."_gold", bp_squad, preset_position['pos_gold_mining_camp'], nil, 1)
+      
+      --local player_entities = Player_GetEntities(player_id)
+      
+      -- 遍历查找需要监督的建筑
+      --local function supervise(gid,idx,eid)
+        --EGroup_Single(eg_single, eid)
+        
+        --if eid['EntityID'] == preset_position['ent_econ_food']['EntityID'] then
+          --LocalCommand_SquadEntityAbility(player_id, official_food, eg_single, bp_supervise, true, false)
+        --elseif eid['EntityID'] == preset_position['ent_gold_mining_camp']['EntityID'] then
+          --LocalCommand_SquadEntityAbility(player_id, official_gold, eg_single, bp_supervise, true, false)
+        --else
+        --end
+      --end
+      
+      --EGroup_ForEach(player_entities, supervise)
+    end
+    
+    --清真寺学者
+    if sbp_type_suffix == 'monk' then
+      --因为这里的地址被替换成了地址表，所以要单独取出 preset_position['...'] 这样 
+      bp_squad = BP_GetSquadBlueprint("unit_monk_2_sul")
+      count = 2
+
+      AGS_SpawnSquad(player_id, sgroup_name..'_monk', bp_squad, preset_position['player_town_center_pos'], nil, count)
+    end
+  else
+    
+  end
+  
+  --返回生成的队伍成员
+  if need_back and use_type ~= 'extra' then
+    return AGS_SpawnSquad(player_id, sgroup_name, bp_squad, preset_position, nil, count)
+  end
 end
