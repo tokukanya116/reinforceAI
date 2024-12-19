@@ -74,5 +74,48 @@ LocalCommand_SquadEntityAbility(player_id, official_gold, eg_single, bp_supervis
 ##### 其他
 
 ###### 异常
+实体生成错误会导致资源变成不可选(但游戏能正常运行且不报错，需要逐行注释查错)
 
-实体生成错误会导致资源变成不可选(但游戏能正常运行且不报错，需要逐行注释差错)
+##### 思路
+1.如果你需要寻找安全的定位，最好基于一个建筑物作为起始目标
+例如：
+
+    ```
+    AGS_LAYOUT_TABLE_A = {
+    OFFSET_FRONT, --0
+    OFFSET_BACK, --4
+    OFFSET_LEFT, --6
+    OFFSET_RIGHT, --2
+    OFFSET_FRONT_LEFT,  --7
+    OFFSET_BACK_LEFT, --5
+    OFFSET_FRONT_RIGHT, --1
+    OFFSET_BACK_RIGHT, --3
+    }
+    -- 值得注意的是：他们都是int值 所以你引用这个方向的时候 写 0 或者 OFFSET_FRONT 都是可以的
+    如： 此处就是计算建筑边距
+    -- 建筑一般都是6
+    local building_radius = 6
+    --只有城镇中心是8
+    if Entity_IsOfType(building, "town_center") then
+        building_radius = 8
+    end
+    local offset = OFFSET_FRONT --指的是在这个建筑的前方，你想要斜角就 找对角方向 OFFSET_FRONT_LEFT 之类的
+    if offset % 2 == 1 then
+        building_radius = building_radius * 1.4142 --sqrt(2) --建筑都是方形的，相当于补充边距
+    end
+    ```
+
+2.关于位移格子
+    并不完全是按照真实距离去进行位移的
+    例：如果你打开地图模式，你就会发现建筑物可以遵循 栅格 布置
+    栅格 指的是 地编的白色格子 或者 游戏里建造时显示的那些格子（1个 栅格 相当于 5）
+    但是 建筑实体 本身是有 模型占位格 的（实体中心点在这个模型格中心 模型占位格一般 4个 占 1个 栅格）
+    模型占位格 不对齐 栅格！ 一般比 自身 占用 栅格 要小
+    简单来说 
+    如果你想要在scar脚本模式下 将一个对齐另一个实体（不重叠） ，你就要考虑 实际距离(比如 小金矿和普通矿场 就是 3个 栅格，实际距离就是 15)
+    同时他有个特性 （因为 1个地图栅格 有 4 模型占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格）
+    例如 日本矿场 无论是 大金 或 小金 ，计算偏移量都是 12.5；其他矿场 都是 10
+
+
+##### 作者&鸣谢
+雾隐kagari

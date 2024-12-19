@@ -27,7 +27,7 @@ end
 --调用预设置函数
 function AGS_Empire_War_PresetExecute()
   --AGS_Print("AGS_Empire_War_PresetExecute")
-  AGS_Empire_War_Start_Setting()
+  --AGS_Empire_War_Start_Setting()
 end
 
 --function AGS_Nomadic_DestroySpawn()
@@ -147,7 +147,9 @@ function AGS_Empire_War_AssignUnitsToResources(content)
     end
   end
   
-  --local content = context
+  --找出地图上所有自然实体
+  local allNeutralEntities = EGroup_CreateIfNotFound("allNeutralEntities")
+  World_GetAllNeutralEntities(allNeutralEntities)
   
   local tc_capital =  EGroup_GetEntityAt( Player_GetEntitiesFromType( content.player_id, AGS_BP_TC_CAPITAL ), 1)
   local tc_capital_pos = Entity_GetPosition( tc_capital )
@@ -158,53 +160,53 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   
   -- 智慧宫
   if content.player_raceName == 'abbasid' or content.player_raceName == 'abbasid_ha_01' then
-    landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "landmark_abb", nil, tc_capital)
+    landmark_abb = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "landmark_abb", nil, tc_capital, allNeutralEntities)
   end
       
   ----生成采集建筑
-  local ent_gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "gold_mining_camp", content.start_pos, nil)
-  local ent_stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", content.start_pos, nil)
-  local ent_econ_food = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", content.start_pos, nil)
-  local ent_econ_wood = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", content.start_pos, nil) 
+  local ent_gold_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
+  local ent_stone_mining_camp = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
+  local ent_econ_food = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", nil, tc_capital, allNeutralEntities)
+  local ent_econ_wood = AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", nil, tc_capital, allNeutralEntities) 
    
-  --默认绵羊采集区
-  local gather_sheep_pos =  World_Pos(tc_capital_pos.x - 5, 0, tc_capital_pos.z - 7.5)
-  --重设中国文明的采集区
-  if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
-    gather_sheep_pos = ent_econ_food['Position']
-  end
+  ----默认绵羊采集区
+  --local gather_sheep_pos =  World_Pos(tc_capital_pos.x - 3.5, 0, tc_capital_pos.z - 7.5)
+  ----重设中国文明的采集区
+  --if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
+    --gather_sheep_pos = Entity_GetPosition(ent_econ_food)
+  --end
   
-  -- 重设蒙古文明的采集区
-  if player_raceName == 'mongol' then
-    local pos = ent_econ_wood['Position'] 
-    gather_sheep_pos = World_Pos(pos.x - 5, 0, pos.z - 7.5)
-  end
+  ---- 重设蒙古文明的采集区
+  --if player_raceName == 'mongol' then
+    --local pos = Entity_GetPosition(ent_econ_wood) 
+    --gather_sheep_pos = World_Pos(pos.x - 3.5, 0, pos.z - 7.5)
+  --end
   
   -- 生成的羊
-  --local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
+  --local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(content.player_id, content.player_raceName, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
   
-  table.insert(content.building_table, {
-      tc_capital = tc_capital,
-      ent_gold_mining_camp = ent_gold_mining_camp,
-      ent_stone_mining_camp = ent_stone_mining_camp,
-      ent_econ_food = ent_econ_food,
-      ent_econ_wood = ent_econ_wood,
-      landmark_abb = landmark_abb,
-      ovoo = ovoo
-  })
+  --table.insert(content.building_table, {
+      --tc_capital = tc_capital,
+      --ent_gold_mining_camp = ent_gold_mining_camp,
+      --ent_stone_mining_camp = ent_stone_mining_camp,
+      --ent_econ_food = ent_econ_food,
+      --ent_econ_wood = ent_econ_wood,
+      --landmark_abb = landmark_abb,
+      --ovoo = ovoo
+  --})
   
-  --local building_table = {
-     --tc_capital,
-     --ent_gold_mining_camp,
-     --ent_stone_mining_camp,
-     --ent_econ_food,
-     --ent_econ_wood,
-     --landmark_abb,
-     --ovoo 
-  --}
+  ----local building_table = {
+     ----tc_capital,
+     ----ent_gold_mining_camp,
+     ----ent_stone_mining_camp,
+     ----ent_econ_food,
+     ----ent_econ_wood,
+     ----landmark_abb,
+     ----ovoo 
+  ----}
   
-  ---- 额外生成的建筑
-  AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_raceName, nil, content.building_table[1])
+  ------ 额外生成的建筑
+  --AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_raceName, nil, content.building_table[1])
   
   ----生成派发的村民
   --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
@@ -263,7 +265,13 @@ function AGS_Empire_War_Start_Setting()
 end
 
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
-function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, build_type, preset_position, building_ent)
+--player_id 玩家id 必须
+--player_raceName 民族名 必须
+--build_type --建筑类型 econ_gold 必须
+--base_position --基点定位 可选
+--base_building_ent --基点实体 可选，定位不存在时为必须
+--allNeutralEntities --
+function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, build_type, base_position, base_building_ent, allNeutralEntities)
   --空值，报错拦截
   if not player_id then
     return
@@ -274,33 +282,53 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   if not build_type then
     return
   end
-  if not preset_position then
-    preset_position = Entity_GetPosition(building_ent)
+  if not base_position and not base_building_ent then
+    return
   end
+  if not base_position then
+    base_position = Entity_GetPosition(base_building_ent)
+  end
+ 
   
   local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
   local distance = 80
-  
   local build_entity_callback
   
   --智慧宫
   if build_type == "landmark_abb" then
     --317af35d
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, building_ent, 'ent', nil, 25, true, true)
+    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, true, true)
+    
+    --树可以删
+    local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
+    World_GetEntitiesNearPoint(player_id, closest_tree_entities, landmark_abb_pos, 35, OT_Neutral)
+    EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
+    
+    local _AGS_DestroyAnyTree = function(gid, idx, eid)    
+      if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
+        EGroup_Remove(allNeutralEntities, eid)
+        Entity_Destroy(eid)
+      end    
+    end
+    
+    EGroup_ForEach(closest_tree_entities, _AGS_DestroyAnyTree)
     
     build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
   end
   
-  
   -- 金矿
   if build_type == "gold_mining_camp" then
-    local gold_type 
-    local gold_entities = EGroup_CreateIfNotFound(build_type)
+    local gold_type --金矿类型
+    local gold_entity --金矿实体
     
-    -- 查找周边金矿类型(先查小金，不存在则找大金)
+    local filter_gold_entities = EGroup_CreateIfNotFound('filter_gold_entities')
+    EGroup_Filter( allNeutralEntities, AGS_BP_DEPOSIT_GOLD, FILTER_REMOVE, filter_gold_entities)
     
-    local gold_entity = AGS_GetClosestGoldEntity(player_id, preset_position, distance)
+   
+    if filter_gold_entities ~= nil then
+      gold_entity = AGS_EGroup_GetClosestEntity(filter_gold_entities, base_position)
+    end
     
     if gold_entity ~= nil then
       if Entity_HasBlueprint(gold_entity, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_GOLD_SMALL)) then
@@ -338,7 +366,11 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
         AGS_SpawnEntity(player_id, 'open_pit_mine', BP_GetEntityBlueprint('building_open_pit_mine'..open_pit_type..'_mal'), gold_position, nil, false, false)  
       end
       
-      local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, pos_offset) 
+      --返回方向 Util_GetDirectionFromAtoB
+       
+      --local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, pos_offset) 
+      local center_pos = Util_GetPositionFromAtoB(gold_position, base_position, pos_minecamp)
+      center_pos = World_Pos(center_pos.x, 0, center_pos.z - pos_offset)
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_raceName, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
     end
   end
@@ -349,11 +381,16 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       build_entity_callback = nil
     end
 
-    local forag_bush_entity = AGS_GetClosestFoodEntity(player_id, 'berry', preset_position, distance)
+    local filter_forag_bush_entities = EGroup_CreateIfNotFound('filter_forag_bush_entities')
+    EGroup_Filter( allNeutralEntities, AGS_BP_DEPOSIT_FOOD, FILTER_REMOVE, filter_forag_bush_entities)
     
+    local forag_bush_entity 
+    if filter_forag_bush_entities ~= nil then
+      forag_bush_entity = AGS_EGroup_GetClosestEntity(filter_forag_bush_entities, base_position)
+    end
+
     if forag_bush_entity ~= nil then
-      local try_near_pos = Util_GetPositionFromAtoB(Entity_GetPosition(forag_bush_entity), preset_position, 7.5)
-      -- AGS_CalculateCenterOffset(try_near_pos, 0, 0)
+      local try_near_pos = Util_GetPositionFromAtoB(Entity_GetPosition(forag_bush_entity), base_position, 7.5)
       build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(player_raceName, AGS_BP_ECOM_FOOD), try_near_pos, nil, false, true)  
     end
   end
@@ -361,27 +398,16 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   --石矿
   if build_type == "stone_mining_camp" then
     local stone_type
-     local stone_entity
+    local stone_entity
     
-    -- 查找周边金矿类型(石料)
-    distance = 80
-    local stone_entities = EGroup_CreateIfNotFound('stone_entities')
-    local filter_entities = EGroup_CreateIfNotFound('filter_entities')
-    -- 查找周边石头类型
-    World_GetEntitiesNearPoint(player_id, stone_entities, preset_position, distance, OT_Neutral)
-    EGroup_Filter(stone_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE), FILTER_KEEP, filter_entities)
+    local filter_stone_entities = EGroup_CreateIfNotFound('filter_stone_entities')
+    EGroup_Filter( allNeutralEntities, AGS_BP_DEPOSIT_STONE, FILTER_REMOVE, filter_stone_entities)
     
-    
-    if EGroup_Count(stone_entities) == 0 then
-      --World_GetEntitiesNearPoint(player_id, closest_resource_gold_deposit, position, distance, OT_Neutral)
-      EGroup_Filter(filter_entities, AGS_GetNeutralEntity(AGS_BP_DEPOSIT_STONE_SMALL), FILTER_KEEP, stone_entities)
-      stone_entity = AGS_EGroup_GetClosestEntity(filter_entities, preset_position)
-    else
-      stone_entity = AGS_EGroup_GetClosestEntity(stone_entities, preset_position)
+   
+    if filter_stone_entities ~= nil then
+      stone_entity = AGS_EGroup_GetClosestEntity(filter_stone_entities, base_position)
     end
-    
-    --stone_entity = AGS_EGroup_GetClosestEntity(filter_entities, preset_position)
-    
+      
     if stone_entity ~= nil then
       
       --判断是大石料还是小石料
@@ -389,27 +415,34 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
         stone_type = 'small'
       else
         stone_type = 'big'
-      end    
+      end  
      
       local stone_position = Entity_GetPosition(stone_entity)
-      local center_pos = AGS_CalculateCenterOffset(stone_position, 0, 0) 
+
       --蒙古
       if player_raceName == 'mongol' then
         local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
-        --local ovoo_type = 'ovoo_small'
-        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(player_raceName, ovoo_type), center_pos, nil, false, false)
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(player_raceName, ovoo_type), stone_position, nil, false, false)
       else 
         --其他
         -- 设置偏移
         -- 默认小石头+标准矿场
         local pos_minecamp = 10
+        local pos_offset = 0
 
         --日本的矿场无论大小金都是固定距离(因为 1个地图栅格 有 4实体占位格距离 的 容许机制，即取值在在这个容许范围之内，实体都不会在地图上位移超过1格)
         if player_civ_prefixes == 'jpn' then
           pos_minecamp = 12.5
         end
         
-        center_pos = AGS_CalculateCenterOffset(stone_position, pos_minecamp, 0) 
+        if gold_type == 'big' and player_civ_prefixes ~= 'jpn' then
+          pos_offset = 5
+        else
+          pos_offset = 0
+        end
+        
+        local center_pos = Util_GetPositionFromAtoB(stone_position, base_position, pos_minecamp)
+        center_pos = World_Pos(center_pos.x, 0, center_pos.z - pos_offset)
         build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, 'stone'..AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_raceName, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
       end
       
@@ -418,39 +451,37 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
 
   -- 木头
   if build_type == "econ_wood" then
-    distance = 90
-    local wood_entities = EGroup_CreateIfNotFound(AGS_EGroupNeutralName(1, 'wood'))
-    -- 查找周边木头类型
-    World_GetEntitiesNearPoint(player_id, wood_entities, preset_position, distance, OT_Neutral)
-    EGroup_Filter( wood_entities, AGS_BP_TREE, FILTER_KEEP)
-    local TC = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL), 1)
+    
+    local filter_tree_entities = EGroup_CreateIfNotFound('filter_tree_entities')
+    EGroup_Filter( allNeutralEntities, AGS_BP_TREE, FILTER_REMOVE, filter_tree_entities)
+    --local TC = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL), 1)
     
     local function findTheNearestForestPosition(gid, idx, eid)
       -- 玩家出生点距离30以上必定是树林
       -- 只要把距离过近的删除，剩下的一定是树林，取第一个生成伐木场就行
-      if eid ~= nil and Util_GetDistance(eid, TC) <= 30 then
-        EGroup_Remove(wood_entities ,eid)
-        --if Entity_IsOfType(eid, AGS_BP_TREE) == 
-        --Util_GetPositionFromAtoB( MarkerID/Pos a, MarkerID/Pos b, Real distance ) --尝试返回一个从a向b出发，距离多少的点
+      if eid ~= nil and Util_GetDistance(eid, base_position) <= 30 then
+        EGroup_Remove(filter_tree_entities ,eid)
       end  
     end
     
-    EGroup_ForEach(wood_entities, findTheNearestForestPosition)
+    EGroup_ForEach(filter_tree_entities, findTheNearestForestPosition)
     
-    if wood_entities ~= nil then
+    if filter_tree_entities ~= nil then
       -- 获取最近城镇中心的树
-      local pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(wood_entities, preset_position))
-      local try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 5)
-      local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
+      local pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, base_position))
+      local try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 7.5)
+      --local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
       
+      --蒙古比较特殊
       if player_raceName == 'mongol' then
-        Entity_Destroy(TC)
-        try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 12.5)
-        center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0)
-        --Entity_WarpToPos(TC, Util_GetPositionFromAtoB(pos_econ_wood, preset_position, 12.5))
-        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_TC_CAPITAL), AGS_GetCivilizationEntity(player_raceName, AGS_BP_TC_CAPITAL), center_pos, nil, false, true)
+        --需要一个展开的城镇中心
+        Entity_Destroy(base_building_ent)
+        try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 12.5)
+        --Entity_WarpToPos(base_building_ent, try_near_pos)
+        --center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0)
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_TC_CAPITAL), AGS_GetCivilizationEntity(player_raceName, AGS_BP_TC_CAPITAL), try_near_pos, nil, false, true)
       else
-        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_WOOD), AGS_GetCivilizationEntity(player_raceName, AGS_BP_ECOM_WOOD), center_pos, nil, false, true)
+        build_entity_callback = AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_WOOD), AGS_GetCivilizationEntity(player_raceName, AGS_BP_ECOM_WOOD), try_near_pos, nil, false, true)
       end  
     end
   end
