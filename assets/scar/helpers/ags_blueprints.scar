@@ -2046,8 +2046,9 @@ end
 --并检查是否有足够空间放置大批量单位:以 范围8格为准(40) 可不传 range
 --是否写入全局 need_global
 --是否需要返回 need_back
+--是否需要删掉多余的东西 need_safe
 --AGS_GetAvailablePosition(player_id, TC_CAPITAL, 'ent', { x = 30,z = 30 }, 15, false, false, true)
-function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
+function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one, need_safe)
   if not player_id then
     return
   end
@@ -2118,11 +2119,6 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     --EGroup_Count(closest_neutral_entities) < 3 and
 
     if not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and EGroup_Count(closest_player_entities) == 0 then
-      local tree_ebp_table = BP_GetEntityBlueprintsWithType('tree')
-      if EGroup_HasBlueprint(closest_neutral_entities, tree_ebp_table, true) then
-        EGroup_Destroy(closest_neutral_entities)
-      end
-      
       player_can_spawn_pos_table[pos_type] = search_pos
     end
   end
@@ -2139,6 +2135,22 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
         end
       end
     end
+    
+    if need_safe then
+      --树可以删
+      local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
+      World_GetEntitiesNearPoint(player_id, closest_tree_entities, one_pos, 35, OT_Neutral)
+      EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
+    
+      local _AGS_DestroyAnyTree = function(gid, idx, eid)    
+        if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
+          Entity_Destroy(eid)
+        end    
+      end
+    
+      EGroup_ForEach(closest_tree_entities, _AGS_DestroyAnyTree)
+    end
+    
     return one_pos
     
   end

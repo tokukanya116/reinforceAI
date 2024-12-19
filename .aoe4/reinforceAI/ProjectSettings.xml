@@ -12,6 +12,7 @@
 						<d2p1:string>assets\scar\conditions</d2p1:string>
 						<d2p1:string>assets\scar\coreconditions</d2p1:string>
 						<d2p1:string>assets\scar\diplomacy</d2p1:string>
+						<d2p1:string>assets\scar\gameplay</d2p1:string>
 					</d2p1:Value>
 				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 			</d3p1:ExpandedPaths>
@@ -24,6 +25,7 @@
 	</PluginSettings>
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_tree_bombardment.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_elimination.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_annihilation.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_regicide.scar</d3p1:string>
@@ -33,7 +35,6 @@
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_tributes.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_diplomacy.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\helpers\ags_teams.scar</d3p1:string>
-			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\helpers\ags_starts.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>

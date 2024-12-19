@@ -285,9 +285,10 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   
   --智慧宫
   if build_type == "landmark_abb" then
+    --317af35d
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, building_ent, 'ent', nil, 25, true ) 
-      --树可以删
+    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, building_ent, 'ent', nil, 25, true, true)
+    
     build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
   end
   
