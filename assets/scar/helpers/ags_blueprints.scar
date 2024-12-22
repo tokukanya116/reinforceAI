@@ -1988,6 +1988,9 @@ end
 --? @args Entity/EGroup building, OFFSET offset
 --? @result Position
 function AGS_Building_GetSpawnPosition(building, offset, other_offset)
+  if not building  then
+    return
+  end
   if offset == nil then
     offset = OFFSET_FRONT
   end
@@ -2079,9 +2082,9 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     closet_pos = base_element
   end
   
-  if element_type == 'sqd' then
-    closet_pos = Squad_GetPosition(base_element)
-  end
+  --if element_type == 'sqd' then
+    --closet_pos = Squad_GetPosition(base_element)
+  --end
   
   --临时存放表
   local player_can_spawn_pos_table = {
@@ -2118,7 +2121,7 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
     --EGroup_Count(closest_neutral_entities) < 3 and
 
-    if not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and EGroup_Count(closest_player_entities) == 0 then
+    if EGroup_Count(closest_neutral_entities) > 0 and not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and EGroup_Count(closest_player_entities) == 0 then
       player_can_spawn_pos_table[pos_type] = search_pos
     end
   end

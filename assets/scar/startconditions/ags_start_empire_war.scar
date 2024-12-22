@@ -27,7 +27,7 @@ end
 --调用预设置函数
 function AGS_Empire_War_PresetExecute()
   --AGS_Print("AGS_Empire_War_PresetExecute")
-  --AGS_Empire_War_Start_Setting()
+  AGS_Empire_War_Start_Setting()
 end
 
 --function AGS_Nomadic_DestroySpawn()
@@ -247,7 +247,7 @@ function AGS_Empire_War_AssignUnitsToResources(content)
 --生成帝国战争模式所需的表和内容
 function AGS_Empire_War_Start_Setting()
   for _, player in pairs(PLAYERS) do
-    if not AGS_AI_IsAI(player.id) then
+    --if not AGS_AI_IsAI(player.id) then
       
       local ew_content = { 
         player_id = player.id,
@@ -260,7 +260,7 @@ function AGS_Empire_War_Start_Setting()
       
       AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_raceName)
       AGS_Empire_War_AssignUnitsToResources(ew_content)
-    end
+    --end
   end
 end
 
@@ -298,23 +298,26 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   if build_type == "landmark_abb" then
     --317af35d
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, true, true)
+    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, false)
     
     --树可以删
     local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
     World_GetEntitiesNearPoint(player_id, closest_tree_entities, landmark_abb_pos, 35, OT_Neutral)
     EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
     
-    local _AGS_DestroyAnyTree = function(gid, idx, eid)    
-      if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
-        EGroup_Remove(allNeutralEntities, eid)
-        Entity_Destroy(eid)
-      end    
-    end
+    --local function destroyAnyTree(gid, idx, eid)    
+      --if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
+        ----EGroup_Remove(allNeutralEntities, eid)
+        --Entity_Destroy(eid)
+      --end    
+    --end
     
-    EGroup_ForEach(closest_tree_entities, _AGS_DestroyAnyTree)
+    --if EGroup_Count(closest_tree_entities) > 0 then
+      --EGroup_ForEach(closest_tree_entities, destroyAnyTree)
+    --end
     
-    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
+    --build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), base_position, nil, false, true)  
+    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
   end
   
   -- 金矿
