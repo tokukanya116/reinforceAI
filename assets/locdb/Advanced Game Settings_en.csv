@@ -408,7 +408,7 @@
 408,,,,,,Very Hard(ResourceBase*3)
 409,,,,,,ResourceBase*3
 410,,,,,,Empire_war(test)
-412,,,,,,Start with the Empire_war
+412,,,,,,Start with the Empire_war（High probability error in multiplayer test! Do not check）
 413,,,,Mod Title,,reinforceAI_V2(Ongoing update)
 414,,,,Mod Gamemode Description,,"Enhanced ai(hardest,absurd)\nSuitable for medium and heavy PVE players (the game time will be longer, you can open ai hosting, if the teammate quit the game or drop the line will be replaced by AI)\nAfter the first 9 minutes, resources are released every 30 seconds based on the level selected for the start\nResources will be released after 13 minutes based on the support level selected in the option\nDisable Navy\nai has more 35 population(The maximum population of 275 or more will result in a card model, which will automatically clean every 12 minutes, requiring the test mode to be turned on)\nImperial War Mode is still in the testing phase, if an error occurs, uncheck the box and it will work normally(sometime it will data out of sync)\nPlease use it with a bundle of the same name(reinforceAI_bundle)\n\nSetting a population of more than 275 at the beginning will cause the model to be blocked, and AI forces will be deleted regularly! (12 minutes)\n- AI(Chinese main civilization) will enter the Ming Dynasty without the Great Wall gatehouse (there will be imperial tombs after construction)\nAdded unit gift in diplomacy interface(Single player mode only available, multiple people will be out of sync)\nComments or feedback: \n1033498641@qq.com"
 415,,,,,,Default
