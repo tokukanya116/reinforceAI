@@ -298,42 +298,26 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
     
     --317af35d
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-<<<<<<< HEAD
     local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, false)
-=======
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, true)
->>>>>>> bbc4e0bc13937a8754b72f69023b069d5214fb70
     
     --树可以删
     local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
     World_GetEntitiesNearPoint(player_id, closest_tree_entities, landmark_abb_pos, 35, OT_Neutral)
     EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
     
-<<<<<<< HEAD
     --local function destroyAnyTree(gid, idx, eid)    
       --if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
         ----EGroup_Remove(allNeutralEntities, eid)
         --Entity_Destroy(eid)
       --end    
     --end
-=======
-    local _AGS_DestroyAnyTree = function(gid, idx, eid)    
-      if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) and Entity_IsSpawned(eid) then
-        Entity_Destroy(eid)
-      end    
-    end
->>>>>>> bbc4e0bc13937a8754b72f69023b069d5214fb70
     
     --if EGroup_Count(closest_tree_entities) > 0 then
       --EGroup_ForEach(closest_tree_entities, destroyAnyTree)
     --end
     
-<<<<<<< HEAD
     --build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), base_position, nil, false, true)  
     build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
-=======
-    AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true)  
->>>>>>> bbc4e0bc13937a8754b72f69023b069d5214fb70
   end
   
   -- 金矿

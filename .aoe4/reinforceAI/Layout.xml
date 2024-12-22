@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutRoot>
   <RootPanel Orientation="Vertical">
-    <LayoutDocumentPane />
+    <LayoutDocumentPane>
+      <LayoutDocument Title="ags_tree_bombardment.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\gameplay\ags_tree_bombardment.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_tree_bombardment.scar" LastActivationTimeStamp="12/23/2024 02:59:27" />
+    </LayoutDocumentPane>
   </RootPanel>
   <TopSide />
   <RightSide />
