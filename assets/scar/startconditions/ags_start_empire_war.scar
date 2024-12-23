@@ -160,10 +160,10 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   end
       
   ----生成采集建筑
-  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
-  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
-  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", nil, tc_capital, allNeutralEntities)
-  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", nil, tc_capital, allNeutralEntities) 
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", nil, tc_capital, allNeutralEntities) 
    
   ----默认绵羊采集区
   --local gather_sheep_pos =  World_Pos(tc_capital_pos.x - 3.5, 0, tc_capital_pos.z - 7.5)
@@ -250,11 +250,10 @@ function AGS_Empire_War_Start_Setting()
         player_raceName = player.raceName,
         player_index = player.index, --玩家索引
         is_local = player.isLocal,
-        start_pos = Player_GetStartingPosition(player.id),
-        building_table = {}
+        start_pos = Player_GetStartingPosition(player.id)
       }
       
-      AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_raceName)
+      --AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_raceName)
       AGS_Empire_War_AssignUnitsToResources(ew_content)
     --end
   end
@@ -266,7 +265,7 @@ end
 --build_type --建筑类型 econ_gold 必须
 --base_position --基点定位 可选
 --base_building_ent --基点实体 可选，定位不存在时为必须
---allNeutralEntities --
+--allNeutralEntities
 function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, build_type, base_position, base_building_ent, allNeutralEntities)
   --空值，报错拦截
   if not player_id then
@@ -298,12 +297,22 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
     
     --317af35d
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local landmark_abb_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, false)
+    local can_build_able_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, false)
     
-    --树可以删
+    local landmark_abb_pos = nil
     local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
-    World_GetEntitiesNearPoint(player_id, closest_tree_entities, landmark_abb_pos, 35, OT_Neutral)
-    EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
+    for k, v in pairs(can_build_able_pos) do
+      World_GetEntitiesNearPoint(player_id, closest_tree_entities, v.position, 35, OT_Neutral)
+      EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
+      
+      if EGroup_Count(closest_tree_entities) < 3 then
+         landmark_abb_pos = v.position
+         if landmark_abb_pos ~= nil then
+            build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
+            break
+          end
+      end
+    end
     
     --local function destroyAnyTree(gid, idx, eid)    
       --if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
@@ -317,7 +326,6 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
     --end
     
     --build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), base_position, nil, false, true)  
-    build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
   end
   
   -- 金矿

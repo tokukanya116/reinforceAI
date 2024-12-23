@@ -8,14 +8,15 @@
 				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
 					<d2p1:Value>
-						<d2p1:string>assets\locdb\Advanced Game Settings_zh-hans.csv</d2p1:string>
+						<d2p1:string>assets\locdb</d2p1:string>
 						<d2p1:string>assets\scar\ai</d2p1:string>
 						<d2p1:string>assets\scar\conditions</d2p1:string>
 						<d2p1:string>assets\scar\coreconditions</d2p1:string>
 						<d2p1:string>assets\scar\diplomacy</d2p1:string>
 						<d2p1:string>assets\scar\gameplay</d2p1:string>
+						<d2p1:string>assets\scar\startconditions</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
-						<d2p1:string>assets\scar\ags_cardinal.scar</d2p1:string>
+						<d2p1:string>assets\scar\ags_global_settings.scar</d2p1:string>
 					</d2p1:Value>
 				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 			</d3p1:ExpandedPaths>
@@ -28,6 +29,8 @@
 	</PluginSettings>
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_global_settings.scar</d3p1:string>
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_tree_bombardment.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_cardinal.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_elimination.scar</d3p1:string>
@@ -36,7 +39,6 @@
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_conquest.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\ai\ags_ai.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_diplomacy_ui.scar</d3p1:string>
-			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\diplomacy\ags_tributes.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>

@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutRoot>
   <RootPanel Orientation="Vertical">
-    <LayoutDocumentPane>
-      <LayoutDocument Title="ags_tree_bombardment.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\gameplay\ags_tree_bombardment.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_tree_bombardment.scar" LastActivationTimeStamp="12/23/2024 02:59:27" />
-    </LayoutDocumentPane>
+    <LayoutDocumentPaneGroup Orientation="Horizontal">
+      <LayoutDocumentPane DockWidth="0.305189775367932*">
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Asset Explorer" IsSelected="True" ContentId="EssenceEditor.AssetExplorer" FloatingLeft="1891" FloatingTop="389" FloatingWidth="1920" FloatingHeight="279" LastActivationTimeStamp="12/23/2024 17:31:22" PreviousContainerId="672b1839-8c43-4cee-9b82-62f60906e62e" PreviousContainerIndex="0" />
+      </LayoutDocumentPane>
+      <LayoutDocumentPane Id="672b1839-8c43-4cee-9b82-62f60906e62e" DockWidth="1.1778380472685*">
+        <LayoutDocument Title="ags_start_empire_war.scar" ContentId="FileName|Script|assets\scar\startconditions\ags_start_empire_war.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar" LastActivationTimeStamp="12/23/2024 19:01:37" />
+        <LayoutDocument Title="ebps" ContentId="Category|ebps" LastActivationTimeStamp="12/23/2024 18:59:02" />
+        <LayoutDocument Title="ags_blueprints.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\helpers\ags_blueprints.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\helpers\ags_blueprints.scar" LastActivationTimeStamp="12/23/2024 19:12:02" />
+        <LayoutDocument Title="ags_global_settings.scar" ContentId="FileName|Script|assets\scar\ags_global_settings.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_global_settings.scar" LastActivationTimeStamp="12/23/2024 19:12:00" />
+      </LayoutDocumentPane>
+    </LayoutDocumentPaneGroup>
+    <LayoutAnchorablePane Id="14427e83-3335-4450-bcc4-d982b57416b4" Name="anchorablesPane" DockHeight="363">
+      <LayoutAnchorable AutoHideHeight="256" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find 'table'" IsSelected="True" ContentId="FindResults" LastActivationTimeStamp="12/23/2024 17:35:19" />
+    </LayoutAnchorablePane>
   </RootPanel>
   <TopSide />
   <RightSide />
   <LeftSide />
   <BottomSide />
-  <FloatingWindows />
-  <Hidden />
+  <FloatingWindows>
+    <LayoutAnchorableFloatingWindow>
+      <LayoutAnchorablePaneGroup Orientation="Horizontal" FloatingWidth="1920" FloatingHeight="39">
+        <LayoutAnchorablePane Id="9df56d8b-a00c-4d87-84c9-616acdf9dc60" DockHeight="286" FloatingWidth="1920" FloatingHeight="39" />
+      </LayoutAnchorablePaneGroup>
+    </LayoutAnchorableFloatingWindow>
+  </FloatingWindows>
+  <Hidden>
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Properties" IsSelected="True" ContentId="EssenceEditor.Properties" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Favorites" IsSelected="True" ContentId="ScenarioEditor.Favorites" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Painter" IsSelected="True" ContentId="ScenarioEditor.Painter" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Object Painter" IsSelected="True" ContentId="ScenarioEditor.BlueprintPainter" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Minimap" IsSelected="True" ContentId="ScenarioEditor.Minimap" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Audio Region Templates" IsSelected="True" ContentId="ScenarioEditor.AudioRegionTemplate" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Bookmarks" IsSelected="True" ContentId="Bookmarks" LastActivationTimeStamp="12/23/2024 14:34:55" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Modules" ContentId="Modules" FloatingLeft="1071" FloatingTop="1002" FloatingWidth="1920" FloatingHeight="286" LastActivationTimeStamp="12/23/2024 17:36:27" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideHeight="260" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Watch 1" ContentId="Watch1" LastActivationTimeStamp="12/23/2024 17:40:14" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideHeight="304" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Globals" ContentId="Globals" FloatingWidth="1920" FloatingHeight="39" LastActivationTimeStamp="12/23/2024 17:32:55" PreviousContainerId="9df56d8b-a00c-4d87-84c9-616acdf9dc60" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideHeight="254" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Locals" ContentId="Locals" LastActivationTimeStamp="12/23/2024 17:39:33" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Call Stack" ContentId="CallStack" LastActivationTimeStamp="12/23/2024 17:33:03" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+  </Hidden>
 </LayoutRoot>

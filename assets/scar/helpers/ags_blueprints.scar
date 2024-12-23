@@ -2088,14 +2088,14 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
   
   --临时存放表
   local player_can_spawn_pos_table = {
-    OFFSET_FRONT_POS = nil,
-    OFFSET_BACK_POS = nil,
-    OFFSET_LEFT_POS = nil,
-    OFFSET_RIGHT_POS = nil,
-    OFFSET_FRONT_LEFT_POS = nil,
-    OFFSET_BACK_LEFT_POS = nil,
-    OFFSET_FRONT_RIGHT_POS = nil,
-    OFFSET_BACK_RIGHT_POS = nil,
+    --OFFSET_FRONT_POS = nil,
+    --OFFSET_BACK_POS = nil,
+    --OFFSET_LEFT_POS = nil,
+    --OFFSET_RIGHT_POS = nil,
+    --OFFSET_FRONT_LEFT_POS = nil,
+    --OFFSET_BACK_LEFT_POS = nil,
+    --OFFSET_FRONT_RIGHT_POS = nil,
+    --OFFSET_BACK_RIGHT_POS = nil,
   }
   
   
@@ -2121,38 +2121,30 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
     local ebp_table = BP_GetEntityBlueprintsWithType(type_table)
     --EGroup_Count(closest_neutral_entities) < 3 and
 
+    --尝试：只有一个应该让他们找地方重新生成
+    --目前最安全的方法
     if EGroup_Count(closest_neutral_entities) > 0 and not EGroup_HasBlueprint(closest_neutral_entities, ebp_table, false) and EGroup_Count(closest_player_entities) == 0 then
-      player_can_spawn_pos_table[pos_type] = search_pos
+      --player_can_spawn_pos_table[pos_type] = search_pos
+      table.insert(player_can_spawn_pos_table, {
+         direction = pos_type,
+         position = search_pos
+      })
+      --应该写入为 方向和地址 的表
     end
   end
   
   -- 是否需要返回一个
   if need_one then
     --重新遍历地址
-    local one_pos
+    local one_pos = nil
     for k, v in pairs(player_can_spawn_pos_table) do
-      if k ~= 'player_id' and k ~= 'player_idx' then
+      --if k ~= 'player_id' and k ~= 'player_idx' then
         one_pos = v
-        if one_pos ~=nil then
+        if one_pos ~= nil then
           break
         end
-      end
-    end
-    
-    --if need_safe then
-      ----树可以删
-      --local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
-      --World_GetEntitiesNearPoint(player_id, closest_tree_entities, one_pos, 35, OT_Neutral)
-      --EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
-    
-      --local _AGS_DestroyAnyTree = function(gid, idx, eid)    
-        --if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
-          --Entity_Destroy(eid)
-        --end    
       --end
-    
-      --EGroup_ForEach(closest_tree_entities, _AGS_DestroyAnyTree)
-    --end
+    end
     
     return one_pos
     
