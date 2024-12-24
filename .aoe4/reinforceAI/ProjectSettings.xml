@@ -13,10 +13,10 @@
 						<d2p1:string>assets\scar\conditions</d2p1:string>
 						<d2p1:string>assets\scar\coreconditions</d2p1:string>
 						<d2p1:string>assets\scar\diplomacy</d2p1:string>
-						<d2p1:string>assets\scar\gamemodes\ags_standard.scar</d2p1:string>
+						<d2p1:string>assets\scar\gamemodes</d2p1:string>
 						<d2p1:string>assets\scar\gameplay</d2p1:string>
-						<d2p1:string>assets\scar\helpers\ags_blueprints.scar</d2p1:string>
-						<d2p1:string>assets\scar\startconditions\ags_start_settled.scar</d2p1:string>
+						<d2p1:string>assets\scar\helpers</d2p1:string>
+						<d2p1:string>assets\scar\startconditions</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
 					</d2p1:Value>
 				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>

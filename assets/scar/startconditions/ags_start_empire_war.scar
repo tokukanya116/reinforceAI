@@ -9,6 +9,8 @@
 ---------------------------------------------------------------------------------------------------
 
 AGS_Empire_War_MODULE = "AGS_Empire_War"
+needUpdateEntities = false
+allNeutralEntities = nil
 
 ---------------------------------------------------------------------------------------------------
 -- Delegates:
@@ -149,8 +151,9 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   end
   
   --找出地图上所有自然实体
-  local allNeutralEntities = EGroup_CreateIfNotFound("allNeutralEntities")
+  allNeutralEntities = EGroup_CreateIfNotFound("allNeutralEntities")
   World_GetAllNeutralEntities(allNeutralEntities)
+  
   
   local tc_capital =  EGroup_GetEntityAt( Player_GetEntitiesFromType( content.player_id, AGS_BP_TC_CAPITAL ), 1)
   local tc_capital_pos = Entity_GetPosition( tc_capital )
@@ -161,10 +164,11 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   end
    
   --生成采集建筑
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_food", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_wood", nil, tc_capital, allNeutralEntities) 
+  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
+  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
+  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_food", nil, tc_capital, allNeutralEntities)
+  AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_wood", nil, tc_capital, allNeutralEntities) 
+  
   
   --默认绵羊采集区
   --local gather_sheep_pos =  World_Pos(tc_capital_pos.x - 3.5, 0, tc_capital_pos.z - 7.5)
@@ -255,7 +259,7 @@ function AGS_Empire_War_Start_Setting()
         start_pos = Player_GetStartingPosition(player.id)
       }
       
-      AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_civ)
+      --AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_civ)
       AGS_Empire_War_AssignUnitsToResources(ew_content)
       
       --当帝国战争模板启动时，这个表一定会生成 --这个模式选择就会报错等官方修复吧
@@ -301,6 +305,8 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
   local distance = 80
   local build_entity_callback
   
+  --需要补一个触发器，触发实体列表更新
+  
   --智慧宫
   if build_type == "landmark_abb" then
     if player_civ ~= 'abbasid' and player_civ ~= 'abbasid_ha_01' then
@@ -331,7 +337,6 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
         landmark_abb_pos = v.position
         if landmark_abb_pos ~= nil then
           AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_civ, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
-          
           EGroup_ForEach(closest_tree_entities, destroyAnyTree)
           break
         end
@@ -487,7 +492,6 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
 
   -- 木头
   if build_type == "econ_wood" then
-    
     local filter_tree_entities = EGroup_CreateIfNotFound('filter_tree_entities')
     EGroup_Filter( allNeutralEntities, AGS_BP_TREE, FILTER_REMOVE, filter_tree_entities)
     --local TC = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, AGS_BP_TC_CAPITAL), 1)
