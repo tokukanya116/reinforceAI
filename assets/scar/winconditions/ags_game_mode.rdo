@@ -5,8 +5,8 @@
 		<DataProperty Name="m_startingCondition" Type="Object">
 			<DataValue Name="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;">10471648435524836975</DataValue>
 			<!--WinCondition/FamilyManagerEnum<FamilyManager::FamilyType::TYP_StartingCondition,StdTraits>/-->
-			<DataObject Name="" Type="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;" Id="10471648435524836975" OwnerId="14864933867492913264">
-				<DataProperty Name="m_enumName" Type="String" Value=""/>
+			<DataObject Name="" Type="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;" Id="10471648435524836975" OwnerId="14864933867492913264" Comment="这个参数有很多bug，建议使用标准模式或者置空">
+				<DataProperty Name="m_enumName" Type="String" Value="standard"/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_gameModeType" Type="String" Value=""/>
@@ -39,7 +39,7 @@
 				<DataProperty Name="m_locStringKey" Type="Int32" Value="413"/>
 			</DataObject>
 		</DataProperty>
-		<DataProperty Name="m_tuningModGUID" Type="String" Value=""/>
+		<DataProperty Name="m_tuningModGUID" Type="String" Value="fe975498c26b480ab1aea44d8c8fd7ea"/>
 		<DataProperty Name="m_optionsUIDescriptor" Type="Object">
 			<DataValue Name="WinCondition::OptionsUIDescriptor">11244949989787655863</DataValue>
 			<!--WinCondition/WinCondition::OptionsUIDescriptor/-->

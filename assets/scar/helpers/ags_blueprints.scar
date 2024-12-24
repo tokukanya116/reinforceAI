@@ -127,6 +127,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_eng",
     defense_wall = "building_defense_wall_eng",
     defense_wall_gate = "building_defense_wall_gate_eng",
+    
+    villager = "unit_villager_1_eng",
+    king = "unit_king_1_eng",
     monk = "unit_monk_3_eng",
     
     town_center_landmark = "building_landmark_age2_westminster_palace_eng",
@@ -176,6 +179,8 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_chi",
     defense_wall_gate = "building_defense_wall_gate_chi",
 
+    villager = "unit_villager_1_chi",
+    king = "unit_king_1_chi",
     monk = "unit_monk_3_chi",
   },
   french = {
@@ -212,6 +217,8 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_fre",
     defense_wall_gate = "building_defense_wall_gate_fre",
     
+    villager = "unit_villager_1_fre",
+    king = "unit_king_1_fre",
     monk = "unit_monk_3_fre",
   },
   hre = {
@@ -247,6 +254,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_hre", --石墙柱
     defense_wall = "building_defense_wall_hre",
     defense_wall_gate = "building_defense_wall_gate_hre",
+    
+    villager = "unit_villager_1_hre",
+    king = "unit_king_1_hre",
     monk = "unit_monk_3_hre",
   },
   mongol = {
@@ -337,6 +347,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_rus", --石墙柱
     defense_wall = "building_defense_wall_rus",
     defense_wall_gate = "building_defense_wall_gate_chi",
+    
+    villager = "unit_villager_1_rus",
+    king = "unit_king_1_rus",
     monk = "unit_monk_3_rus",
   },
   abbasid = {
@@ -368,6 +381,8 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_abb",
     defense_wall_gate = "building_defense_wall_gate_abb",
     
+    villager = "unit_villager_1_abb",
+    king = "unit_king_1_abb",
     monk = "unit_monk_3_abb",
   },
   sultanate = {
@@ -404,7 +419,10 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_sul",
     defense_wall = "building_defense_wall_sul",
     defense_wall_gate = "building_defense_wall_gate_sul",
-    monk = "unit_monk_2_sul",
+    
+    villager = "unit_villager_1_sul",
+    king = "unit_king_1_sul",
+    monk = "unit_monk_3_sul",
   },
   malian = {
     castle = "building_defense_keep_mal",
@@ -444,6 +462,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_mal",
     defense_wall = "building_defense_wall_mal",
     defense_wall_gate = "building_defense_wall_gate_mal",
+    
+    villager = "unit_villager_1_mal",
+    king = "unit_king_1_mal",
     monk = "unit_monk_3_mal",
   },
   ottoman = {
@@ -481,6 +502,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_ott",
     defense_wall = "building_defense_wall_ott",
     defense_wall_gate = "building_defense_wall_gate_ott",
+    
+    villager = "unit_villager_1_ott",
+    king = "unit_king_1_ott",
     monk = "unit_monk_3_ott",
   },
   chinese_ha_01 = {
@@ -523,6 +547,8 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_chi_ha_01",
     defense_wall_gate = "building_defense_wall_gate_chi_ha_01",
 
+    villager = "unit_villager_1_chi_ha_01",
+    king = "unit_king_1_chi_ha_01",
     monk = "unit_monk_3_chi_ha_01",
     monk_shaolin = "unit_monk_shaolin_3_chi_ha_01"
   },
@@ -560,6 +586,7 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_fre_ha_01",
     defense_wall_gate = "building_defense_wall_gate_fre_ha_01",
     
+    villager = "unit_villager_1_fre_ha_01",
     monk = "unit_monk_3_fre_ha_01", 
     jeanne_d_arc_1 = "unit_jeanne_d_arc_1_fre_ha_01",
     scout = "unit_scout_1_fre_ha_01",
@@ -595,9 +622,11 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_abb_ha_01",
     defense_wall_gate = "building_defense_wall_gate_abb_ha_01",
     
-    monk_age2 = "unit_culture_3_free_abb_ha_01",
+    monk = "unit_culture_2_free_abb_ha_01",
     monk_age3 = "unit_culture_3_free_abb_ha_01",
     monk_age4 = "unit_culture_4_free_abb_ha_01",
+    villager = "unit_villager_1_abb_ha_01",
+    king = "unit_king_1_abb_ha_01",
   },
   hre_ha_01 = {
     castle = "building_defense_keep_hre_ha_01",
@@ -632,6 +661,9 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_hre_ha_01",
     defense_wall = "building_defense_wall_hre_ha_01",
     defense_wall_gate = "building_defense_wall_gate_hre_ha_01",
+    
+    villager = "unit_villager_1_hre_ha_01",
+    king = "unit_king_1_hre_ha_01",
     monk = "unit_monk_1_hre_ha_01",
   },
   japanese = {
@@ -668,7 +700,10 @@ AGS_ENTITY_TABLE = {
     defense_wall_bastion = "building_defense_wall_bastion_jpn",
     defense_wall = "building_defense_wall_jpn",
     defense_wall_gate = "building_defense_wall_gate_jpn",
-    monk = "unit_monk_3_mal",
+    
+    villager = "unit_villager_1_jpn",
+    king = "unit_king_1_jpn",
+    monk = "unit_monk_1_jpn",
   },
   byzantine={
     castle = "building_defense_keep_byz",
@@ -708,6 +743,8 @@ AGS_ENTITY_TABLE = {
     defense_wall = "building_defense_wall_byz",
     defense_wall_gate = "building_defense_wall_gate_byz",
 
+    villager = "unit_villager_1_byz",
+    king = "unit_king_1_byz",
     monk = "unit_monk_3_byz",
   },
 }
@@ -2153,6 +2190,7 @@ function AGS_GetAvailablePosition(player_id, base_element, element_type, distanc
   return player_can_spawn_pos_table 
   
 end
+
 
 --在一个位置附近返回一个可以安全放置该蓝图的位置
 function AGS_GetSafeSpawnPositionByEPB( ebp, position )

@@ -19,6 +19,7 @@ Core_RegisterModule(AGS_Empire_War_MODULE)
 --如果没勾选帝国战争模式，将与帝国战争模式的函数注入全部移除
 function AGS_Empire_War_UpdateModuleSettings()
   AGS_Print("AGS_Empire_War_UpdateModuleSettings")
+  --EnableEmpireWarExtend
   if not AGS_GLOBAL_SETTINGS.EnableEmpireWar then
     Core_UnregisterModule(AGS_Empire_War_MODULE)
   end
@@ -56,7 +57,7 @@ end
 --删掉所有的预生成，再重新按照民族生成特殊单位
 --此处杀掉农民和侦察兵还有羊就行，其他都不要动免得需要再生成
 --贞德是农民需要特殊区分
-function AGS_Empire_War_StartUnitsSetting(player_id, player_raceName)
+function AGS_Empire_War_StartUnitsSetting(player_id, player_civ)
   local player_start_sgroup = Player_GetSquads(player_id)
   local function get_kill_sgroup(gid, idx, sid)
     if Squad_IsOfType(sid, 'scar_scout') or Squad_IsOfType(sid, 'scar_villager') and not Squad_IsOfType(sid, 'jeanne_d_arc') or Squad_IsOfType(sid, 'scar_sheep') then
@@ -66,7 +67,7 @@ function AGS_Empire_War_StartUnitsSetting(player_id, player_raceName)
   SGroup_ForEach(player_start_sgroup, get_kill_sgroup)
       
   --要移除掉蒙古的蒙古包
-  if player_raceName == 'mongol' then
+  if player_civ == 'mongol' then
     local player_start_entities = Player_GetEntities(player_id)
     
     local function get_kill_entity(gid, idx, eid)
@@ -155,31 +156,31 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   local tc_capital_pos = Entity_GetPosition( tc_capital )
    
   -- 智慧宫
-  if content.player_raceName == 'abbasid' or content.player_raceName == 'abbasid_ha_01' then
-    AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "landmark_abb", nil, tc_capital, allNeutralEntities)
+  if content.player_civ == 'abbasid' or content.player_civ == 'abbasid_ha_01' then
+    AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "landmark_abb", nil, tc_capital, allNeutralEntities)
   end
-      
-  ----生成采集建筑
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_food", nil, tc_capital, allNeutralEntities)
-  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_raceName, "econ_wood", nil, tc_capital, allNeutralEntities) 
    
-  ----默认绵羊采集区
+  --生成采集建筑
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "gold_mining_camp", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "stone_mining_camp", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_food", nil, tc_capital, allNeutralEntities)
+  --AGS_Empire_War_Generate_Building_PreSetting(content.player_id, content.player_civ, "econ_wood", nil, tc_capital, allNeutralEntities) 
+  
+  --默认绵羊采集区
   --local gather_sheep_pos =  World_Pos(tc_capital_pos.x - 3.5, 0, tc_capital_pos.z - 7.5)
-  ----重设中国文明的采集区
-  --if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
+  --重设中国文明的采集区
+  --if player_civ == 'chinese' or player_civ == 'chinese_ha_01' then
     --gather_sheep_pos = Entity_GetPosition(ent_econ_food)
   --end
   
   ---- 重设蒙古文明的采集区
-  --if player_raceName == 'mongol' then
+  --if player_civ == 'mongol' then
     --local pos = Entity_GetPosition(ent_econ_wood) 
     --gather_sheep_pos = World_Pos(pos.x - 3.5, 0, pos.z - 7.5)
   --end
   
   -- 生成的羊
-  --local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(content.player_id, content.player_raceName, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
+  --local sg_player_resource_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(content.player_id, content.player_civ, "econ_food_resource_sheep", 'resource', gather_sheep_pos, true)
   
   --table.insert(content.building_table, {
       --tc_capital = tc_capital,
@@ -202,25 +203,25 @@ function AGS_Empire_War_AssignUnitsToResources(content)
   ----}
   
   ------ 额外生成的建筑
-  --AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_raceName, nil, content.building_table[1])
+  --AGS_Empire_War_Extra_Generate_Building_PreSetting(content.player_id, content.player_civ, nil, content.building_table[1])
   
   ----生成派发的村民
-  --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
-  --local sg_player_econ_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_sheep", 'worker', gather_sheep_pos, true)
-  --local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'], true)
-  --local sg_player_econ_wood = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "econ_wood", 'worker', player_building_position_table['pos_econ_wood'], true)
+  --local sg_player_goldminer = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "econ_gold", 'worker', player_building_position_table['pos_gold_mining_camp'], true)
+  --local sg_player_econ_food_sheep = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "econ_food_sheep", 'worker', gather_sheep_pos, true)
+  --local sg_player_econ_food_berry = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "econ_food_berry", 'worker', player_building_position_table['pos_econ_food'], true)
+  --local sg_player_econ_wood = AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "econ_wood", 'worker', player_building_position_table['pos_econ_wood'], true)
   
   ----侦察兵
-  --AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
+  --AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "extra", 'scout',  World_Pos(player_town_center_pos.x-8, 0, player_town_center_pos.z-8))
 
   ----朝廷命官
-  ----if player_raceName == 'chinese' or player_raceName == 'chinese_ha_01' then
-  ----AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'official', player_building_position_table)
+  ----if player_civ == 'chinese' or player_civ == 'chinese_ha_01' then
+  ----AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "extra", 'official', player_building_position_table)
   ----end
   
   
-  ----if player_raceName == 'sultanate' then
-  ----AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, "extra", 'monk', player_building_position_table)
+  ----if player_civ == 'sultanate' then
+  ----AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, "extra", 'monk', player_building_position_table)
   ----end
   
   ----遍历执行派遣
@@ -247,31 +248,42 @@ function AGS_Empire_War_Start_Setting()
       
       local ew_content = { 
         player_id = player.id,
-        player_raceName = player.raceName,
+        player_civ = player.raceName,
         player_index = player.index, --玩家索引
         is_local = player.isLocal,
+        is_human = player.isHuman,
         start_pos = Player_GetStartingPosition(player.id)
       }
       
-      --AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_raceName)
+      AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_civ)
       AGS_Empire_War_AssignUnitsToResources(ew_content)
+      
+      --当帝国战争模板启动时，这个表一定会生成 --这个模式选择就会报错等官方修复吧
+      --for _, t_town in pairs(_townGen.towns) do
+        --if t_town.playerID == player.id then
+          --AGS_Empire_War_AssignUnitsToResources(ew_content, t_town)
+        --end
+      --end
+      
     --end
   end
 end
 
+
+
 --自动识别类型选择建筑蓝图并生成，返回建筑entity
 --player_id 玩家id 必须
---player_raceName 民族名 必须
+--player_civ 民族名 必须
 --build_type --建筑类型 econ_gold 必须
 --base_position --基点定位 可选
 --base_building_ent --基点实体 可选，定位不存在时为必须
 --allNeutralEntities
-function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName, build_type, base_position, base_building_ent, allNeutralEntities)
+function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, build_type, base_position, base_building_ent, allNeutralEntities)
   --空值，报错拦截
   if not player_id then
     return
   end
-  if not player_raceName then
+  if not player_civ then
     return
   end
   if not build_type then
@@ -285,33 +297,46 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
   end
  
   
-  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
+  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_civ]
   local distance = 80
   local build_entity_callback
   
   --智慧宫
   if build_type == "landmark_abb" then
-    if player_raceName ~= 'abbasid' and player_raceName ~= 'abbasid_ha_01' then
+    if player_civ ~= 'abbasid' and player_civ ~= 'abbasid_ha_01' then
       return
     end
     
     --317af35d
+    --6a4d4e1b
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local can_build_able_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 25, false)
+    local can_build_able_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 15, false)
     
     local landmark_abb_pos = nil
     local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
+    
+    --删掉树
+    local function destroyAnyTree(gid, idx, eid)    
+      if eid ~= nil and Entity_IsOfType(eid, AGS_BP_TREE) then
+        EGroup_Remove(allNeutralEntities, eid)
+        Entity_Destroy(eid)
+      end   
+    end
+    
     for k, v in pairs(can_build_able_pos) do
-      World_GetEntitiesNearPoint(player_id, closest_tree_entities, v.position, 35, OT_Neutral)
+      World_GetEntitiesNearPoint(player_id, closest_tree_entities, v.position, 30, OT_Neutral)
       EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
       
-      if EGroup_Count(closest_tree_entities) < 3 then
-         landmark_abb_pos = v.position
-         if landmark_abb_pos ~= nil then
-            build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
-            break
-          end
+      if EGroup_Count(closest_tree_entities) > 10 then
+        landmark_abb_pos = v.position
+        if landmark_abb_pos ~= nil then
+          AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_civ, 'landmark_abb'), landmark_abb_pos, nil, false, true) 
+          
+          EGroup_ForEach(closest_tree_entities, destroyAnyTree)
+          break
+        end
       end
+      
     end
     
     --local function destroyAnyTree(gid, idx, eid)    
@@ -325,7 +350,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       --EGroup_ForEach(closest_tree_entities, destroyAnyTree)
     --end
     
-    --build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_raceName, 'landmark_abb'), base_position, nil, false, true)  
+    --build_entity_callback = AGS_SpawnEntity(player_id, 'landmark_abb', AGS_GetCivilizationEntity(player_civ, 'landmark_abb'), base_position, nil, false, true)  
   end
   
   -- 金矿
@@ -382,13 +407,13 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       --local center_pos = AGS_CalculateCenterOffset(gold_position, pos_minecamp, pos_offset) 
       local center_pos = Util_GetPositionFromAtoB(gold_position, base_position, pos_minecamp)
       center_pos = World_Pos(center_pos.x, 0, center_pos.z - pos_offset)
-      AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_raceName, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
+      AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_civ, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
     end
   end
   
   -- 磨坊
   if build_type == "econ_food" then
-    if player_raceName == 'mongol' then
+    if player_civ == 'mongol' then
       return
     end
 
@@ -402,7 +427,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
 
     if forag_bush_entity ~= nil then
       local try_near_pos = Util_GetPositionFromAtoB(Entity_GetPosition(forag_bush_entity), base_position, 7.5)
-      AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(player_raceName, AGS_BP_ECOM_FOOD), try_near_pos, nil, false, true)  
+      AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_FOOD), AGS_GetCivilizationEntity(player_civ, AGS_BP_ECOM_FOOD), try_near_pos, nil, false, true)  
     end
   end
   
@@ -431,9 +456,9 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       local stone_position = Entity_GetPosition(stone_entity)
 
       --蒙古
-      if player_raceName == 'mongol' then
+      if player_civ == 'mongol' then
         local ovoo_type = stone_type == 'small' and 'ovoo_small' or 'ovoo_large'
-        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(player_raceName, ovoo_type), stone_position, nil, false, false)
+        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id,'ovoo_mon'), AGS_GetCivilizationEntity(player_civ, ovoo_type), stone_position, nil, false, false)
       else 
         --其他
         -- 设置偏移
@@ -454,7 +479,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
         
         local center_pos = Util_GetPositionFromAtoB(stone_position, base_position, pos_minecamp)
         center_pos = World_Pos(center_pos.x, 0, center_pos.z - pos_offset)
-        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, 'stone'..AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_raceName, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
+        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, 'stone'..AGS_BP_MINING_CAMP), AGS_GetCivilizationEntity(player_civ, AGS_BP_MINING_CAMP), center_pos, nil, false, true)  
       end
       
     end
@@ -484,26 +509,26 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_raceName,
       --local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
       
       --蒙古比较特殊
-      if player_raceName == 'mongol' then
+      if player_civ == 'mongol' then
         --需要一个展开的城镇中心
         Entity_Destroy(base_building_ent)
         try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 12.5)
         --Entity_WarpToPos(base_building_ent, try_near_pos)
         --center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0)
-        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_TC_CAPITAL), AGS_GetCivilizationEntity(player_raceName, AGS_BP_TC_CAPITAL), try_near_pos, nil, false, true)
+        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_TC_CAPITAL), AGS_GetCivilizationEntity(player_civ, AGS_BP_TC_CAPITAL), try_near_pos, nil, false, true)
       else
-        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_WOOD), AGS_GetCivilizationEntity(player_raceName, AGS_BP_ECOM_WOOD), try_near_pos, nil, false, true)
+        AGS_SpawnEntity(player_id, AGS_EGroupName(player_id, AGS_BP_ECOM_WOOD), AGS_GetCivilizationEntity(player_civ, AGS_BP_ECOM_WOOD), try_near_pos, nil, false, true)
       end  
     end
   end
 end
 
 --其他额外建筑(千万不能改变context)
-function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_raceName, preset_position, context)
+function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_civ, preset_position, context)
   if not player_id then
     return
   end
-  if not player_raceName then
+  if not player_civ then
     return
   end
   if not context then
@@ -518,7 +543,7 @@ function AGS_Empire_War_Extra_Generate_Building_PreSetting(player_id, player_rac
   
   
   local build_entities = EGroup_CreateIfNotFound('build_entities')
-  local raceName = player_raceName
+  local raceName = player_civ
   local back_pos
  
   for build_type, build_num in pairs(AGS_EMPIRE_WAR_ENTITY_NUM_TABLE[raceName]) do
@@ -717,12 +742,12 @@ function AGS_Empire_War_FindSpawnPositionAndSoftBuilding(player_id, ebp, step, p
 end
 
 --自动识别sbp类型并返回sgroup
-function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, use_type, sbp_type_suffix, preset_position, need_back)
+function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_civ, use_type, sbp_type_suffix, preset_position, need_back)
   --空值，报错拦截
   if not player_id then
     return
   end
-  if not player_raceName then
+  if not player_civ then
     return
   end
   if not use_type then
@@ -739,7 +764,7 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, u
   end
   
   
-  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_raceName]
+  local player_civ_prefixes = AGS_GLOBAL_SETTINGS.Prefixes[player_civ]
   local bp_squad -- 小队蓝图
   local sgroup_name = AGS_SGroupName(player_id, use_type)
   local count
@@ -747,7 +772,7 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, u
   -- 按类型生成的个体参数
   if sbp_type_suffix == "worker" then
     bp_squad = BP_GetSquadBlueprint("unit_villager_1_"..player_civ_prefixes)
-    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName][tostring(use_type) .."_".. sbp_type_suffix]
+    count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_civ][tostring(use_type) .."_".. sbp_type_suffix]
   elseif sbp_type_suffix == "resource" then
     if use_type == 'econ_food_resource_sheep' then
       bp_squad = AGS_GetNeutralUnit(AGS_BP_SHEEP)
@@ -756,7 +781,7 @@ function AGS_Empire_War_Generate_Sgroup_PreSetting(player_id, player_raceName, u
   elseif use_type == 'extra' then
     if sbp_type_suffix == 'scout' then
       bp_squad = BP_GetSquadBlueprint("unit_scout_1_"..player_civ_prefixes)
-      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_raceName]['scout']
+      count = AGS_EMPIRE_WAR_SQUAD_NUM_TABLE[player_civ]['scout']
       AGS_SpawnSquad(player_id, sgroup_name, bp_squad, preset_position, nil, count)
       return
     end
