@@ -316,7 +316,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
     --317af35d
     --6a4d4e1b
     --function AGS_GetAvailablePosition(player_id, base_element, element_type, distance, range, need_one )
-    local can_build_able_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 15, false)
+    local can_build_able_pos = AGS_GetAvailablePosition(player_id, base_building_ent, 'ent', nil, 20, false)
     
     local landmark_abb_pos = nil
     local closest_tree_entities = EGroup_CreateIfNotFound("closest_tree_entities")
@@ -330,7 +330,7 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
     end
     
     for k, v in pairs(can_build_able_pos) do
-      World_GetEntitiesNearPoint(player_id, closest_tree_entities, v.position, 30, OT_Neutral)
+      World_GetEntitiesNearPoint(player_id, closest_tree_entities, v.position, 25, OT_Neutral)
       EGroup_Filter(closest_tree_entities, AGS_BP_TREE, FILTER_KEEP)
       
       if EGroup_Count(closest_tree_entities) > 10 then
@@ -508,8 +508,20 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
     
     if filter_tree_entities ~= nil then
       -- 获取最近城镇中心的树
-      local pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, base_position))
-      local try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 7.5)
+      local pos_econ_wood
+      local try_near_pos
+      
+      if player_civ ~= 'abbasid' and player_civ ~= 'abbasid_ha_01' then
+        pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, base_position, nil))
+        try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 7.5)
+      else
+        --必须满足离城镇中心最近，且和智慧宫差80距离以上
+        local landmark_abb = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, 'house_of_wisdom_abb'), 1)
+        pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, Entity_GetPosition(landmark_abb), nil))
+        try_near_pos = Util_GetPositionFromAtoB(Entity_GetPosition(landmark_abb), pos_econ_wood, 15)
+      end
+      
+       
       --local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
       
       --蒙古比较特殊

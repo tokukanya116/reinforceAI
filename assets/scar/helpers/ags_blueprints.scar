@@ -1727,7 +1727,8 @@ function AGS_SpawnEntity(player_id, egroup_name, bp_entity, position, position_o
   local e = Entity_CreateFacing(bp_entity, player_id, placement, rotation, true)
   
   if opt_do_correction then
-    local safe_spawn = Entity_CalculatePassableSpawnPosition(e, World_GetSpawnablePosition(placement, e))
+    --Entity_CalculatePassableSpawnPosition
+    local safe_spawn = World_GetSpawnablePosition(placement, e)
     Entity_WarpToPos(e, safe_spawn)  
   end
   
@@ -1895,7 +1896,7 @@ end
 function AGS_GetCurrentName(player)
   return Core_GetPlayerName(player.id)
 end
-function AGS_EGroup_GetClosestEntity(egroup, position)
+function AGS_EGroup_GetClosestEntity(egroup, position, limit)
   local closest_distance_sqr = 1000000000000
   local closest_entity = nil
   
@@ -1903,10 +1904,22 @@ function AGS_EGroup_GetClosestEntity(egroup, position)
     local entityPosition = Entity_GetPosition(eid)
     local distance_sqr = World_DistanceSquaredPointToPoint(entityPosition, position)
     
-    if distance_sqr < closest_distance_sqr then
-      closest_distance_sqr = distance_sqr
-      closest_entity = eid
+    if distance_sqr < closest_distance_sqr then   
+      if limit ~= nil then
+        if distance_sqr > limit.distance then
+          closest_distance_sqr = distance_sqr
+          closest_entity = eid
+        end
+      else
+        closest_distance_sqr = distance_sqr
+        closest_entity = eid
+      end
     end
+    
+    --if limit ~= nil then
+      --limit.build_ent_pos
+      --distance = 20
+    --end
     
   end
   EGroup_ForEach(egroup, _CheckEntity)
