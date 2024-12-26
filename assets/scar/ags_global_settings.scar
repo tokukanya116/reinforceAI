@@ -92,7 +92,7 @@ AGS_GLOBAL_SETTINGS = {
   },
 --圣地设置
   ReligiousSettings = {
-    Timer = 15,
+    Timer = 20,
     ResumableTimer = false, --恢复计时
     SingleCentralSite = false, --中心单个圣地
     MilitarySites = false, -- undefined, used by KOTH
@@ -103,7 +103,7 @@ AGS_GLOBAL_SETTINGS = {
   },
 --奇观设置
   WonderSettings = {
-    Timer = 20,
+    Timer = 25,
     LastStand = false, --守护奇观至最后一刻
     ScaleCost = AGS_GS_WONDER_SCALE_COST_DISABLED, --奇观成本增益
   },
@@ -540,8 +540,8 @@ function AGS_GlobalSettings_DefineResourceSupSetting(category)
     end  
   
     if AGS_GLOBAL_SETTINGS.IsTestMode then
-      AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_MAXIMUM
-      AGS_GLOBAL_SETTINGS.MapVision = AGS_GS_MAP_VISION_REVEALED -- 地图视野 --AGS_GS_MAP_VISION_REVEALED --AGS_GS_MAP_VISION_EXPLORED
+      --AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_MAXIMUM
+      --AGS_GLOBAL_SETTINGS.MapVision = AGS_GS_MAP_VISION_REVEALED -- 地图视野 --AGS_GS_MAP_VISION_REVEALED --AGS_GS_MAP_VISION_EXPLORED
     end
     
 end

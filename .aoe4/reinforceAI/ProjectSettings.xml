@@ -16,6 +16,7 @@
 						<d2p1:string>assets\scar\gamemodes</d2p1:string>
 						<d2p1:string>assets\scar\gameplay</d2p1:string>
 						<d2p1:string>assets\scar\helpers</d2p1:string>
+						<d2p1:string>assets\scar\specials\ags_testing.scar</d2p1:string>
 						<d2p1:string>assets\scar\startconditions</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
 					</d2p1:Value>
@@ -30,16 +31,16 @@
 	</PluginSettings>
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\winconditions\ags_game_mode.rdo</d3p1:string>
+			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\specials\ags_testing.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_starting_scout.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_cardinal.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\gamemodes\ags_standard.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\helpers\ags_blueprints.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_settled.scar</d3p1:string>
-			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\winconditions\ags_game_mode.rdo</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_global_settings.scar</d3p1:string>
 			<d3p1:string>C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar</d3p1:string>
 			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_tree_bombardment.scar</d3p1:string>
-			<d3p1:string>C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\conditions\ags_elimination.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>
