@@ -437,7 +437,7 @@ function AGS_GlobalSettings_DefineGameSettings(category)
   end
   --如果帝国战争模式选项不为空，给全局对应选项赋值
   if category.option_game_setting_empire_war ~= nil then
-    AGS_GLOBAL_SETTINGS.EnableEmpireWarExtend = category.option_game_setting_empire_war
+    AGS_GLOBAL_SETTINGS.EnableEmpireWar = category.option_game_setting_empire_war
   end
 end
 
@@ -1281,7 +1281,7 @@ function AGS_GiveResources_ONCE()
     if Player_IsHuman(player.id) then
       Player_AddResource(player.id, RT_Food, 350)
       Player_AddResource(player.id, RT_Gold, 200)
-      Player_AddResource(player.id, RT_Stone, 900)
+      Player_AddResource(player.id, RT_Stone, 1100)
     end
   end
 end

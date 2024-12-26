@@ -250,6 +250,7 @@ function AGS_Empire_War_Start_Setting()
   for _, player in pairs(PLAYERS) do
     --if not AGS_AI_IsAI(player.id) then
       
+    
       local ew_content = { 
         player_id = player.id,
         player_civ = player.raceName,
@@ -269,6 +270,7 @@ function AGS_Empire_War_Start_Setting()
         --end
       --end
       
+    
     --end
   end
 end
@@ -500,8 +502,15 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
       -- 玩家出生点距离30以上必定是树林
       -- 只要把距离过近的删除，剩下的一定是树林，取第一个生成伐木场就行
       if eid ~= nil and Util_GetDistance(eid, base_position) <= 30 then
-        EGroup_Remove(filter_tree_entities ,eid)
-      end  
+        EGroup_Remove(filter_tree_entities, eid)
+      end
+      
+      if player_civ == 'abbasid' or player_civ == 'abbasid_ha_01' then
+        local landmark_abb = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, 'house_of_wisdom_abb'), 1)
+        if eid ~= nil and Util_GetDistance(eid, Entity_GetPosition(landmark_abb)) <= 25 then
+          EGroup_Remove(filter_tree_entities, eid)
+        end
+      end
     end
     
     EGroup_ForEach(filter_tree_entities, findTheNearestForestPosition)
@@ -511,16 +520,13 @@ function AGS_Empire_War_Generate_Building_PreSetting(player_id, player_civ, buil
       local pos_econ_wood
       local try_near_pos
       
-      if player_civ ~= 'abbasid' and player_civ ~= 'abbasid_ha_01' then
-        pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, base_position, nil))
-        try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 7.5)
-      else
-        --必须满足离城镇中心最近，且和智慧宫差80距离以上
-        local landmark_abb = EGroup_GetEntityAt(Player_GetEntitiesFromType(player_id, 'house_of_wisdom_abb'), 1)
-        pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, Entity_GetPosition(landmark_abb), nil))
-        try_near_pos = Util_GetPositionFromAtoB(Entity_GetPosition(landmark_abb), pos_econ_wood, 15)
+     
+      pos_econ_wood = Entity_GetPosition(AGS_EGroup_GetClosestEntity(filter_tree_entities, base_position, nil))
+      try_near_pos = Util_GetPositionFromAtoB(pos_econ_wood, base_position, 7.5)
+     
+      if player_civ == 'abbasid' or player_civ == 'abbasid_ha_01' then
+        try_near_pos = pos_econ_wood
       end
-      
        
       --local center_pos = AGS_CalculateCenterOffset(try_near_pos, 0, 0) 
       
