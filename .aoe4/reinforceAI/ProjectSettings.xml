@@ -16,7 +16,7 @@
 						<d2p1:string>assets\scar\gamemodes</d2p1:string>
 						<d2p1:string>assets\scar\gameplay</d2p1:string>
 						<d2p1:string>assets\scar\helpers</d2p1:string>
-						<d2p1:string>assets\scar\specials\ags_testing.scar</d2p1:string>
+						<d2p1:string>assets\scar\specials</d2p1:string>
 						<d2p1:string>assets\scar\startconditions</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
 					</d2p1:Value>

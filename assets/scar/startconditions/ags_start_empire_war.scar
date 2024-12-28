@@ -30,7 +30,7 @@ end
 --调用预设置函数
 function AGS_Empire_War_PresetExecute()
   --AGS_Print("AGS_Empire_War_PresetExecute")
-  AGS_Empire_War_Start_Setting()
+  --AGS_Empire_War_Start_Setting()
 end
 
 --function AGS_Nomadic_DestroySpawn()
