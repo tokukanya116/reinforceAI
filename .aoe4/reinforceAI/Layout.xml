@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutRoot>
   <RootPanel Orientation="Vertical">
-    <LayoutDocumentPaneGroup Orientation="Horizontal" DockHeight="1.57328385899814*">
-      <LayoutDocumentPane Id="42d3b767-2da3-4320-b535-42f0f880d526" DockWidth="0.613477924089853*">
-        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Asset Explorer" IsSelected="True" ContentId="EssenceEditor.AssetExplorer" FloatingLeft="1891" FloatingTop="389" FloatingWidth="1920" FloatingHeight="279" LastActivationTimeStamp="12/28/2024 19:38:32" PreviousContainerId="672b1839-8c43-4cee-9b82-62f60906e62e" PreviousContainerIndex="0" />
-        <LayoutDocument Title="ags_game_mode.rdo" ContentId="Reflect|Essence.Editor.ReflectEditor.Controls.DefaultReflectControlActivator|0xCE4ADA983D96B070" LastActivationTimeStamp="12/28/2024 18:48:21" />
-        <LayoutDocument Title="Enums" ContentId="Attributes.Enums" LastActivationTimeStamp="12/26/2024 09:46:18" />
+    <LayoutDocumentPaneGroup Orientation="Horizontal">
+      <LayoutDocumentPane Id="42d3b767-2da3-4320-b535-42f0f880d526" DockWidth="0.536647671737044*">
+        <LayoutDocument Title="Enums" ContentId="Attributes.Enums" LastActivationTimeStamp="12/28/2024 22:24:52" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Asset Explorer" ContentId="EssenceEditor.AssetExplorer" FloatingLeft="1891" FloatingTop="389" FloatingWidth="1920" FloatingHeight="279" LastActivationTimeStamp="12/28/2024 22:25:26" PreviousContainerId="672b1839-8c43-4cee-9b82-62f60906e62e" PreviousContainerIndex="0" />
+        <LayoutDocument Title="ags_game_mode.rdo" IsSelected="True" ContentId="Reflect|Essence.Editor.ReflectEditor.Controls.DefaultReflectControlActivator|0xCE4ADA983D96B070" LastActivationTimeStamp="12/29/2024 06:54:23" />
       </LayoutDocumentPane>
-      <LayoutDocumentPane Id="672b1839-8c43-4cee-9b82-62f60906e62e" DockWidth="0.869430453312671*">
-        <LayoutDocument Title="ags_start_empire_war.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\startconditions\ags_start_empire_war.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar" LastActivationTimeStamp="12/28/2024 19:38:36" />
-        <LayoutDocument Title="ags_blueprints.scar" ContentId="FileName|Script|assets\scar\helpers\ags_blueprints.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\helpers\ags_blueprints.scar" LastActivationTimeStamp="12/26/2024 17:17:14" />
-        <LayoutDocument Title="ags_global_settings.scar" ContentId="FileName|Script|assets\scar\ags_global_settings.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\ags_global_settings.scar" LastActivationTimeStamp="12/28/2024 18:48:00" />
-        <LayoutDocument Title="ags_testing.scar" ContentId="FileName|Script|assets\scar\specials\ags_testing.scar" ToolTip="C:\Users\dell\Desktop\aoe4\reinforceAI\assets\scar\specials\ags_testing.scar" LastActivationTimeStamp="12/26/2024 17:19:34" />
+      <LayoutDocumentPane Id="672b1839-8c43-4cee-9b82-62f60906e62e" DockWidth="0.946247601798128*">
+        <LayoutDocument Title="ags_start_empire_war.scar" ContentId="FileName|Script|assets\scar\startconditions\ags_start_empire_war.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_empire_war.scar" LastActivationTimeStamp="12/29/2024 06:54:44" />
+        <LayoutDocument Title="ags_blueprints.scar" ContentId="FileName|Script|assets\scar\helpers\ags_blueprints.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\helpers\ags_blueprints.scar" LastActivationTimeStamp="12/29/2024 06:54:44" />
+        <LayoutDocument Title="ags_global_settings.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\ags_global_settings.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\ags_global_settings.scar" LastActivationTimeStamp="12/29/2024 06:55:01" />
+        <LayoutDocument Title="ags_testing.scar" ContentId="FileName|Script|assets\scar\specials\ags_testing.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\specials\ags_testing.scar" LastActivationTimeStamp="12/29/2024 02:53:33" />
+        <LayoutDocument Title="ags_reveal_spawn.scar" ContentId="FileName|Script|assets\scar\gameplay\ags_reveal_spawn.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\gameplay\ags_reveal_spawn.scar" LastActivationTimeStamp="12/29/2024 03:25:08" />
+        <LayoutDocument Title="ags_starts.scar" ContentId="FileName|Script|assets\scar\helpers\ags_starts.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\helpers\ags_starts.scar" LastActivationTimeStamp="12/29/2024 03:25:34" />
+        <LayoutDocument Title="ags_start_settled.scar" ContentId="FileName|Script|assets\scar\startconditions\ags_start_settled.scar" ToolTip="C:\Users\Administrator\Desktop\aoe4\标准\reinforceAI\assets\scar\startconditions\ags_start_settled.scar" LastActivationTimeStamp="12/29/2024 03:29:49" />
       </LayoutDocumentPane>
     </LayoutDocumentPaneGroup>
-    <LayoutAnchorablePane Id="14427e83-3335-4450-bcc4-d982b57416b4" Name="anchorablesPane" DockHeight="98">
-      <LayoutAnchorable AutoHideHeight="256" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find Results 1" IsSelected="True" ContentId="FindResults" LastActivationTimeStamp="12/28/2024 18:33:59" />
+    <LayoutAnchorablePane Id="14427e83-3335-4450-bcc4-d982b57416b4" Name="anchorablesPane" DockHeight="447">
+      <LayoutAnchorable AutoHideHeight="256" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find Results 1" IsSelected="True" ContentId="FindResults" LastActivationTimeStamp="12/29/2024 03:25:55" />
       <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Error List" ContentId="ErrorList" LastActivationTimeStamp="12/26/2024 10:49:46" />
       <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Console" ContentId="Console" LastActivationTimeStamp="12/25/2024 18:59:55" />
     </LayoutAnchorablePane>
@@ -26,17 +29,17 @@
   <BottomSide />
   <FloatingWindows />
   <Hidden>
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Properties" IsSelected="True" ContentId="EssenceEditor.Properties" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Favorites" IsSelected="True" ContentId="ScenarioEditor.Favorites" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Painter" IsSelected="True" ContentId="ScenarioEditor.Painter" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Object Painter" IsSelected="True" ContentId="ScenarioEditor.BlueprintPainter" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Minimap" IsSelected="True" ContentId="ScenarioEditor.Minimap" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Audio Region Templates" IsSelected="True" ContentId="ScenarioEditor.AudioRegionTemplate" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Bookmarks" IsSelected="True" ContentId="Bookmarks" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Modules" IsSelected="True" ContentId="Modules" FloatingLeft="1071" FloatingTop="1002" FloatingWidth="1920" FloatingHeight="286" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="5" />
-    <LayoutAnchorable AutoHideHeight="260" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Watch 1" IsSelected="True" ContentId="Watch1" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="6" />
-    <LayoutAnchorable AutoHideHeight="304" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Globals" IsSelected="True" ContentId="Globals" FloatingLeft="1075" FloatingTop="736" FloatingWidth="1920" FloatingHeight="39" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="5" />
-    <LayoutAnchorable AutoHideHeight="254" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Locals" IsSelected="True" ContentId="Locals" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="4" />
-    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Call Stack" IsSelected="True" ContentId="CallStack" LastActivationTimeStamp="12/28/2024 18:48:00" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Properties" IsSelected="True" ContentId="EssenceEditor.Properties" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Favorites" IsSelected="True" ContentId="ScenarioEditor.Favorites" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Painter" IsSelected="True" ContentId="ScenarioEditor.Painter" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Object Painter" IsSelected="True" ContentId="ScenarioEditor.BlueprintPainter" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="2" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Minimap" IsSelected="True" ContentId="ScenarioEditor.Minimap" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Audio Region Templates" IsSelected="True" ContentId="ScenarioEditor.AudioRegionTemplate" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Bookmarks" IsSelected="True" ContentId="Bookmarks" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="3" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Modules" IsSelected="True" ContentId="Modules" FloatingLeft="1071" FloatingTop="1002" FloatingWidth="1920" FloatingHeight="286" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="5" />
+    <LayoutAnchorable AutoHideHeight="260" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Watch 1" IsSelected="True" ContentId="Watch1" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="6" />
+    <LayoutAnchorable AutoHideHeight="304" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Globals" IsSelected="True" ContentId="Globals" FloatingLeft="1075" FloatingTop="736" FloatingWidth="1920" FloatingHeight="39" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="5" />
+    <LayoutAnchorable AutoHideHeight="254" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Locals" IsSelected="True" ContentId="Locals" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="4" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Call Stack" IsSelected="True" ContentId="CallStack" LastActivationTimeStamp="12/29/2024 06:54:23" PreviousContainerId="14427e83-3335-4450-bcc4-d982b57416b4" PreviousContainerIndex="0" />
   </Hidden>
 </LayoutRoot>

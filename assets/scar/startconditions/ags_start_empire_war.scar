@@ -261,7 +261,7 @@ function AGS_Empire_War_Start_Setting()
       }
       
       --AGS_Empire_War_StartUnitsSetting(ew_content.player_id, ew_content.player_civ)
-      AGS_Empire_War_AssignUnitsToResources(ew_content)
+      --AGS_Empire_War_AssignUnitsToResources(ew_content)
       
       --当帝国战争模板启动时，这个表一定会生成 --这个模式选择就会报错等官方修复吧
       --for _, t_town in pairs(_townGen.towns) do

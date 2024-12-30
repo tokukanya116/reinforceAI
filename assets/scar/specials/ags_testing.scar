@@ -177,23 +177,23 @@ function AGS_Testing_Find_Enemy()
 end
 
 --参数
-AGS_TSETING_OBJECTIVES_CONQUEST = {
-  reason = WR_NONE,
-  title = "$64c5019a145c4e4da448dbd3adeea61e:425", 
-  title_lost = Loc_Empty(),
-  title_victory = Loc_Empty(),
-  description = Loc_Empty(),
-  icon = "icons\\races\\common\\victory_conditions\\victory_condition_conquest",
-  data_template = "ConquestObjectiveTemplate",
-  data_template_or = "ConquestObjectiveTemplate",
-  priority = OT_Primary,
-  parent = 0,
-  telemetry = "conquestObj",
-  alert = "icons\\event_queue_high_priority_large",
-}
+--AGS_TSETING_OBJECTIVES_CONQUEST = {
+  --reason = WR_NONE,
+  --title = "$64c5019a145c4e4da448dbd3adeea61e:425", 
+  --title_lost = Loc_Empty(),
+  --title_victory = Loc_Empty(),
+  --description = Loc_Empty(),
+  --icon = "icons\\races\\common\\victory_conditions\\victory_condition_conquest",
+  --data_template = "ConquestObjectiveTemplate",
+  --data_template_or = "ConquestObjectiveTemplate",
+  --priority = OT_Primary,
+  --parent = 0,
+  --telemetry = "conquestObj",
+  --alert = "icons\\event_queue_high_priority_large",
+--}
 
---模板
-function AGS_Testing_CreateObjective() 
-  AGS_TSETING_CONQUEST_OBJECTIVE = AGS_Objectives_Create(AGS_TSETING_OBJECTIVES_CONQUEST, AGS_GS_LOCAL_PLAYER)
-  AGS_Objectives_Set(AGS_TSETING_CONQUEST_OBJECTIVE, OS_Incomplete, true)
-end
+----模板
+--function AGS_Testing_CreateObjective() 
+  --AGS_TSETING_CONQUEST_OBJECTIVE = AGS_Objectives_Create(AGS_TSETING_OBJECTIVES_CONQUEST, AGS_GS_LOCAL_PLAYER)
+  --AGS_Objectives_Set(AGS_TSETING_CONQUEST_OBJECTIVE, OS_Incomplete, true)
+--end

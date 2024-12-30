@@ -6,7 +6,7 @@
 			<DataValue Name="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;">10471648435524836975</DataValue>
 			<!--WinCondition/FamilyManagerEnum<FamilyManager::FamilyType::TYP_StartingCondition,StdTraits>/-->
 			<DataObject Name="" Type="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;" Id="10471648435524836975" OwnerId="14864933867492913264" Comment="这个参数有很多bug，建议使用标准模式或者置空">
-				<DataProperty Name="m_enumName" Type="String" Value="standard"/>
+				<DataProperty Name="m_enumName" Type="String" Value=""/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_gameModeType" Type="String" Value=""/>
